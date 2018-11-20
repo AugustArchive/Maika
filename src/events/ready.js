@@ -30,7 +30,8 @@ module.exports = class ReadyEvent extends Event {
                     + SHARDS  : ${this.bot.shards.size}
                     + PLUGINS : ${this.bot.registry.plugins.size}
                     \`\`\`
-                `
+                `,
+                color: this.bot.color
             }
         });
         this.bot.startFeeds();

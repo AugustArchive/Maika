@@ -31,6 +31,7 @@ module.exports = class AugustPlugin {
     constructor(options) {
         this.name = options.name;
         this.visible = options.visible;
+        this.embeded = options.embeded;
         /** @type {Collection<AugustCommand>} */
         this.commands = new Collection();
 
@@ -66,6 +67,7 @@ module.exports = class AugustPlugin {
 /**
  * @typedef {Object} AugustPluginOptions
  * @prop {string} name The plugin name
+ * @prop {string} embeded The plugin name but for the help embed
  * @prop {boolean} visible Whenther or not the plugin should be visiable
  * @prop {AugustCommand[]} commands The commands
  */
@@ -75,7 +77,7 @@ module.exports = class AugustPlugin {
  * @prop {string} description The command description
  * @prop {string} [usage=''] The command usage
  * @prop {string} [category='Generic'] The command category
- * @prop {string[]} [aliases=[]] The command aliases
+ * @prop {string[]} aliases The command aliases
  * @prop {boolean} [hidden=false] Whenther or not the command should be hidden from the help command
  * @prop {boolean} [owner=false] Whenther or not the command should be executed by the owners
  * @prop {boolean} [guild=false] Whenther or not the command should be executed in a Discord "guild"

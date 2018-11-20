@@ -82,8 +82,8 @@ module.exports = class AugustBoatClient extends Client {
     startFeeds() {
         const guilds = this.r.table('guilds').run();
         for (let i = 0; i < guilds.length; i++) {
-            if (guilds[i].feeds.reddit && guilds[i].feeds.reddit.enabled)
-                this.feeds.reddit.start(`https://reddit.com/r/${guilds[i].feeds.reddit.subreddit}`, guilds[i].feeds.reddit.channelID);
+            if (guilds[i].reddit_feed.enabled)
+                this.feeds.reddit.start(`https://reddit.com/r/${guilds[i].reddit_feed.subreddit}`, guilds[i].reddit_feed.channelID);
         }
     }
 

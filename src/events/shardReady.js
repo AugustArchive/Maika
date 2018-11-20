@@ -9,6 +9,6 @@ module.exports = class ShardReadyEvent extends Event {
     }
 
     run(id) {
-        this.bot.logger.warn(`Shard #${id} is ready!`);
+        this.bot.logger.info(`Shard #${id} is ready!`);
     }
 };

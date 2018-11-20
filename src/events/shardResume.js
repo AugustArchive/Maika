@@ -9,6 +9,6 @@ module.exports = class ShardResumedEvent extends Event {
     }
 
     run(id) {
-        this.bot.logger.warn(`Shard #${id} has been resumed!`);
+        this.bot.logger.info(`Shard #${id} has been resumed!`);
     }
 };

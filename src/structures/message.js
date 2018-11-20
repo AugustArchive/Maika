@@ -57,7 +57,7 @@ module.exports = class CommandMessage {
      * @param {string} content The content
      * @returns {Promise<import('eris').Message>}
      */
-    send(content) {
+    reply(content) {
         return this.msg.channel.createMessage(content);
     }
 
@@ -69,7 +69,7 @@ module.exports = class CommandMessage {
      * @returns {Promise<import('eris').Message>}
      */
     async code(lang, content) {
-        return this.send(`\`\`\`${lang || ''}\n${content}\`\`\``);
+        return this.reply(`\`\`\`${lang || ''}\n${content}\`\`\``);
     }
 
     /**

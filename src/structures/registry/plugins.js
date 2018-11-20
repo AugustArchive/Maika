@@ -116,14 +116,14 @@ module.exports = class PluginRegistry {
         const plug = plugin[0].get(command);
 
         if (plug.guild && msg.channel.type === 1)
-            return ctx.send(`**${ctx.sender.username}**: You must be in a guild to execute the **\`${plug.command}\`** command.`);
+            return ctx.reply(`**${ctx.sender.username}**: You must be in a guild to execute the **\`${plug.command}\`** command.`);
         else if (plug.owner && !['280158289667555328'].includes(msg.author.id))
-            return ctx.send(`**${ctx.sender.username}**: You must be a developer to execute the **\`${plug.command}\`** command.`);
+            return ctx.reply(`**${ctx.sender.username}**: You must be a developer to execute the **\`${plug.command}\`** command.`);
 
         try {
             await plug.run(ctx);
         } catch(ex) {
-            ctx.send(`**${ctx.sender.username}**: Command **\`${plug.command}\`** has failed to run.`);
+            ctx.reply(`**${ctx.sender.username}**: Command **\`${plug.command}\`** has failed to run.`);
             this.bot.logger.error(ex.stack);
         }
     }
