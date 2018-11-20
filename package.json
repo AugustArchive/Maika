@@ -1,0 +1,16 @@
+{
+    "name": "augustboat",
+    "description": "Customizable, stable Discord multipurpose bot made in the Eris library",
+    "version": "0.0.1",
+    "main": "src/bot.js",
+    "dependencies": {
+        "common-tags": "1.8.0",
+        "dotenv": "^6.1.0",
+        "eris": "0.9.0",
+        "node-fetch": "2.3.0",
+        "rethinkdbdash": "2.3.31",
+        "to-time": "1.0.2",
+        "winston": "3.1.0"
+    },
+    "author": "August (Chris)"
+}
