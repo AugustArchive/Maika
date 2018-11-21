@@ -24,7 +24,7 @@ module.exports = new Plugin({
                 CHANNELS: ${Object.keys(msg.bot.channelGuildMap).length}
                 SHARDS: ${msg.guild.shard.id}/${msg.bot.shards.size}
                 PLUGINS: ${msg.bot.registry.plugins.size}
-                UPTIME: ${humanize(Date.now() - msg.bot.startTime, { round: true })}
+                UPTIME: ${humanize(Date.now() - msg.bot.startTime)}
                 MEMORY USAGE: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB
                 DEPENDENCIES [${Object.keys(dependencies).length}]: ${Object.entries(dependencies).map(s => s[0]).join(', ')}
                 ERIS: v${Eris}
@@ -139,7 +139,7 @@ module.exports = new Plugin({
             CHANNELS: ${Object.keys(msg.bot.channelGuildMap).length}
             SHARDS: ${msg.guild.shard.id}/${msg.bot.shards.size}
             PLUGINS: ${msg.bot.registry.plugins.size}
-            UPTIME: ${humanize(Date.now() - msg.bot.startTime, { round: true })}
+            UPTIME: ${humanize(Date.now() - msg.bot.startTime)}
             MEMORY USAGE: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB
             DEPENDENCIES [${Object.keys(dependencies).length}]: ${Object.entries(dependencies).map(s => s[0]).join(', ')}
             ERIS: v${Eris}
@@ -152,6 +152,6 @@ module.exports = new Plugin({
         description: 'Shows the current uptime for AugustBoat',
         category: 'Generic',
         aliases: [],
-        run: (msg) => msg.reply(humanize(Date.now() - msg.bot.startTime, { round: true }))
+        run: (msg) => msg.reply(humanize(Date.now() - msg.bot.startTime))
     }]
 });

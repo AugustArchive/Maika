@@ -30,6 +30,7 @@ module.exports = class CommandMessage {
      * @param {{ msg: import('eris').Message; args: string[]; prefix: string; }} options The other options
      */
     constructor(bot, options) {
+        Object.assign(this, options.msg);
         this.bot = bot;
         this.msg = options.msg;
         this.args = options.args;

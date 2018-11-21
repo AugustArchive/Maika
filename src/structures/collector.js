@@ -50,6 +50,7 @@ module.exports = class MessageCollector {
      * 
      * @param {(msg: import('eris').Message) => boolean} filter The filter function
      * @param {{ channelID: string; userID: string; timeout?: number; }} options The other options
+     * @returns {Promise<import('eris').Message>}
      */
     async awaitMessages(filter, options) {
         const { channelID, userID, timeout } = options;
