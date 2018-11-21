@@ -1,4 +1,4 @@
-const { string: resolveString, color: resolveColor, clone } = require('../../util/embed');
+const { string: resolveString, color: resolveColor, clone } = require('../util/embed');
 
 module.exports = class MessageEmbed {
     constructor(data = {}) {
