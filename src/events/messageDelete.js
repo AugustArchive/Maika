@@ -1,5 +1,6 @@
 const Event            = require('../structures/event');
 const { stripIndents } = require('common-tags');
+const { dateformat }   = require('../deps');
 
 module.exports = class MessageDeletedEvent extends Event {
     constructor(bot) {
@@ -9,7 +10,7 @@ module.exports = class MessageDeletedEvent extends Event {
         });
     }
 
-    run(msg) {
+    async run(msg) {
         if (!msg.content || !msg.channel.guild || !msg.author)
             return;
 
@@ -24,8 +25,8 @@ module.exports = class MessageDeletedEvent extends Event {
                 timestamp: msg.timestamp
             }).run();
 
-        const data = this.bot.r.table('guilds').get(msg.channel.guild.id).run();
-        if (data.logging.enabled && msg.channel.guild.channels.has(data.logging.channelID) && msg.channel.guild.channels.get(data.logging.channelID).permissionsOf(this.bot.unavailableGuilds.id).has('sendMessages')) {
+        const data = await this.bot.r.table('guilds').get(msg.channel.guild.id).run();
+        if (data.logging.enabled && msg.channel.guild.channels.has(data.logging.channelID) && msg.channel.guild.channels.get(data.logging.channelID).permissionsOf(this.bot.user.id).has('sendMessages')) {
             const channel = msg.channel.guild.channels.get(data.logging.channelID);
             channel.createMessage({
                 embed: {
@@ -33,12 +34,13 @@ module.exports = class MessageDeletedEvent extends Event {
                         A message was deleted!
                         \`\`\`diff
                         - ID        : ${msg.id}
-                        - Channel ID: ${msg.channel.name}
+                        - Channel   : ${msg.channel.name}
                         - Content   : ${msg.embeds > 1 ? 'The content was an embed' : msg.content}
-                        - Created At: ${new Date(msg.timestamp).toISOString()}
+                        - Created At: ${dateformat(msg.createdAt, 'mm/dd/yyyy hh:MM:ss TT')}
                         - Author    : ${msg.author.username}
                         \`\`\`
-                    `
+                    `,
+                    color: this.bot.color
                 }
             });
         }

@@ -26,7 +26,7 @@ module.exports = class FinderUtil {
     /**
      * The finder util finds guilds, users, channels, or roles.
      * 
-     * @param {import('../structures/client')} bot The bot client
+     * @param {import('../structures/client')} bot The this.bot client
      */
     constructor(bot) {
         this.bot = bot;
@@ -66,26 +66,25 @@ module.exports = class FinderUtil {
      * Resolves a Discord user
      * 
      * @param {string} query The query
-     * @returns {import('eris').User}
+     * @returns {Promise<import('eris').User>}
      */
     user(query) {
         return new Promise((resolve, reject) => {
             if (/^\d+$/.test(query)) {
-              const user = this.bot.users.get(query);
-              if (user) return resolve(user);
+                const user = this.bot.users.get(query);
+                if (user) return resolve(user);
             } else if (/^<@!?(\d+)>$/.test(query)) {
-              const match = query.match(/^<@!?(\d+)>$/);
-              const user = this.bot.users.get(match[1]);
-              if (user) return resolve(user);
+                const match = query.match(/^<@!?(\d+)>$/);
+                const user = this.bot.users.get(match[1]);
+                if (user) return resolve(user);
             } else if (/^(.+)#(\d{4})$/.test(query)) {
-              const match = query.match(/^(.+)#(\d{4})$/);
-              const users = this.bot.users.filter((user) => user.username === match[1] && Number(user.discriminator) === Number(match[2]));
-              if (users.length > 0) return resolve(users[0]);
+                const match = query.match(/^(.+)#(\d{4})$/);
+                const users = this.bot.users.filter((user) => user.username === match[1] && Number(user.discriminator) === Number(match[2]));
+                if (users.length > 0) return resolve(users[0]);
             } else {
-              const users = this.bot.users.filter((user) => user.username.toLowerCase().includes(query.toLowerCase()));
-              if (users.length > 0) return resolve(users[0]);
+                const users = this.bot.users.filter((user) => user.username.toLowerCase().includes(query.toLowerCase()));
+                if (users.length > 0) return resolve(users[0]);
             }
-      
             reject();
         });
     }
@@ -99,10 +98,10 @@ module.exports = class FinderUtil {
     guild(query) {
         return new Promise((resolve, reject) => {
             if (/^\d+$/.test(query)) {
-                const guild = this.bot.guilds.get(query);
+                const guild = this.this.bot.guilds.get(query);
                 if (guild) return resolve(guild);
             } else {
-                const guilds = this.bot.guilds.filter((guild) => guild.name.toLowerCase().includes(query.toLowerCase()));
+                const guilds = this.this.bot.guilds.filter((guild) => guild.name.toLowerCase().includes(query.toLowerCase()));
                 if (guilds.length > 0) return resolve(guilds[0]);
             }
 
@@ -124,7 +123,7 @@ module.exports = class FinderUtil {
                 if (!guild.channels.has(query)) reject();
                 resolve(guild.channels.get(query));
               } else {
-                const channel = channel in bot.channelGuildMap && bot.guilds.get(bot.channelGuildMap[query]).channels.get(query);
+                const channel = channel in this.bot.channelGuildMap && this.bot.guilds.get(this.bot.channelGuildMap[query]).channels.get(query);
                 if (channel) return resolve(channel);
               }
             } else if (/^<#(\d+)>$/.test(channel)) {
@@ -133,7 +132,7 @@ module.exports = class FinderUtil {
                 if (!guild.channels.has(match[1])) reject();
                 resolve(guild.channels.get(match[1]));
               } else {
-                const channel = match[1] in bot.channelGuildMap && bot.guilds.get(bot.channelGuildMap[match[1]]).channels.get(query);
+                const channel = match[1] in this.bot.channelGuildMap && this.bot.guilds.get(this.bot.channelGuildMap[match[1]]).channels.get(query);
                 if (channel) return resolve(channel);
               }
             } else if (guild) {
@@ -154,7 +153,7 @@ module.exports = class FinderUtil {
     message(options) {
         return new Promise(async(resolve, reject) => {
             try {
-                const message = await this.bot.getMessage(options.channelID, options.messageID);
+                const message = await this.this.bot.getMessage(options.channelID, options.messageID);
                 resolve(message);
             } catch(ex) {
                 reject('Unknown Message ID.');

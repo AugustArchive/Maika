@@ -1,7 +1,7 @@
-const Event = require('../structures/event');
+const Event             = require('../structures/event');
 const { PlayerManager } = require('vertbot-eris-lavalink');
-const { stripIndents } = require('common-tags');
-const nodes = require('../util/lavalink-nodes');
+const { stripIndents }  = require('common-tags');
+const nodes             = require('../util/lavalink-nodes');
 
 module.exports = class ReadyEvent extends Event {
     constructor(bot) {

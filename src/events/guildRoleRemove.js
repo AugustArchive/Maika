@@ -1,4 +1,4 @@
-const Event = require('../structures/event');
+const Event            = require('../structures/event');
 const { stripIndents } = require('common-tags');
 
 module.exports = class GuildRoleDeleted extends Event {
@@ -6,8 +6,8 @@ module.exports = class GuildRoleDeleted extends Event {
         super(bot, { event: 'guildRoleDelete', emitter: 'on' });
     }
 
-    run(role) {
-        const data = this.bot.r.table('guilds').get(role.guild.id).run();
+    async run(role) {
+        const data = await this.bot.r.table('guilds').get(guild.id).run();
         if (data.logging.enabled && guild.channels.has(data.logging.channelID) && guild.channels.get(data.logging.channelID).permissionsOf(this.bot.user.id).has('sendMessages'))
         guild.channels.get(data.logging.channelID).createMessage({
             embed: {

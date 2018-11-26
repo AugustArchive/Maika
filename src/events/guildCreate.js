@@ -1,4 +1,4 @@
-const Event = require('../structures/event');
+const Event            = require('../structures/event');
 const { stripIndents } = require('common-tags');
 
 module.exports = class GuildJoinedEvent extends Event {
