@@ -38,7 +38,7 @@ module.exports = class ReadyEvent extends Event {
         });
 
         if (!(this.bot.voiceConnections instanceof PlayerManager))
-            this.bot.voiceConnections = new PlayerManager(this.bot, nodes(), {
+            this.bot.voiceConnections = new PlayerManager(this.bot, nodes, {
                 userId: this.bot.user.id,
                 numShards: this.bot.shards.size
             });
