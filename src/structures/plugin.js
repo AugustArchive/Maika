@@ -22,17 +22,18 @@
 
 const { Collection } = require('eris');
 
-module.exports = class AugustPlugin {
+module.exports = class MaikaPlugin {
     /**
      * The plugin class
      * 
-     * @param {AugustPluginOptions} options The options
+     * @param {MaikaPluginOptions} options The options
      */
     constructor(options) {
         this.name = options.name;
         this.visible = options.visible;
         this.embeded = options.embeded;
-        /** @type {Collection<AugustCommand>} */
+        this.enabled = options.enabled;
+        /** @type {Collection<MaikaCommand>} */
         this.commands = new Collection();
 
         for (let i = 0; i < options.commands.length; i++)
@@ -47,7 +48,7 @@ module.exports = class AugustPlugin {
      * Gets a plugin
      * 
      * @param {any} m The module
-     * @returns {AugustCommand}
+     * @returns {MaikaCommand}
      */
     get(m) {
         return this.commands.filter(c => c.command === m || c.aliases.includes(m))[0];
@@ -65,22 +66,24 @@ module.exports = class AugustPlugin {
 };
 
 /**
- * @typedef {Object} AugustPluginOptions
+ * @typedef {Object} MaikaPluginOptions
  * @prop {string} name The plugin name
  * @prop {string} embeded The plugin name but for the help embed
  * @prop {boolean} visible Whenther or not the plugin should be visiable
- * @prop {AugustCommand[]} commands The commands
+ * @prop {boolean} enabled If the plugin is enabled
+ * @prop {MaikaCommand[]} commands The commands
  */
 /**
- * @typedef {Object} AugustCommand
+ * @typedef {Object} MaikaCommand
  * @prop {string} command The command name
  * @prop {string} description The command description
  * @prop {string} [usage=''] The command usage
  * @prop {string} [category='Generic'] The command category
- * @prop {string[]} aliases The command aliases
+ * @prop {ICommandAliases} aliases The command aliases
  * @prop {boolean} [hidden=false] Whenther or not the command should be hidden from the help command
  * @prop {boolean} [owner=false] Whenther or not the command should be executed by the owners
  * @prop {boolean} [guild=false] Whenther or not the command should be executed in a Discord "guild"
- * @prop {RunnableCommand} run The run function
+ * @prop {IRunnableCommand} run The run function
  */
-/** @typedef {(msg: import('./message')) => Promise<void>} RunnableCommand */
+/** @typedef {(msg: import('./message')) => Promise<void>} IRunnableCommand */
+/** @typedef {string[]} ICommandAliases */

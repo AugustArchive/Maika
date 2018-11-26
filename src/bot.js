@@ -21,9 +21,9 @@
  */
 
 require('dotenv').config({ path: '../.env' });
-const AugustClient = require('./structures/client');
+const MaikaClient = require('./structures/client');
 
-const client = new AugustClient();
-client.setup(() => 'AugustBoat is currently connecting via WS.');
+const client = new MaikaClient();
+client.setup(() => 'Maika is currently connecting via WS.');
 
 process.on('unhandledRejection', error => client.logger.error(error.stack));

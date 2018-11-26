@@ -57,6 +57,8 @@ module.exports = class FinderUtil {
                 if (roles.length > 0)
                     return resolve(roles[0]);
             }
+
+            reject();
         });
     }
 
@@ -80,7 +82,7 @@ module.exports = class FinderUtil {
               const users = this.bot.users.filter((user) => user.username === match[1] && Number(user.discriminator) === Number(match[2]));
               if (users.length > 0) return resolve(users[0]);
             } else {
-              const users = bot.users.filter((user) => user.username.toLowerCase().includes(query.toLowerCase()));
+              const users = this.bot.users.filter((user) => user.username.toLowerCase().includes(query.toLowerCase()));
               if (users.length > 0) return resolve(users[0]);
             }
       
@@ -164,9 +166,10 @@ module.exports = class FinderUtil {
      * Shows a list of Discord emojis
      * 
      * @param {import('eris').Guild} guild The guild
+     * @param {number} [len] The length
      * @returns {string}
      */
-    emojis(guild) {
-        return trim(guild.emojis.map(i => `<${i.animated ? 'a' : ''}:${i.name}:${i.id}>`), 50).join(', ');
+    emojis(guild, len = 50) {
+        return trim(guild.emojis.map(i => `<${i.animated ? 'a' : ''}:${i.name}:${i.id}>`), len).join(', ');
     }
 };

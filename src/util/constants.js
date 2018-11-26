@@ -1,11 +1,18 @@
-/**
- * The feed colours
- */
+const REGEX = (bot) => new RegExp([
+    process.env.TOKEN,
+    process.env.PPY,
+    process.env.WOLKE,
+    bot.token,
+    process.env.LAVALINK_HOST,
+    process.env.LAVALINK_PORT,
+    process.env.LAVALINK_REGION,
+    process.env.LAVALINK_PASSWORD
+].join('|'), 'gi');
+
 exports.FeedColors = {
     REDDIT: 0xFF4500
 };
-
-exports.USER_AGENT = `AugustBoat (https://github.com/AugustBoat/AugustBoat v${require('../../package.json').version})`;
+exports.USER_AGENT = `Maika (https://github.com/MaikaBot/Maika v${require('../../package.json').version})`;
 exports.DefaultColours = {
     DEFAULT: 0x000000,
     WHITE: 0xFFFFFF,
@@ -35,4 +42,27 @@ exports.DefaultColours = {
     GREYPLE: 0x99AAB5,
     DARK_BUT_NOT_BLACK: 0x2C2F33,
     NOT_QUITE_BLACK: 0x23272A,
+};
+exports.redact = (bot, str) => str.replace(REGEX(bot), '--snip--');
+exports.error = (bool) => (bool ? 0xFF0000 : 0x00FF00);
+exports.clean = (str) => {
+    if (typeof (str) == 'string')
+        return str.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    else 
+        return str;
+};
+exports.SearchColours = {
+    OSU: 0xFF66AA,
+    KITSU: 0xFD8320,
+    AZUR_LANE: 0x1A1917,
+    GITHUB: 0xFFFFFF,
+    MDN: 0x066FAD,
+    REDDIT: 0xFF4500,
+    ROTTEN_TOMATOES: 0xFFEC02,
+    STEAM: 0x101D2F,
+    TWITCH: 0x6441A4,
+    VOCADB: 0x86D2D0
+};
+exports.Strings = {
+    ERROR: (msg, ex) => `**${msg.sender.username}**: \`${ex.message}\``
 };

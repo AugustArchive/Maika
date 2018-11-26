@@ -20,14 +20,15 @@
  * SOFTWARE.
  */
 
-const { Client }        = require('eris');
-const RedditFeed        = require('./feed/reddit');
-const PluginRegistry    = require('./registry/plugins');
-const EventRegistry     = require('./registry/events');
-const FinderUtil        = require('../util/finder');
-const winston           = require('winston');
+const { Client, Collection } = require('eris');
+const RedditFeed             = require('./feed/reddit');
+const PluginRegistry         = require('./registry/plugins');
+const EventRegistry          = require('./registry/events');
+const SchedulerRegistry      = require('./registry/schedulers');
+const FinderUtil             = require('../util/finder');
+const winston                = require('winston');
 
-module.exports = class AugustBoatClient extends Client {
+module.exports = class MaikaClient extends Client {
     /**
      * Start. Here.
      */
@@ -53,11 +54,15 @@ module.exports = class AugustBoatClient extends Client {
         this.events     = new EventRegistry(this);
         this.constants  = require('../util/constants');
         this.finder     = new FinderUtil(this);
-        this.color      = 0xFF938D;
+        this.color      = 0xcb4a6f;
         this.feeds      = {
             reddit: new RedditFeed(this)
         };
-        this.maintenance = false;
+        this.maintenance = 'no';
+        this.schedulers = new SchedulerRegistry(this.bot);
+        /** @type {Collection<import('./voice/player')>} */
+        this.players = new Collection();
+        this.owners = ['280158289667555328'];
     }
 
     /**
@@ -70,6 +75,7 @@ module.exports = class AugustBoatClient extends Client {
 
         this.registry.setup();
         this.events.setup();
+        this.schedulers.setup();
         super.connect()
             .then(() => this.logger.info(message));
     }
@@ -81,23 +87,22 @@ module.exports = class AugustBoatClient extends Client {
      */
     startFeeds() {
         const guilds = this.r.table('guilds').run();
-        for (let i = 0; i < guilds.length; i++) {
+        for (let i = 0; i < guilds.length; i++)
             if (guilds[i].reddit_feed.enabled)
                 this.feeds.reddit.start(`https://reddit.com/r/${guilds[i].reddit_feed.subreddit}`, guilds[i].reddit_feed.channelID);
-        }
     }
 
     /**
      * Sets the `maintenance` mode
      * 
-     * @param {boolean} maintenance The boolean
+     * @param {"yes" | "no"} maintenance The maintenace mode
      * @returns {void}
      */
     setMaintenance(maintenance) {
-        if (maintenance === false)
-            this.maintenance = false;
+        if (maintenance === "no")
+            this.maintenance = "no";
         else {
-            this.maintenance = true;
+            this.maintenance = "yes";
             this.setGameForMaintenance();
         }
     }
@@ -107,7 +112,7 @@ module.exports = class AugustBoatClient extends Client {
      */
     setGameForMaintenance() {
         this.editStatus('dnd', {
-            name: 'Maintenance mode enabled',
+            name: 'Cleaning Cafe Stile',
             type: 0
         });
     }

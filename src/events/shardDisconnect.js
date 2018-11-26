@@ -8,7 +8,7 @@ module.exports = class ShardDisconnectedEvent extends Event {
         });
     }
 
-    run(id) {
-        this.bot.logger.warn(`Shard #${id} has been disconnected...`);
+    run(error, id) {
+        this.bot.logger.warn(`Shard #${id} has been disconnected... (${error})`);
     }
 };

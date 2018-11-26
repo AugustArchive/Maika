@@ -43,7 +43,10 @@ module.exports = class PluginRegistry {
 
             for (let i = 0; i < files.length; i++) {
                 const mod = require(`../../plugins/${files[i]}`);
+                if (!mod.enabled)
+                    return;
                 this.plugins.set(mod.name, mod);
+                this.bot.logger.info(`Loaded plugin ${mod.name}`);
             }
         });
     }
@@ -96,7 +99,7 @@ module.exports = class PluginRegistry {
 
         let prefix;
         const mention = new RegExp(`^<@!?${this.bot.user.id}> `).exec(msg.content);
-        let prefixes = [process.env.PREFIX, 'x!', `${mention}`];
+        let prefixes = [process.env.PREFIX, 'x!', `${mention}`, guild.prefix];
 
         for (const i of prefixes)
             if (msg.content.startsWith(i))
@@ -117,7 +120,7 @@ module.exports = class PluginRegistry {
 
         if (plug.guild && msg.channel.type === 1)
             return ctx.reply(`**${ctx.sender.username}**: You must be in a guild to execute the **\`${plug.command}\`** command.`);
-        else if (plug.owner && !['280158289667555328'].includes(msg.author.id))
+        else if (plug.owner && !this.bot.owners.includes(msg.author.id))
             return ctx.reply(`**${ctx.sender.username}**: You must be a developer to execute the **\`${plug.command}\`** command.`);
 
         try {

@@ -8,15 +8,16 @@ module.exports = new Plugin({
     name: 'Generic',
     visible: true,
     embeded: 'ℹ Generic',
+    enabled: true,
     commands: [{
         command: 'about',
-        description: 'Shows information about me, AugustBoat!',
+        description: 'Shows information about me, Maika!',
         aliases: ['me'],
         category: 'Generic',
         run: (msg) => msg.embed({
             description: stripIndents`
-                :wave: **Hello, ${msg.sender.username}! I am ${msg.bot.user.username}#${msg.bot.user.discriminator}.**
-                **My prefix is ${msg.prefix}! Use \`${msg.prefix}help\` to see what commands ${msg.bot.user.username}#${msg.bot.user.discriminator} has!**
+                :wave: **Hello, ${msg.sender.username}! I am ${msg.bot.user.username}.**
+                Use \`${msg.prefix}help\` to see what commands ${msg.bot.user.username} has!**
                 
                 \`\`\`fix
                 GUILDS: ${msg.bot.guilds.size}
@@ -29,7 +30,7 @@ module.exports = new Plugin({
                 DEPENDENCIES [${Object.keys(dependencies).length}]: ${Object.entries(dependencies).map(s => s[0]).join(', ')}
                 ERIS: v${Eris}
                 NODE: ${process.version}
-                AUGUSTBOAT: v${version}
+                MAIKA: v${version}
                 \`\`\`
             `,
             color: msg.bot.color
@@ -42,7 +43,7 @@ module.exports = new Plugin({
         aliases: ['halp', 'plugin', 'plugins', 'h'],
         category: 'Generic',
         run: (msg) => {
-            const plugins = msg.bot.registry.plugins.filter(c => !['280158289667555328'].includes(msg.sender.id) ? c.visible : true);
+            const plugins = msg.bot.registry.plugins.filter(c => ['280158289667555328'].includes(msg.sender.id) ? true : c.visible);
 
             if (!msg.args[0])
                 return msg.embed({
@@ -52,15 +53,17 @@ module.exports = new Plugin({
 
                         ${plugins.map(s => `**${s.name}** (\`${msg.prefix}help ${s.name.toLowerCase()}\`)`).join('\n')}
                     `,
-                    color: msg.bot.color
+                    color: msg.bot.color,
+                    footer: { text: `${msg.bot.registry.plugins.size} Plugins` }
                 });
 
             const p = plugins.filter((m) => m.name.toLowerCase() === msg.args.join(' ').toLowerCase())[0];
             if (p)
                 return msg.embed({
                     title: p.embeded,
-                    description: p.commands.map(s => `${msg.prefix}${s.command}${s.usage ? ` ${s.usage}` : ''} **::** ${s.description}`).join('\n'),
-                    color: msg.bot.color
+                    description: p.commands.map(s => `**${msg.prefix}${s.command}${s.usage ? ` ${s.usage}` : ''}**:  ${s.description}`).join('\n'),
+                    color: msg.bot.color,
+                    footer: { text: `${p.count} Commands` }
                 });
             else
                 return msg.reply(`**${msg.sender.username}**: The plugin \`${msg.args[0]}\` doesn't exist.`);
@@ -129,8 +132,14 @@ module.exports = new Plugin({
         }
     },
     {
+        command: 'source',
+        description: 'Grabs Maika\'s Github repository URL',
+        aliases: ['src', 'sauce'],
+        run: (msg) => msg.reply(`**${msg.sender.username}**: <https://github.com/MaikaBot/Maika>`)
+    },
+    {
         command: 'statistics',
-        description: 'Shows AugustBoat\'s current statistics',
+        description: 'Gives Maika\'s current statistics',
         aliases: ['stats', 'botinfo', 'bot', 'info'],
         category: 'Generic',
         run: (msg) => msg.code('fix', stripIndents`
@@ -141,15 +150,15 @@ module.exports = new Plugin({
             PLUGINS: ${msg.bot.registry.plugins.size}
             UPTIME: ${humanize(Date.now() - msg.bot.startTime)}
             MEMORY USAGE: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB
-            DEPENDENCIES [${Object.keys(dependencies).length}]: ${Object.entries(dependencies).map(s => s[0]).join(', ')}
+            DEPENDENCIES: ${Object.entries(dependencies).map(s => s[0]).join(', ')}
             ERIS: v${Eris}
             NODE: ${process.version}
-            AUGUSTBOAT: v${version}
+            MAIKA: v${version}
         `)
     },
     {
         command: 'uptime',
-        description: 'Shows the current uptime for AugustBoat',
+        description: 'Shows the current uptime for Maika',
         category: 'Generic',
         aliases: [],
         run: (msg) => msg.reply(humanize(Date.now() - msg.bot.startTime))

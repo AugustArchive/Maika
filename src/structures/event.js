@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-module.exports = class AugustEvent {
+module.exports = class MaikaEvent {
     /**
      * The event class
      * 
