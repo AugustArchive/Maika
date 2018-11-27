@@ -1,0 +1,8 @@
+{
+    "apps": [
+        {
+            "script": "src/bot.js",
+            "name": "Maika"
+        }
+    ]
+}
