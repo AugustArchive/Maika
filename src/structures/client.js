@@ -27,6 +27,7 @@ const EventRegistry          = require('./registry/events');
 const SchedulerRegistry      = require('./registry/schedulers');
 const FinderUtil             = require('../util/finder');
 const winston                = require('winston');
+const MaikaWebsite           = require('../../website/interfaces/website');
 
 module.exports = class MaikaClient extends Client {
     /**
@@ -39,7 +40,7 @@ module.exports = class MaikaClient extends Client {
             autoreconnect: true
         });
 
-        this.logger     = winston.createLogger({
+        this.logger = winston.createLogger({
             transports: [new winston.transports.Console()],
             format: winston.format.combine(
                 winston.format.colorize({ all: true }),
@@ -49,13 +50,13 @@ module.exports = class MaikaClient extends Client {
                 )
             )
         });
-        this.registry   = new PluginRegistry(this);
-        this.r          = require('rethinkdbdash')({ db: process.env.DB_NAME, host: process.env.DB_HOST, port: Number(process.env.DB_PORT) });
-        this.events     = new EventRegistry(this);
-        this.constants  = require('../util/constants');
-        this.finder     = new FinderUtil(this);
-        this.color      = 0xcb4a6f;
-        this.feeds      = {
+        this.registry = new PluginRegistry(this);
+        this.r = require('rethinkdbdash')({ db: process.env.DB_NAME, host: process.env.DB_HOST, port: Number(process.env.DB_PORT) });
+        this.events = new EventRegistry(this);
+        this.constants = require('../util/constants');
+        this.finder = new FinderUtil(this);
+        this.color = 0xCB4A6F;
+        this.feeds = {
             reddit: new RedditFeed(this)
         };
         this.maintenance = 'no';
@@ -63,6 +64,7 @@ module.exports = class MaikaClient extends Client {
         /** @type {Collection<import('./voice/player')>} */
         this.players = new Collection();
         this.owners = ['280158289667555328'];
+        this.website = new MaikaWebsite(this);
     }
 
     /**

@@ -36,7 +36,6 @@ module.exports = class ReadyEvent extends Event {
                 color: this.bot.color
             }
         });
-
         if (!(this.bot.voiceConnections instanceof PlayerManager))
             this.bot.voiceConnections = new PlayerManager(this.bot, nodes, {
                 userId: this.bot.user.id,
@@ -45,5 +44,11 @@ module.exports = class ReadyEvent extends Event {
         this.bot.startFeeds();
         this.bot.setMaintenance(false);
         this.bot.editStatus('online', { name: `x;help | ${this.bot.guilds.size} Guild${this.bot.guilds.size > 1 ? "s" : ""}`, type: 0 });
+        this
+            .bot
+            .website
+            .setApplicationRoot()
+            .setRouters()
+            .start();
     }
 };

@@ -3,6 +3,10 @@
         {
             "script": "src/bot.js",
             "name": "Maika"
+        },
+        {
+            "script": "website/index.js",
+            "name": "Frontend"
         }
     ]
 }
