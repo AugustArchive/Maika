@@ -6,8 +6,8 @@ module.exports = class GuildRoleDeleted extends Event {
         super(bot, { event: 'guildRoleDelete', emitter: 'on' });
     }
 
-    async run(role) {
-        const data = await this.bot.r.table('guilds').get(role.guild.id).run();
+    async run(guild, role) {
+        const data = await this.bot.r.table('guilds').get(guild.id).run();
         if (data.logging.enabled && guild.channels.has(data.logging.channelID) && guild.channels.get(data.logging.channelID).permissionsOf(this.bot.user.id).has('sendMessages'))
         guild.channels.get(data.logging.channelID).createMessage({
             embed: {

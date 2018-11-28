@@ -23,10 +23,6 @@ module.exports = class GuildJoinedEvent extends Event {
                 channelID: null,
                 subreddit: null
             },
-            modlog: {
-                enabled: false,
-                channelID: null
-            },
             roles: {
                 assignable: [],
                 autorole: {
@@ -40,12 +36,12 @@ module.exports = class GuildJoinedEvent extends Event {
                 description: stripIndents`
                     Joined **${guild.name}**
                     \`\`\`diff
-                    + ID                         : ${guild.id}
-                    + Large                      : ${guild.large ? 'Yes' : 'No'}
-                    + Member Count               : ${guild.memberCount.toLocaleString()}
+                    + ID: ${guild.id}
+                    + Large: ${guild.large ? 'Yes' : 'No'}
+                    + Member Count: ${guild.memberCount.toLocaleString()}
                     + Roles [${guild.roles.size}]: ${guild.roles.map(s => s.name).join(', ')}
-                    + Region                     : ${guild.region}
-                    + Shard                      : ${guild.shard.id}/${this.bot.shards.size}
+                    + Region: ${guild.region}
+                    + Shard: ${guild.shard.id}/${this.bot.shards.size}
                     \`\`\`
                     `,
                 color: this.bot.color

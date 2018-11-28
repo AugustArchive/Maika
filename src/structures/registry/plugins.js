@@ -46,7 +46,7 @@ module.exports = class PluginRegistry {
                 if (!mod.enabled)
                     return;
                 this.plugins.set(mod.name, mod);
-                this.bot.logger.info(`Loaded plugin ${mod.name}`);
+                this.bot.logger.info(`Loaded plugin: ${mod.name}`);
             }
         });
     }
@@ -76,17 +76,12 @@ module.exports = class PluginRegistry {
                     channelID: null,
                     subreddit: null
                 },
-                modlog: {
-                    enabled: false,
-                    channelID: null
-                },
                 roles: {
                     assignable: [],
                     autorole: {
                         user: null,
                         bot: null
-                    },
-                    muted: null
+                    }
                 }
             }).run();
         
