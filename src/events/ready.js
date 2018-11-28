@@ -12,6 +12,10 @@ module.exports = class ReadyEvent extends Event {
     }
 
     run() {
+        if (!this.bot.bot) {
+            this.bot.logger.error('Sorry, Maika is not a selfbot, it\'s a discord bot. Process exiting..');
+            process.exit(-8);
+        }
         this.bot.logger.info(stripIndents`
             ${this.bot.user.username}#${this.bot.user.discriminator} has connected to Discord!
         
