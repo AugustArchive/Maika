@@ -6,7 +6,7 @@
  * @param {import('eris').Guild} guild The guild object
  */
 module.exports = (bot, vs, guild) => {
-    const player = bot.voiceConnections.get(guild);
+    const player = bot.voiceConnections.get(guild.id);
     if (player)
         return Promise.resolve(player);
     return bot.joinVoiceChannel(vs.channelID);

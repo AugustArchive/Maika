@@ -12,7 +12,7 @@ module.exports = class GuildJoinedEvent extends Event {
     run(guild) {
         this.bot.logger.info(`Joined ${guild.name} (${guild.id})`);
         this.bot.r.table('guilds').insert({
-            id: guild.id,
+            id: msg.channel.guild.id,
             prefix: process.env.PREFIX,
             logging: {
                 enabled: false,
@@ -22,6 +22,17 @@ module.exports = class GuildJoinedEvent extends Event {
                 enabled: false,
                 channelID: null,
                 subreddit: null
+            },
+            modlog: {
+                enabled: false,
+                channelID: null
+            },
+            roles: {
+                assignable: [],
+                autorole: {
+                    user: null,
+                    bot: null
+                }
             }
         }).run();
         this.bot.createMessage(process.env.LOG_CHANNEL, {

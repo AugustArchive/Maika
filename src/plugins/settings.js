@@ -71,7 +71,7 @@ module.exports = new Plugin({
                                 if (!channel || channel.type === 2 || channel.type === 4) // If no channel was found or the channel is a voice or category channel
                                     return msg.reply(`**${msg.sender.username}**: No channel was found or it's not a text channel!`);
 
-                                await msg.bot.r.table('guilds').get(msg.guild.id).update({ modlog: { channel: channel.id } }).run();
+                                await msg.bot.r.table('guilds').get(msg.guild.id).update({ modlog: { channelID: channel.id } }).run();
                                 msg.reply(`**${msg.sender.username}**: Channel <#${channel.id}> is now where the mod-log embeds will go to!`);
                             } break;
                         }
@@ -84,7 +84,7 @@ module.exports = new Plugin({
 
                         switch (msg.args[1]) {
                             case "channel": {
-                                await msg.bot.r.table('guilds').get(msg.guild.id).update({ modlog: { channel: null } }).run();
+                                await msg.bot.r.table('guilds').get(msg.guild.id).update({ modlog: { channelID: null } }).run();
                                 msg.reply(`**${msg.sender.username}**: Ok, I have resetted the mod-log channel!`);
                             } break;
                             case "enabled": {
@@ -97,7 +97,7 @@ module.exports = new Plugin({
                         msg.code('ini', stripIndents`
                             # Mod Log Settings for ${msg.guild.name}
                             [modlog.enabled]: ${guild.modlog.enabled ? 'Yes' : 'No'}
-                            [modlog.channel]: ${guild.modlog.channel === null ? 'Hasn\'t been set' : guild.modlog.channel}
+                            [modlog.channel]: ${guild.modlog.channelID === null ? 'Hasn\'t been set' : guild.modlog.channelID}
                         `);
                     } break;
                 }
@@ -167,9 +167,9 @@ module.exports = new Plugin({
                     } break;
                     case "status": {
                         msg.code('ini', stripIndents`
-                            # Mod Log Settings for ${msg.guild.name}
+                            # Logging Settings for ${msg.guild.name}
                             [logging.enabled]: ${guild.logging.enabled ? 'Yes' : 'No'}
-                            [logging.channel]: ${guild.logging.channel === null ? 'Hasn\'t been set' : guild.logging.channelID}
+                            [logging.channel]: ${guild.logging.channelID === null ? 'Hasn\'t been set' : guild.logging.channelID}
                         `);
                     } break;
                 }

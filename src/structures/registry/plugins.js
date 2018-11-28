@@ -75,6 +75,18 @@ module.exports = class PluginRegistry {
                     enabled: false,
                     channelID: null,
                     subreddit: null
+                },
+                modlog: {
+                    enabled: false,
+                    channelID: null
+                },
+                roles: {
+                    assignable: [],
+                    autorole: {
+                        user: null,
+                        bot: null
+                    },
+                    muted: null
                 }
             }).run();
         
@@ -83,7 +95,7 @@ module.exports = class PluginRegistry {
                 id: msg.author.id,
                 coins: 0,
                 profile: {
-                    description: 'Use the `{{prefix}}profile set description <desc>` to set a description!',
+                    description: `Use the \`x;profile set description <desc>\` to set a description!`,
                     social: {
                         osu: null,
                         twitter: null,

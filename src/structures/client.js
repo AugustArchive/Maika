@@ -20,14 +20,14 @@
  * SOFTWARE.
  */
 
-const { Client, Collection } = require('eris');
-const RedditFeed             = require('./feed/reddit');
-const PluginRegistry         = require('./registry/plugins');
-const EventRegistry          = require('./registry/events');
-const SchedulerRegistry      = require('./registry/schedulers');
-const FinderUtil             = require('../util/finder');
-const winston                = require('winston');
-const MaikaWebsite           = require('../../website/interfaces/website');
+const { Client }        = require('eris');
+const RedditFeed        = require('./feed/reddit');
+const PluginRegistry    = require('./registry/plugins');
+const EventRegistry     = require('./registry/events');
+const SchedulerRegistry = require('./registry/schedulers');
+const FinderUtil        = require('../util/finder');
+const winston           = require('winston');
+const MaikaWebsite      = require('../../website/interfaces/website');
 
 module.exports = class MaikaClient extends Client {
     /**
@@ -60,9 +60,7 @@ module.exports = class MaikaClient extends Client {
             reddit: new RedditFeed(this)
         };
         this.maintenance = 'no';
-        this.schedulers = new SchedulerRegistry(this.bot);
-        /** @type {Collection<import('./voice/player')>} */
-        this.players = new Collection();
+        this.schedulers = new SchedulerRegistry(this);
         this.owners = ['280158289667555328'];
         this.website = new MaikaWebsite(this);
     }

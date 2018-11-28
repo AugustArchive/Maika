@@ -153,7 +153,7 @@ module.exports = class FinderUtil {
     message(options) {
         return new Promise(async(resolve, reject) => {
             try {
-                const message = await this.this.bot.getMessage(options.channelID, options.messageID);
+                const message = await this.bot.getMessage(options.channelID, options.messageID);
                 resolve(message);
             } catch(ex) {
                 reject('Unknown Message ID.');
@@ -170,5 +170,34 @@ module.exports = class FinderUtil {
      */
     emojis(guild, len = 50) {
         return trim(guild.emojis.map(i => `<${i.animated ? 'a' : ''}:${i.name}:${i.id}>`), len).join(', ');
+    }
+
+    /**
+     * Resolves a Discord member
+     * 
+     * @param {string} query The query
+     * @param {import('eris').Guild} guild The guild
+     * @param {boolean} [noGuessing] If u wanna guess or not
+     * @returns {Promise<import('eris').Member>}
+     */
+    member(query, guild, noGuessing = false) {
+        return new Promise((resolve, reject) => {
+            if (/^\d+$/.test(query)) {
+                const user = guild.members.get(query);
+                if (user) return resolve(user);
+            } else if (/^<@!?(\d+)>$/.test(query)) {
+                const match = query.match(/^<@!?(\d+)>$/);
+                const user = guild.members.get(match[1]);
+                if (user) return resolve(user);
+            } else if (/^(.+)#(\d{4})$/.test(query)) {
+                const match = query.match(/^(.+)#(\d{4})$/);
+                const users = guild.members.filter((user) => user.user.username === match[1] && Number(user.user.discriminator) === Number(match[2]));
+                if (users.length > 0) return resolve(users[0]);
+            } else if (!noGuessing) {
+                const users = guild.members.filter((user) => user.user.username.toLowerCase().includes(query.toLowerCase()));
+                if (users.length > 0) return resolve(users[0]);
+            }
+            reject();
+        });
     }
 };

@@ -44,11 +44,11 @@ module.exports = class ReadyEvent extends Event {
         this.bot.startFeeds();
         this.bot.setMaintenance(false);
         this.bot.editStatus('online', { name: `x;help | ${this.bot.guilds.size} Guild${this.bot.guilds.size > 1 ? "s" : ""}`, type: 0 });
-        this
-            .bot
-            .website
-            .setApplicationRoot()
-            .setRouters()
-            .start();
+        //this
+            //.bot
+            //.website
+            //.setApplicationRoot()
+            //.setRouters()
+            //.start();
     }
 };

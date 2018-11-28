@@ -45,6 +45,8 @@ module.exports = new Plugin({
                         return message.edit(`**${msg.sender.username}**: They said no, so you're forever alone.`);
                     else if (['cancel', 'finish'].includes(collected.content))
                         return message.edit(`**${wanted.username}**: Cancelled marriage with <@${msg.sender.id}>`);
+                    else if (!collected.content)
+                        return message.edit(`**${msg.sender.username}**: Sorry, their slience said no.`);
                     else {
                         await msg.bot.r.table('users').get(wanted.id).update({ marriage: { is: true, to: msg.sender.id } }).run();
                         msg.bot.r.table('users').get(msg.sender.id).update({ marriage: { is: true, to: wanted.id } }).run();
