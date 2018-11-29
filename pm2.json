@@ -7,6 +7,10 @@
         {
             "script": "website/index.js",
             "name": "Frontend"
+        },
+        {
+            "script": "webhooks/index.js",
+            "name": "WebhookServer"
         }
     ]
 }

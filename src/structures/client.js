@@ -20,14 +20,17 @@
  * SOFTWARE.
  */
 
-const { Client }        = require('eris');
-const RedditFeed        = require('./feed/reddit');
-const PluginRegistry    = require('./registry/plugins');
-const EventRegistry     = require('./registry/events');
-const SchedulerRegistry = require('./registry/schedulers');
-const FinderUtil        = require('../util/finder');
-const winston           = require('winston');
-const MaikaWebsite      = require('../../website/interfaces/website');
+const { Client }                         = require('eris');
+const RedditFeed                         = require('./feed/reddit');
+const PluginRegistry                     = require('./registry/plugins');
+const EventRegistry                      = require('./registry/events');
+const SchedulerRegistry                  = require('./registry/schedulers');
+const MetricsRegistry                    = require('./registry/metrics');
+const Database                           = require('./database');
+const FinderUtil                         = require('../util/finder');
+const winston                            = require('winston');
+const MaikaWebsite                       = require('../../website/interfaces/website');
+const { Counter, collectDefaultMetrics } = require('prom-client');
 
 module.exports = class MaikaClient extends Client {
     /**
@@ -51,7 +54,7 @@ module.exports = class MaikaClient extends Client {
             )
         });
         this.registry = new PluginRegistry(this);
-        this.r = require('rethinkdbdash')({ db: process.env.DB_NAME, host: process.env.DB_HOST, port: Number(process.env.DB_PORT) });
+        this.database = new Database(this);
         this.events = new EventRegistry(this);
         this.constants = require('../util/constants');
         this.finder = new FinderUtil(this);
@@ -63,6 +66,11 @@ module.exports = class MaikaClient extends Client {
         this.schedulers = new SchedulerRegistry(this);
         this.owners = ['280158289667555328'];
         this.website = new MaikaWebsite(this);
+        this.prometheus = {
+            commands: new Counter({ name: 'commands', help: 'Shows how many commands that Maika has executed.' }),
+            messages: new Counter({ name: 'messages', help: 'Shows how many messages that Maika has seen.' })
+        };
+        this.metrics = new MetricsRegistry();
     }
 
     /**
@@ -71,13 +79,14 @@ module.exports = class MaikaClient extends Client {
      * @param {SetupCallback} fn The callback
      */
     async setup(fn) {
-        const message = fn();
-
+        collectDefaultMetrics({ prefix: 'maika_', timeout: 30000 });
         this.registry.setup();
         this.events.setup();
         this.schedulers.setup();
+        this.database.setup();
+        this.metrics.start();
         super.connect()
-            .then(() => this.logger.info(message));
+            .then(() => this.logger.info(fn()));
     }
 
     /**
@@ -103,18 +112,11 @@ module.exports = class MaikaClient extends Client {
             this.maintenance = "no";
         else {
             this.maintenance = "yes";
-            this.setGameForMaintenance();
+            this.editStatus('dnd', {
+                name: 'Cleaning Cafe Stile',
+                type: 0
+            });
         }
-    }
-
-    /**
-     * Edits the status when `maintenance` is true
-     */
-    setGameForMaintenance() {
-        this.editStatus('dnd', {
-            name: 'Cleaning Cafe Stile',
-            type: 0
-        });
     }
 };
 
