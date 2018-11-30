@@ -16,8 +16,8 @@ module.exports = new Plugin({
         category: 'Generic',
         run: (msg) => msg.embed({
             description: stripIndents`
-                :wave: **Hello, ${msg.sender.username}! I am ${msg.bot.user.username}.**
-                Use \`${msg.prefix}help\` to see what commands ${msg.bot.user.username} has!**
+                **Hello, ${msg.sender.username}! I am ${msg.bot.user.username}.**
+                **Use \`${msg.prefix}help\` to see what commands ${msg.bot.user.username} has!**
                 
                 \`\`\`fix
                 GUILDS: ${msg.bot.guilds.size}
