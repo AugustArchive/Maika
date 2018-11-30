@@ -27,8 +27,8 @@ module.exports = new Plugin({
 
                             await msg.embed({
                                 description: stripIndents`
-                                    :black_medium_square: **1 BTC**: ${res.last}
-                                    :black_medium_square: **High Value**: ${res.high}
+                                    :black_medium_square: **1 BTC**: ${parseInt(res.last).toLocaleString()}
+                                    :black_medium_square: **High Value**: ${parseInt(res.high).toLocaleString()}
                                 `,
                                 color: msg.bot.color
                             });
@@ -43,8 +43,8 @@ module.exports = new Plugin({
 
                             await msg.embed({
                                 description: stripIndents`
-                                    :black_medium_square: **1 BTC**: ${resp.last}
-                                    :black_medium_square: **High Value**: ${resp.high}
+                                    :black_medium_square: **1 BTC**: ${parseInt(resp.last).toLocaleString()}
+                                    :black_medium_square: **High Value**: ${parseInt(resp.high).toLocaleString()}
                                 `,
                                 color: msg.bot.color
                             });
