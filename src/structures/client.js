@@ -26,7 +26,6 @@ const PluginRegistry                     = require('./registry/plugins');
 const EventRegistry                      = require('./registry/events');
 const SchedulerRegistry                  = require('./registry/schedulers');
 const MetricsRegistry                    = require('./registry/metrics');
-const Database                           = require('./database');
 const FinderUtil                         = require('../util/finder');
 const winston                            = require('winston');
 const MaikaWebsite                       = require('../../website/interfaces/website');
@@ -46,15 +45,15 @@ module.exports = class MaikaClient extends Client {
         this.logger = winston.createLogger({
             transports: [new winston.transports.Console()],
             format: winston.format.combine(
-                winston.format.colorize({ all: true }),
+                winston.format.colorize({ level: true }),
                 winston.format.timestamp({ format: 'HH:mm:ss' }),
                 winston.format.printf(
-                    (info) => `[${info.timestamp}] <${info.level}>: ${info.message}`
+                    (info) => `[Maika] [${info.level}] >> ${info.message}`
                 )
             )
         });
         this.registry = new PluginRegistry(this);
-        this.database = new Database(this);
+        this.r = require('rethinkdbdash')({ db: process.env.DB_NAME, host: process.env.DB_HOST, port: 28015 });
         this.events = new EventRegistry(this);
         this.constants = require('../util/constants');
         this.finder = new FinderUtil(this);
