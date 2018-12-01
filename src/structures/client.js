@@ -82,7 +82,6 @@ module.exports = class MaikaClient extends Client {
         this.registry.setup();
         this.events.setup();
         this.schedulers.setup();
-        this.database.setup();
         this.metrics.start();
         super.connect()
             .then(() => this.logger.info(fn()));

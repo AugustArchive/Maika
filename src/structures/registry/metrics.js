@@ -6,11 +6,12 @@ module.exports = class MetricRegistry {
     start() {
         http
             .createServer((req, res) => {
+                console.log(`[Metrics] [info]: ${req.url} was requested.`);
                 if (url.parse(req.url) === '/metrics') {
                     res.writeHead(200, { 'Content-Type': register.contentType });
                     res.write(register.metrics());
+                    res.end();
                 }
-                res.end();
             }).listen(5590);
     }
 };
