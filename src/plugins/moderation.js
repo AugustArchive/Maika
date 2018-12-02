@@ -4,7 +4,7 @@ module.exports = new Plugin({
     name: 'Moderation',
     embeded: ':hammer: Moderation',
     visible: true,
-    enabled: true,
+    enabled: false,
     commands: [{
         command: 'ban',
         description: 'Bans a member',

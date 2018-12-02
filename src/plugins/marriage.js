@@ -5,7 +5,7 @@ module.exports = new Plugin({
     name: 'Marriage',
     embeded: '👰 Marriage',
     visible: true,
-    enabled: true,
+    enabled: false,
     commands: [
         {
             command: 'marry',

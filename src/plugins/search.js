@@ -17,7 +17,7 @@ module.exports = new Plugin({
     name: 'Search',
     embeded: ':mag: Search',
     visible: true,
-    enabled: true,
+    enabled: false,
     commands: [
         {
             command: 'anime',
