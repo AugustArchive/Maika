@@ -57,7 +57,6 @@ module.exports = class PluginRegistry {
      * @param {import('eris').Message} msg The message class
      */
     async handle(msg) {
-        this.bot.prometheus.messages.inc();
         if (msg.author.bot || !this.bot.ready)
             return;
 
@@ -133,7 +132,6 @@ module.exports = class PluginRegistry {
 
         try {
             await plug.run(ctx);
-            this.bot.prometheus.commands.inc();
         } catch(ex) {
             ctx.reply(`**${ctx.sender.username}**: Command **\`${plug.command}\`** has failed to run.`);
             this.bot.logger.error(ex.stack);

@@ -200,11 +200,13 @@ module.exports = new Plugin({
 
             if (msg.guild && msg.guild.members.has(user.id)) {
                 const member = msg.guild.members.get(user.id);
+                const mutual = msg.bot.guilds.filter((i) => i.members.has(user.id)).map(g => g.name).join(', ');
                 if (member.nick)
                     embed.fields.push({ name: 'Nickname', value: member.nick, inline: true });
                 
                 embed.fields.push({ name: 'Status', value: (member.status === 'online' ? "Online" : member.status === 'idle' ? 'Away' : member.status === 'dnd' ? 'Do Not Disturb' : 'Offline'), inline: true });
                 embed.fields.push({ name: `Roles [${member.roles.length}]`, value: member.roles.map(s => `<@&${s}>`).join(', '), inline: true });
+                embed.fields.push({ name: 'Mutual Guilds', value: mutual, inline: true });
                 if (member.game)
                     embed.description = `${(member.game.type === 0 ? 'Playing' : member.game.type === 1 ? 'Streaming' : member.game.type === 2 ? 'Listening to' : member.game.type === 3 ? 'Watching' : '')} **${member.game.name}**`;
                 embed.fields.push({ name: 'Joined At', value: dateformat(member.joinedAt, 'mm/dd/yyyy hh:MM:ss TT'), inline: true });

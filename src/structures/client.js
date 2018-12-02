@@ -25,11 +25,9 @@ const RedditFeed                         = require('./feed/reddit');
 const PluginRegistry                     = require('./registry/plugins');
 const EventRegistry                      = require('./registry/events');
 const SchedulerRegistry                  = require('./registry/schedulers');
-const MetricsRegistry                    = require('./registry/metrics');
 const FinderUtil                         = require('../util/finder');
 const winston                            = require('winston');
 const MaikaWebsite                       = require('../../website/interfaces/website');
-const { Counter, collectDefaultMetrics } = require('prom-client');
 
 module.exports = class MaikaClient extends Client {
     /**
@@ -65,11 +63,7 @@ module.exports = class MaikaClient extends Client {
         this.schedulers = new SchedulerRegistry(this);
         this.owners = ['280158289667555328'];
         this.website = new MaikaWebsite(this);
-        this.prometheus = {
-            commands: new Counter({ name: 'commands', help: 'Shows how many commands that Maika has executed.' }),
-            messages: new Counter({ name: 'messages', help: 'Shows how many messages that Maika has seen.' })
-        };
-        this.metrics = new MetricsRegistry();
+        this.http = require('../util/http');
     }
 
     /**
@@ -78,11 +72,9 @@ module.exports = class MaikaClient extends Client {
      * @param {SetupCallback} fn The callback
      */
     async setup(fn) {
-        collectDefaultMetrics({ prefix: 'maika_', timeout: 30000 });
         this.registry.setup();
         this.events.setup();
         this.schedulers.setup();
-        this.metrics.start();
         super.connect()
             .then(() => this.logger.info(fn()));
     }

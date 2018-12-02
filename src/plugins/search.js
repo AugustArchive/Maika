@@ -172,7 +172,7 @@ module.exports = new Plugin({
                                         name: 'Company', value: res.company, inline: true
                                     },
                                     {
-                                        name: 'Website URL', value: (res.blog === null ? res.blog : 'None'), inline: true
+                                        name: 'Website URL', value: res.blog || 'None', inline: true
                                     },
                                     {
                                         name: 'Followers', value: res.followers, inline: true
@@ -548,7 +548,7 @@ module.exports = new Plugin({
                                         name: 'Gold?', value: data.is_gold ? 'Yes' : 'No', inline: true
                                     },
                                     {
-                                        name: 'Verified?', value: data.verified ? 'Yes' : 'No'
+                                        name: 'Verified?', value: data.verified ? 'Yes' : 'No', inline: true
                                     }
                                 ]
                             });
