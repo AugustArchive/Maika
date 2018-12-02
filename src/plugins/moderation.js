@@ -5,5 +5,14 @@ module.exports = new Plugin({
     embeded: ':hammer: Moderation',
     visible: true,
     enabled: true,
-    commands: []
+    commands: [{
+        command: 'ban',
+        description: 'Bans a member',
+        usage: '<user> [reason]',
+        aliases: ['banne', 'bannerino'],
+        run: async(msg) => {
+            if (!msg.args[0])
+                return msg.reply();
+        }
+    }]
 });

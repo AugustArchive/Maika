@@ -85,5 +85,5 @@ module.exports = class MaikaPlugin {
  * @prop {boolean} [guild=false] Whenther or not the command should be executed in a Discord "guild"
  * @prop {IRunnableCommand} run The run function
  */
-/** @typedef {(msg: import('./message')) => Promise<void>} IRunnableCommand */
+/** @typedef {(bot: import('./client'), msg: import('./message')) => Promise<void>} IRunnableCommand */
 /** @typedef {string[]} ICommandAliases */

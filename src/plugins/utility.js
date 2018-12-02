@@ -21,8 +21,8 @@ module.exports = new Plugin({
             description: 'Grabs my permissions',
             aliases: ['botperms', 'bot-perms'],
             guild: true,
-            run: async (msg) => {
-                const me = msg.guild.members.get(msg.bot.user.id);
+            run: async (bot, msg) => {
+                const me = msg.guild.members.get(bot.user.id);
                 return await msg.embed({
                     description: stripIndents`
                         **Create Instant Invite**: ${(get(me, 'createInstantInvite')) ? 'Yes' : 'No'}
@@ -53,7 +53,7 @@ module.exports = new Plugin({
                         **Manage Webhooks**: ${get(me, 'manageWebhooks') ? 'Yes' : 'No'}
                         **Manage Emojis**: ${get(me, 'manageEmojis') ? 'Yes' : 'No'}
                     `,
-                    color: msg.bot.color
+                    color: bot.color
                 });
             }
         },
@@ -62,7 +62,7 @@ module.exports = new Plugin({
             description: 'Grabs a list of any users that I know that have the same discriminator as you, senpai!',
             usage: '[discrim]',
             aliases: ['discriminator'],
-            async run(msg) {
+            async run(bot, msg) {
                 let discrim = 0000;
                 let users = [];
 
@@ -75,7 +75,7 @@ module.exports = new Plugin({
                         discrim = msg.args[0];
                 }
 
-                const userMap = msg.bot.users.filter(u => u.discriminator === discrim);
+                const userMap = bot.users.filter(u => u.discriminator === discrim);
                 userMap.forEach(s => users.push(`${s.username}#${s.discriminator}`));
 
                 return await msg.code('fix', users.join('\n'));
@@ -86,7 +86,7 @@ module.exports = new Plugin({
             description: 'Gives a list of all of the moderators',
             aliases: ['mods-online', 'mods'],
             guild: true,
-            async run(msg) {
+            async run(bot, msg) {
                 const moderators = [];
                 const mods = msg.guild.members.filter(m => m.permission.has('banMembers') && !m.bot);
                 mods.forEach(f => moderators.push(`${f.username}#${f.discriminator} (${f.status})`));

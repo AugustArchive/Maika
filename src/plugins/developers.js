@@ -14,7 +14,7 @@ module.exports = new Plugin({
         description: 'Evaluates arbitrary JavaScript scripts within the bot.',
         usage: '<script>',
         aliases: ['evl', 'ev', 'js', 'script'],
-        async run(msg) {
+        async run(bot, msg) {
             if (!msg.args[0])
                 return msg.reply(`**${msg.sender.username}**: What script do you want me to evaluate?`);
 
@@ -37,7 +37,7 @@ module.exports = new Plugin({
                         showHidden: true
                     });
                 }
-                result = msg.bot.constants.redact(msg.bot, result);
+                result = bot.constants.redact(bot, result);
             } catch(ex) {
                 error = true;
                 result = ex.message;
@@ -46,7 +46,7 @@ module.exports = new Plugin({
             if (!slient)
                 return msg.embed({
                     title: error ? 'Evaluation Errored' : 'Evaluation Success',
-                    color: msg.bot.constants.error(error),
+                    color: bot.constants.error(error),
                     description: stripIndents`
                         **${Date.now() - start}ms**
                         \`\`\`js
@@ -61,7 +61,7 @@ module.exports = new Plugin({
         description: 'Executes arbitrary shell code within the bot\'s terminal.',
         usage: '<script>',
         aliases: ['shell'],
-        async run(msg) {
+        async run(bot, msg) {
             if (!msg.args[0])
                 return msg.reply(`**${msg.sender.username}**: I need a script to execute.`);
 
@@ -84,13 +84,13 @@ module.exports = new Plugin({
         description: "Requests the body of an URL.",
         usage: '<url>',
         aliases: ['req'],
-        async run(msg) {
+        async run(bot, msg) {
             if (!msg.args[0])
                 return msg.reply(`**${msg.sender.username}**: No \`<url>\` argument passed.`);
 
             const startedAt = Date.now();
             const mes = await msg.reply(`**${msg.sender.username}**: Requesting to \`${msg.args[0]}\`...`);
-            const req = await fetch(msg.args[0], { method: 'GET', headers: { 'User-Agent': msg.bot.constants.USER_AGENT } });
+            const req = await fetch(msg.args[0], { method: 'GET', headers: { 'User-Agent': bot.constants.USER_AGENT } });
             if (req.ok) {
                 const result = await req.json();
                 await mes.delete();

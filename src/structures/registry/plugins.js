@@ -131,7 +131,7 @@ module.exports = class PluginRegistry {
             return ctx.reply(`**${ctx.sender.username}**: You must be a developer to execute the **\`${plug.command}\`** command.`);
 
         try {
-            await plug.run(ctx);
+            await plug.run(this.bot, ctx);
         } catch(ex) {
             ctx.reply(`**${ctx.sender.username}**: Command **\`${plug.command}\`** has failed to run.`);
             this.bot.logger.error(ex.stack);

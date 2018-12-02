@@ -14,18 +14,18 @@ module.exports = new Plugin({
         description: 'Shows information about me, Maika!',
         aliases: ['me'],
         category: 'Generic',
-        run: (msg) => msg.embed({
+        run: (bot, msg) => msg.embed({
             description: stripIndents`
-                **Hello, ${msg.sender.username}! I am ${msg.bot.user.username}.**
-                **Use \`${msg.prefix}help\` to see what commands ${msg.bot.user.username} has!**
+                **Hello, ${msg.sender.username}! I am ${bot.user.username}.**
+                **Use \`${msg.prefix}help\` to see what commands ${bot.user.username} has!**
                 
                 \`\`\`fix
-                GUILDS: ${msg.bot.guilds.size}
-                USERS: ${msg.bot.users.size}
-                CHANNELS: ${Object.keys(msg.bot.channelGuildMap).length}
-                SHARDS: ${msg.guild.shard.id}/${msg.bot.shards.size}
-                PLUGINS: ${msg.bot.registry.plugins.size}
-                UPTIME: ${humanize(Date.now() - msg.bot.startTime)}
+                GUILDS: ${bot.guilds.size}
+                USERS: ${bot.users.size}
+                CHANNELS: ${Object.keys(bot.channelGuildMap).length}
+                SHARDS: ${msg.guild.shard.id}/${bot.shards.size}
+                PLUGINS: ${bot.registry.plugins.size}
+                UPTIME: ${humanize(Date.now() - bot.startTime)}
                 MEMORY USAGE: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB
                 DEPENDENCIES [${Object.keys(dependencies).length}]: ${Object.entries(dependencies).map(s => s[0]).join(', ')}
                 ERIS: v${Eris}
@@ -33,7 +33,7 @@ module.exports = new Plugin({
                 MAIKA: v${version}
                 \`\`\`
             `,
-            color: msg.bot.color
+            color: bot.color
         })
     },
     {
@@ -42,19 +42,19 @@ module.exports = new Plugin({
         usage: '[plugin]',
         aliases: ['halp', 'plugin', 'plugins', 'h'],
         category: 'Generic',
-        run: (msg) => {
-            const plugins = msg.bot.registry.plugins.filter(c => ['280158289667555328'].includes(msg.sender.id) ? true : c.visible);
+        run: (bot, msg) => {
+            const plugins = bot.registry.plugins.filter(c => ['280158289667555328'].includes(msg.sender.id) ? true : c.visible);
 
             if (!msg.args[0])
                 return msg.embed({
-                    title: `${msg.bot.user.username}#${msg.bot.user.discriminator} | Plugins`,
+                    title: `${bot.user.username}#${bot.user.discriminator} | Plugins`,
                     description: stripIndents`
                         Here are a list of plugins, use \`${msg.prefix}help [plugin]\` to view the plugin's commands!
 
                         ${plugins.map(s => `**${s.name}** (\`${msg.prefix}help ${s.name.toLowerCase()}\`)`).join('\n')}
                     `,
-                    color: msg.bot.color,
-                    footer: { text: `${msg.bot.registry.plugins.size} Plugins` }
+                    color: bot.color,
+                    footer: { text: `${bot.registry.plugins.size} Plugins` }
                 });
 
             const p = plugins.filter((m) => m.name.toLowerCase() === msg.args.join(' ').toLowerCase())[0];
@@ -62,7 +62,7 @@ module.exports = new Plugin({
                 return msg.embed({
                     title: p.embeded,
                     description: p.commands.map(s => `**${msg.prefix}${s.command}${s.usage ? ` ${s.usage}` : ''}**:  ${s.description}`).join('\n'),
-                    color: msg.bot.color,
+                    color: bot.color,
                     footer: { text: `${p.count} Commands` }
                 });
             else
@@ -74,9 +74,9 @@ module.exports = new Plugin({
         description: 'Invite me to your discord server or join mine!',
         aliases: ['invite'],
         category: 'Generic',
-        run: (msg) => msg.embed({
+        run: (bot, msg) => msg.embed({
             description: stripIndents`
-                **Invite**: <https://discordapp.com/oauth2/authorize?client_id=${msg.bot.user.id}&scope=bot>
+                **Invite**: <https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot>
                 **Discord Server**: https://discord.gg/7TtMP2n
             `
         })
@@ -108,7 +108,7 @@ module.exports = new Plugin({
             if (!msg.args[0]) {
                 const message = await msg.reply(`**${msg.sender.username}**: Grabbing shard information`);
                 let shardMap = '';
-                msg.bot.shards.map(shard => shardMap += `[Shard #${shard.id}]: Latency: ${shard.latency}ms | Status: ${shard.status}`).join('\n');
+                bot.shards.map(shard => shardMap += `[Shard #${shard.id}]: Latency: ${shard.latency}ms | Status: ${shard.status}`).join('\n');
                 await message.delete();
                 let current = msg.guild.shard;
                 return msg.code('ini', stripIndents`
@@ -120,7 +120,7 @@ module.exports = new Plugin({
                 `);
             }
 
-            const shard = msg.bot.shards.get(Number(msg.args[0]));
+            const shard = bot.shards.get(Number(msg.args[0]));
             if (shard)
                 return msg.code('asciidoc', stripIndents`
                     = Shard #${shard.id} =
@@ -135,20 +135,20 @@ module.exports = new Plugin({
         command: 'source',
         description: 'Grabs Maika\'s Github repository URL',
         aliases: ['src', 'sauce'],
-        run: (msg) => msg.reply(`**${msg.sender.username}**: <https://github.com/MaikaBot/Maika>`)
+        run: (bot, msg) => msg.reply(`**${msg.sender.username}**: <https://github.com/MaikaBot/Maika>`)
     },
     {
         command: 'statistics',
         description: 'Gives Maika\'s current statistics',
         aliases: ['stats', 'botinfo', 'bot', 'info'],
         category: 'Generic',
-        run: (msg) => msg.code('fix', stripIndents`
-            GUILDS: ${msg.bot.guilds.size}
-            USERS: ${msg.bot.users.size}
-            CHANNELS: ${Object.keys(msg.bot.channelGuildMap).length}
-            SHARDS: ${msg.guild.shard.id}/${msg.bot.shards.size}
-            PLUGINS: ${msg.bot.registry.plugins.size}
-            UPTIME: ${humanize(Date.now() - msg.bot.startTime)}
+        run: (bot, msg) => msg.code('fix', stripIndents`
+            GUILDS: ${bot.guilds.size}
+            USERS: ${bot.users.size}
+            CHANNELS: ${Object.keys(bot.channelGuildMap).length}
+            SHARDS: ${msg.guild.shard.id}/${bot.shards.size}
+            PLUGINS: ${bot.registry.plugins.size}
+            UPTIME: ${humanize(Date.now() - bot.startTime)}
             MEMORY USAGE: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB
             DEPENDENCIES: ${Object.entries(dependencies).map(s => s[0]).join(', ')}
             ERIS: v${Eris}
@@ -161,6 +161,6 @@ module.exports = new Plugin({
         description: 'Shows the current uptime for Maika',
         category: 'Generic',
         aliases: [],
-        run: (msg) => msg.reply(humanize(Date.now() - msg.bot.startTime))
+        run: (bot, msg) => msg.reply(humanize(Date.now() - bot.startTime))
     }]
 });

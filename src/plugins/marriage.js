@@ -12,16 +12,16 @@ module.exports = new Plugin({
             description: 'Marry a user!',
             usage: '<user>',
             aliases: ['marriage'],
-            async run(msg) {
+            async run(bot, msg) {
                 if (!msg.args[0])
                     return msg.reply(`**${msg.sender.username}**: You must provide a user ID, mention, or name.`);
 
-                const wanted = await msg.bot.finder.user(msg.args[0]);
+                const wanted = await bot.finder.user(msg.args[0]);
                 if (wanted.id === msg.sender.id)
                     return msg.reply(`**${msg.sender.username}**: You can't marry yourself, you filthy person.`);
 
-                const self = await msg.bot.r.table('users').get(msg.sender.id).run();
-                const user = await msg.bot.r.table('users').get(wanted.id).run();
+                const self = await bot.r.table('users').get(msg.sender.id).run();
+                const user = await bot.r.table('users').get(wanted.id).run();
 
                 if (user.marriage.is)
                     return msg.reply(`**${msg.sender.username}**: That person is already married.`);
@@ -48,8 +48,8 @@ module.exports = new Plugin({
                     else if (!collected.content)
                         return message.edit(`**${msg.sender.username}**: Sorry, their slience said no.`);
                     else {
-                        await msg.bot.r.table('users').get(wanted.id).update({ marriage: { is: true, to: msg.sender.id } }).run();
-                        msg.bot.r.table('users').get(msg.sender.id).update({ marriage: { is: true, to: wanted.id } }).run();
+                        await bot.r.table('users').get(wanted.id).update({ marriage: { is: true, to: msg.sender.id } }).run();
+                        bot.r.table('users').get(msg.sender.id).update({ marriage: { is: true, to: wanted.id } }).run();
                         return message.edit(stripIndents`
                             :sparkling_heart: <@${msg.sender.id}> and <@${wanted.id}> are happlied married! :sparkling_heart:
                             When is the honeymoon? I want to know too! >~<
@@ -63,13 +63,13 @@ module.exports = new Plugin({
             description: 'W-what! You want to divorce, sure I guess...',
             usage: '<user>',
             aliases: ['break-up'],
-            async run(msg) {
+            async run(bot, msg) {
                 if (!msg.args[0])
                     return msg.reply(`**${msg.sender.username}**: You must provide your loved one!`);
 
-                const wanted = await msg.bot.finder.user(msg.args[0]);
-                const self = await msg.bot.r.table('users').get(msg.sender.id).run();
-                const loved = await msg.bot.r.table('users').get(wanted.id).run();
+                const wanted = await bot.finder.user(msg.args[0]);
+                const self = await bot.r.table('users').get(msg.sender.id).run();
+                const loved = await bot.r.table('users').get(wanted.id).run();
 
                 if (!loved.marriage.is)
                     return msg.reply(`**${msg.sender.username}**: So, you think I'm stupid huh? **${wanted.username}** isn't even married!`);
@@ -78,8 +78,8 @@ module.exports = new Plugin({
                 else if (!self.marriage.is)
                     return msg.reply(`**${msg.sender.username}**: Why do you think I'm stupid! You're not even married...`);
                 else {
-                    await msg.bot.r.table('users').get(msg.sender.id).update({ marriage: { is: false, to: null } }).run();
-                    msg.bot.r.table('users').get(wanted.id).update({ marriage: { is: false, to: null } }).run();
+                    await bot.r.table('users').get(msg.sender.id).update({ marriage: { is: false, to: null } }).run();
+                    bot.r.table('users').get(wanted.id).update({ marriage: { is: false, to: null } }).run();
                     return msg.reply(stripIndents`
                         :broken_heart: <@${wanted.id}> and <@${msg.sender.id}> have broken up... :broken_heart:
                         I shipped them so hard though... :(

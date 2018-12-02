@@ -24,7 +24,7 @@ module.exports = new Plugin({
             description: 'Searches anime from Kitsu',
             usage: '<anime>',
             aliases: ['animu'],
-            async run(msg) {
+            async run(bot, msg) {
                 if (!msg.args[0])
                     return msg.reply(`**${msg.sender.username}**: You must provide an anime title.`);
 
@@ -33,7 +33,7 @@ module.exports = new Plugin({
                     title: `${anime.titles.romaji} (${anime.titles.japanese}) | ${anime.titles.english}`,
                     description: anime.synopsis > 2000 ? `${anime.synopsis.substr(0, 2000 - 3)}...` : anime.synopsis,
                     url: anime.url,
-                    color: msg.bot.constants.SearchColours.KITSU,
+                    color: bot.constants.SearchColours.KITSU,
                     fields: [
                         {
                             name: 'Type', value: anime.subType, inline: true
@@ -68,7 +68,7 @@ module.exports = new Plugin({
             description: 'Searches the Azur Lane API for a ship',
             usage: '<ship>',
             aliases: ['shipgirl'],
-            async run(msg) {
+            async run(bot, msg) {
                 if (!msg.args[0])
                     return msg.reply(`**${msg.sender.username}**: Provide a shipgirl to search! .w.`);
 
@@ -80,7 +80,7 @@ module.exports = new Plugin({
                     const data = res[0].item;
                     return await msg.embed({
                         title: `${data.names.en} (${data.class} Class)`,
-                        color: msg.bot.constants.SearchColours.AZUR_LANE,
+                        color: bot.constants.SearchColours.AZUR_LANE,
                         url: data.page_url,
                         thumbnail: { url: data.icon },
                         footer: { text: `Ship ${data.id}` },
@@ -137,7 +137,7 @@ module.exports = new Plugin({
                         ]
                     });
                 } catch(ex) {
-                    return msg.reply(msg.bot.constants.Strings.ERROR(msg, ex));
+                    return msg.reply(bot.constants.Strings.ERROR(msg, ex));
                 }
             }
         },
@@ -146,7 +146,7 @@ module.exports = new Plugin({
             description: 'Searches the GitHub API for users or repositories',
             usage: '<user|repository> <user or repo_author> <repo_name>',
             aliases: ['git'],
-            async run(msg) {
+            async run(bot, msg) {
                 if (!msg.args[0])
                     return msg.reply(`**${msg.sender.username}**: You must provide a subcommand. (\`user\` or \`repository\`)`);
                 if (!['user', 'repository'].includes(msg.args[0]))
@@ -166,7 +166,7 @@ module.exports = new Plugin({
                                 description: res.bio,
                                 url: res.html_url,
                                 thumbnail: { url: res.avatar_url },
-                                color: msg.bot.constants.SearchColours.GITHUB,
+                                color: bot.constants.SearchColours.GITHUB,
                                 fields: [
                                     {
                                         name: 'Company', value: res.company, inline: true
@@ -183,7 +183,7 @@ module.exports = new Plugin({
                                 ]
                             });
                         } catch(ex) {
-                            return msg.reply(msg.bot.constants.Strings.ERROR(msg, ex));
+                            return msg.reply(bot.constants.Strings.ERROR(msg, ex));
                         }
                     } break;
                     case "repository": {
@@ -199,7 +199,7 @@ module.exports = new Plugin({
                             await msg.embed({
                                 title: `${res.name} (${res.id})`,
                                 description: res.description,
-                                color: msg.bot.constants.SearchColours.GITHUB,
+                                color: bot.constants.SearchColours.GITHUB,
                                 url: res.html_url,
                                 fields: [
                                     {
@@ -227,7 +227,7 @@ module.exports = new Plugin({
                                 ]
                             });
                         } catch(ex) {
-                            return msg.reply(msg.bot.constants.Strings.ERROR(msg, ex));
+                            return msg.reply(bot.constants.Strings.ERROR(msg, ex));
                         }
                     } break;
                 }
@@ -238,7 +238,7 @@ module.exports = new Plugin({
             description: 'Searches the Jisho API for english to romanji.',
             usage: '<word>',
             aliases: ['romanji'],
-            async run(msg) {
+            async run(bot, msg) {
                 if (!msg.args[0])
                     return msg.reply(`**${msg.sender.username}**: You must provide an English word.`);
                 
@@ -255,7 +255,7 @@ module.exports = new Plugin({
                         ${data.senses[0].english_definitions.join(', ')}
                     `);
                 } catch(ex) {
-                    return msg.reply(msg.bot.constants.Strings.ERROR(msg, ex));
+                    return msg.reply(bot.constants.Strings.ERROR(msg, ex));
                 }
             }
         },
@@ -264,7 +264,7 @@ module.exports = new Plugin({
             description: 'Searches manga from Kitsu',
             usage: '<manga>',
             aliases: [],
-            async run(msg) {
+            async run(bot, msg) {
                 if (!msg.args[0])
                     return msg.reply(`**${msg.sender.username}**: You must provide an manga to search!`);
 
@@ -273,7 +273,7 @@ module.exports = new Plugin({
                     title: `${manga.titles.japanese} (${manga.titles.romaji}) | ${manga.titles.english}`,
                     description: manga.synopsis > 2000 ? `${manga.synopsis.substr(0, 2000 - 3)}` : manga.synopsis,
                     url: manga.url,
-                    color: msg.bot.constants.SearchColours.KITSU,
+                    color: bot.constants.SearchColours.KITSU,
                     fields: [
                         {
                             name: 'Type', value: manga.subType, inline: true
@@ -293,7 +293,7 @@ module.exports = new Plugin({
             description: 'Searches the Mozilla Developer Network for any JavaScript prototypes',
             usage: '<prototype>',
             aliases: ['mozilla-developer-network'],
-            async run(msg) {
+            async run(bot, msg) {
                 if (!msg.args[0])
                     return msg.reply(`**${msg.sender.username}**: You must add an JavaScript prototype argument.`);
 
@@ -312,10 +312,10 @@ module.exports = new Plugin({
                         title: data.title,
                         url: data.url,
                         description: data.excerpt,
-                        color: msg.bot.constants.SearchColours.MDN
+                        color: bot.constants.SearchColours.MDN
                     });
                 } catch(ex) {
-                    return msg.reply(msg.bot.constants.Strings.ERROR(msg, ex));
+                    return msg.reply(bot.constants.Strings.ERROR(msg, ex));
                 }
             }
         },
@@ -324,7 +324,7 @@ module.exports = new Plugin({
             description: "Searches osu!users and beatmaps",
             usage: '<"user" | "beatmap"> <id | user> [gamemode]',
             aliases: ['osu!'],
-            async run(msg) {
+            async run(bot, msg) {
             if (!msg.args[0])
                 return msg.reply(`**${msg.sender.username}**: You must provide an subcommand: \`user\` or \`beatmap\``);
             if (!['user', 'beatmap'].includes(msg.args[0]))
@@ -345,7 +345,7 @@ module.exports = new Plugin({
                             msg.embed({
                                 title: `User ${user.username} (${user.id})`,
                                 description: `Level ${user.level} | ${user.country}`,
-                                color: msg.bot.constants.SearchColours.OSU,
+                                color: bot.constants.SearchColours.OSU,
                                 fields: [
                                     {
                                         name: 'Joined osu! At', value: user.joinedAt, inline: true
@@ -376,7 +376,7 @@ module.exports = new Plugin({
                             msg.embed({
                                 title: `User ${user.username} (${user.id})`,
                                 description: `Level ${user.level} | ${user.country}`,
-                                color: msg.bot.constants.SearchColours.OSU,
+                                color: bot.constants.SearchColours.OSU,
                                 fields: [
                                     {
                                         name: 'Joined osu! At', value: user.joinedAt, inline: true
@@ -407,7 +407,7 @@ module.exports = new Plugin({
                             msg.embed({
                                 title: `User ${user.username} (${user.id})`,
                                 description: `Level ${user.level} | ${user.country}`,
-                                color: msg.bot.constants.SearchColours.OSU,
+                                color: bot.constants.SearchColours.OSU,
                                 fields: [
                                     {
                                         name: 'Joined osu! At', value: user.joinedAt, inline: true
@@ -438,7 +438,7 @@ module.exports = new Plugin({
                             msg.embed({
                                 title: `User ${user.username} (${user.id})`,
                                 description: `Level ${user.level} | ${user.country}`,
-                                color: msg.bot.constants.SearchColours.OSU,
+                                color: bot.constants.SearchColours.OSU,
                                 fields: [
                                     {
                                         name: 'Joined osu! At', value: user.joinedAt, inline: true
@@ -474,7 +474,7 @@ module.exports = new Plugin({
                         msg.embed({
                             title: `${beatmap.artist} — ${beatmap.title} (${beatmap.id})`,
                             description: `${beatmap.approved} | ${beatmap.difficulty} :star:`,
-                            color: msg.bot.constants.SearchColours.OSU,
+                            color: bot.constants.SearchColours.OSU,
                             fields: [
                                 {
                                     name: 'Difficulty', value: `- **Approach Rate**: ${beatmap.ar}\n- **Circle Size**: ${beatmap.cs}\n- **Overall Difficulty**: ${beatmap.od}\n- **HP Drain**: ${beatmap.hd}`, inline: true
@@ -514,7 +514,7 @@ module.exports = new Plugin({
             description: 'Searches the Reddit API for a user or a subreddit',
             usage: '<user|subreddit> <user or subreddit>',
             aliases: ['r/'],
-            async run(msg) {
+            async run(bot, msg) {
                 if (!msg.args[0])
                     return msg.reply(`**${msg.sender.username}**: No "user" or "subreddit" argument called.`);
                 if (!['user', 'subreddit'].includes(msg.args[0]))
@@ -535,7 +535,7 @@ module.exports = new Plugin({
 
                             await msg.embed({
                                 title: `u/${data.name} (${data.id})`,
-                                color: msg.bot.constants.SearchColours.REDDIT,
+                                color: bot.constants.SearchColours.REDDIT,
                                 url: `https://reddit.com/u/${msg.args[0]}`,
                                 fields: [
                                     {
@@ -553,7 +553,7 @@ module.exports = new Plugin({
                                 ]
                             });
                         } catch(ex) {
-                            return msg.reply(msg.bot.constants.Strings.ERROR(msg, ex));
+                            return msg.reply(bot.constants.Strings.ERROR(msg, ex));
                         }
                     } break;
                     case "subreddit": {
@@ -569,13 +569,13 @@ module.exports = new Plugin({
 
                             await msg.embed({
                                 title: res.data.display_name,
-                                color: msg.bot.constants.SearchColours.REDDIT,
+                                color: bot.constants.SearchColours.REDDIT,
                                 description: res.data.public_description,
                                 url: `https://reddit.com/r/${msg.args[0]}`,
                                 thumbnail: { url: res.data.icon_img }
                             });
                         } catch(ex) {
-                            return msg.reply(msg.bot.constants.Strings.ERROR(msg, ex));
+                            return msg.reply(bot.constants.Strings.ERROR(msg, ex));
                         }
                     } break;
                 }
@@ -586,7 +586,7 @@ module.exports = new Plugin({
             description: 'Searches the Steam API for a user or game',
             usage: '<user|game> <game or user>',
             aliases: [],
-            async run(msg) {
+            async run(bot, msg) {
                 if (!msg.args[0])
                     return msg.reply(`**${msg.sender.username}**: No \`user\` or \`game\` argument called.`);
                 if (!['user', 'game'].includes(msg.args[0]))
@@ -603,7 +603,7 @@ module.exports = new Plugin({
 
                             await msg.embed({
                                 title: `User ${res.id.customurl}`,
-                                color: msg.bot.constants.SearchColours.STEAM,
+                                color: bot.constants.SearchColours.STEAM,
                                 thumbnail: { url: res.avatars.avatar },
                                 url: res.profile.url,
                                 fields: [
@@ -619,7 +619,7 @@ module.exports = new Plugin({
                                 ]
                             });
                         } catch(ex) {
-                            return msg.reply(msg.bot.constants.Strings.ERROR(msg, ex));
+                            return msg.reply(bot.constants.Strings.ERROR(msg, ex));
                         }
                     } break;
                     case "game": {
@@ -648,7 +648,7 @@ module.exports = new Plugin({
                                 title: data.name,
                                 url: `http://store.steampowered.com/app/${data.steam_appid}`,
                                 thumbnail: { url: data.header_image },
-                                color: msg.bot.constants.SearchColours.STEAM,
+                                color: bot.constants.SearchColours.STEAM,
                                 fields: [
                                     {
                                         name: 'Price', value: price, inline: true
@@ -677,7 +677,7 @@ module.exports = new Plugin({
                                 ]
                             });
                         } catch(ex) {
-                            return msg.reply(msg.bot.constants.Strings.ERROR(msg, ex));
+                            return msg.reply(bot.constants.Strings.ERROR(msg, ex));
                         }
                     } break;
                 }
@@ -688,7 +688,7 @@ module.exports = new Plugin({
             description: 'Searches the VocaDB API of your query',
             usage: '<query>',
             aliases: ['vocaloid'],
-            async run(msg) {
+            async run(bot, msg) {
                 if (!msg.args[0])
                     return msg.reply(`**${msg.sender.username}**: No \`vocaloid\` song argument passed.`);
 
@@ -703,7 +703,7 @@ module.exports = new Plugin({
                         title: data.name,
                         url: `http://vocadb.net/S/${data.id}`,
                         description: data.lyrics.length ? (data.lyrics[0].value > 2000 ? `${data.lyrics[0].value}...` : data.lyrics[0].value) : 'No lyrics avaliable at this moment',
-                        color: msg.bot.constants.SearchColours.VOCADB,
+                        color: bot.constants.SearchColours.VOCADB,
                         fields: [
                             {
                                 name: 'Artist', value: data.artistString, inline: false
@@ -714,7 +714,7 @@ module.exports = new Plugin({
                         ]
                     });
                 } catch(ex) {
-                    return msg.reply(msg.bot.constants.Strings.ERROR(msg, ex));
+                    return msg.reply(bot.constants.Strings.ERROR(msg, ex));
                 }
             }
         }
