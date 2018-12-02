@@ -6,7 +6,9 @@
 * PassTheMayo   - **Plugin system but modified to use classes.**
 * other devs    - **Other developers who made npm modules (some aren't August's but some are.) (src/deps)**
 
-## Plugin Example
+## Plugin Example/Notes
+- All `MaikaPlugin#embeded` titles must start with an Discord emoji or some pull requests will be declined.
+
 ```js
 const Plugin = require('../structures/plugin');
 
