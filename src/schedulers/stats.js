@@ -11,7 +11,7 @@ module.exports = new Scheduler({
     name: 'stats',
     interval: 900000,
     enabled: false,
-    run(bot) {
+    async run(bot) {
         await bot.http.post(`https://discordbotindex.com/apiv1/bot/${bot.user.id}`)
             .set()
             .agent(bot.constants.USER_AGENT)

@@ -14,7 +14,7 @@ module.exports = new Plugin({
             description: 'Shows your\'s or another user\'s balance.',
             usage: '[user]',
             aliases: ['bal', '$', 'yen'],
-            run(bot, msg) {
+            async run(bot, msg) {
                 const user = await bot.finder.user(msg.args.length > 0 ? msg.args.join(' ') : msg.sender.id);
                 const uConfig = await bot.r.table('users').get(user.id).run();
                 const prefix = (user.id === msg.sender.id ? 'Your' : `${user.username}#${user.discriminator}'s`);
@@ -26,7 +26,7 @@ module.exports = new Plugin({
             description: 'Bet all, half, or an amount to win or lose...',
             usage: '<amount|"all"|"half">',
             aliases: ['gamble'],
-            run(bot, msg) {
+            async run(bot, msg) {
                 if (!msg.args[0])
                     return msg.reply(`**${msg.sender.username}**: You must provide an amount.`);
                 if (isNaN(msg.args[0]))
