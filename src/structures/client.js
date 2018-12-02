@@ -64,6 +64,7 @@ module.exports = class MaikaClient extends Client {
         this.owners = ['280158289667555328'];
         this.website = new MaikaWebsite(this);
         this.http = require('../util/http');
+        this.announcement = 'Disabled the `search` and `marriage` plugins until a fix is solved.';
     }
 
     /**

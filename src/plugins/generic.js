@@ -50,6 +50,7 @@ module.exports = new Plugin({
                     title: `${bot.user.username}#${bot.user.discriminator} | Plugins`,
                     description: stripIndents`
                         Here are a list of plugins, use \`${msg.prefix}help [plugin]\` to view the plugin's commands!
+                        **${bot.announcement}**
 
                         ${plugins.map(s => `**${s.name}** (\`${msg.prefix}help ${s.name.toLowerCase()}\`)`).join('\n')}
                     `,
