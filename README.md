@@ -1,33 +1,38 @@
-# Maika
-> Customizable, stable Discord bot made in the [Eris](https://abal.moe/Eris) library.
+# Maika [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
+**Customizable, stable Discord bot made in the [Eris](https://abal.moe/Eris) library.**
 
-## Credits
-* dragonfire535 - **Search Commands**
-* PassTheMayo   - **Plugin system but modified to use classes.**
-* other devs    - **Other developers who made npm modules (some aren't August's but some are.) (src/deps)**
+## Installing
+> You can't clone Maika since I don't condone of publishing "fake" public bot clones into any bot list since you're just using my code as a base and not editing it.
+>
+> If you wanna keep Maika as a base, you can but you have to follow some rules:
 
-## Plugin Example/Notes
-- All `MaikaPlugin#embeded` titles must start with an Discord emoji or some pull requests will be declined.
+* **1**: `DO NOT ADD MAIKA TO ANY PUBLIC BOT LISTS.`
+* **2**: `Your clone must be credited (even though my license doesn't condone it but I made the source code right?)`
+* **3**: `Your instance must be privated to friends and not be a public bot.`
 
-```js
-const Plugin = require('../structures/plugin');
+> If you don't break any of those guidelines, you should be good of not me going to friend you and ask you to stop and it will become a big pile of mess since it's a silly argument of "cloning" another person's bot without their permission / not crediting them.
+>
+> If you do credit me, you can credit me in the README.md (if it's a public GitHub repository) or in any "footer" / credits command.
 
-module.exports = new Plugin({
-    name: 'test', // The plugin name
-    embeded: ':gear: Test', // The plugin embeded title
-    visible: true, // If the plugin should be visible to all users
-    enabled: true, // If the plugin should be registered in the PluginRegistry
-    commands: [ // The command array
-        {
-            command: 'test', // The command name (REQUIRED)
-            description: 'owo?', // The command description (REQUIRED)
-            usage: '', // The command usage (optional but put it if there is any arguments)
-            aliases: ['debug'], // The command aliases
-            hidden: true, // If the command should be hidden from the help command
-            owner: true, // If the command should be ran by the owners
-            guild: false, // If the command should be ran in Discord guilds
-            run: (msg) => msg.reply('hi!') // The run function
-        }
-    ]
-});
+## License
+```
+Copyright (c) 2018-present auguwu
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
