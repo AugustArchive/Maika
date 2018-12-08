@@ -16,5 +16,20 @@ module.exports = class EventProcessor extends Processor {
      * @param {import('../event')} event The event
      * @returns {void}
      */
-    process(event) {}
+    process(event) {
+        const fn = async(...args) => {
+            try {
+                await event.run(this.bot, ...args);
+            } catch(ex) {
+                this.bot.logger.error(`Event ${event.event} has errored:\n${ex.stack}`);
+            }
+        };
+
+        if (event.emitter === 'on')
+            this.bot.on(event.event, fn);
+        else if (event.emitter === 'once')
+            this.bot.once(event.event, fn);
+        else
+            throw new RangeError("Invalid emitter.");
+    }
 };
