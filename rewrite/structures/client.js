@@ -4,7 +4,7 @@ const EventRegistry             = require('./registry/events');
 const SchedulerRegistry         = require('./registry/schedulers');
 const Database                  = require('./database');
 const winston                   = require('winston');
-const FinderUtil                = require('../util/finder');
+const RESTClient                = require('./rest');
 
 module.exports = class MaikaClient extends DiscordClient {
     constructor() {
@@ -17,7 +17,7 @@ module.exports = class MaikaClient extends DiscordClient {
         this.registry     = new CommandRegistry(this);
         this.events       = new EventRegistry(this);
         this.schedulers   = new SchedulerRegistry(this);
-        this.finder       = new FinderUtil(this);
+        this.rest         = new RESTClient(this);
         this.database     = new Database(this);
         this.color        = 0xE67EDE;
         this.http         = require('./http/request');

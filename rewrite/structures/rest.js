@@ -1,10 +1,10 @@
-const { trim } = require('./array');
+const { trim } = require('../util/array');
 
-module.exports = class FinderUtil {
+module.exports = class RESTClient {
     /**
-     * The finder util finds guilds, users, channels, or roles.
+     * Construct the REST client
      * 
-     * @param {import('../structures/client')} bot The this.bot client
+     * @param {import('./client')} bot The bot client
      */
     constructor(bot) {
         this.bot = bot;
