@@ -4,7 +4,7 @@
     "version": "0.1.0",
     "main": "src/bot.js",
     "scripts": {
-        "test": "eslint . -- fix"
+        "test": "eslint . --fix"
     },
     "dependencies": {
         "common-tags": "1.8.0",
