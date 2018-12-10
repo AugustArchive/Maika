@@ -12,8 +12,6 @@ module.exports = class CommandRegistry {
         this.bot       = bot;
         /** @type {Collection<import('../command')>} */
         this.commands  = new Collection();
-        /** @type {Collection<{ file: string; name: string; }>} */
-        this.categories = new Collection();
         this.processor = new CommandProcessor(bot);
     }
 
@@ -33,14 +31,10 @@ module.exports = class CommandRegistry {
                     try {
                         const command = require(`../../commands/${modules[i]}/${f}`);
                         if (command.checks.disabled)
-                            this.bot.logger.info(`Command ${command.command} is disabled, not addint to Collection...`);
+                            this.bot.logger.info(`Command ${command.command} is disabled, not adding to Collection...`);
 
-                        this.categories.set(modules[i], {
-                            file: f,
-                            name: modules[i]
-                        });
                         this.commands.set(command.command, command);
-                        this.bot.logger.info(`Loaded ${command.command}!`);
+                        this.bot.logger.info(`Loaded command ${command.command}!`);
                     } catch(ex) {
                         this.bot.logger.error(`Unable to load command ${f.split('.js', '')}:\n${ex.stack}`);
                     }

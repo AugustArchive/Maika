@@ -7,7 +7,7 @@ module.exports = new Event({
         client.logger.info(`${client.user.username}#${client.user.discriminator} has connected swiftly to Discord!`);
         for (const s of client.shards.map(sh => sh))
             client.editStatus('online', {
-                name: `x;help | [${s.id}] | ${client.guilds.size} Guild${client.guilds.size > 1 ? 's' : ''}`,
+                name: `x;help | [Shard ${s.id}] | ${client.guilds.size} Guild${client.guilds.size > 1 ? 's' : ''}`,
                 type: 0
             });
     }
