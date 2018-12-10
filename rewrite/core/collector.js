@@ -19,7 +19,7 @@ module.exports = class MessageCollector {
             return;
 
         const collector = this.collectors[msg.channel.id + msg.author.id];
-        if (collector.filter(msg))
+        if (collector && collector.filter(msg))
             collector.accept(msg);
     }
 
