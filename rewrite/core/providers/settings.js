@@ -4,7 +4,10 @@ const Settings  = require('../../schema/settings');
 
 module.exports = class SettingsProvider extends Provider {
     constructor() {
-        super(Settings);
+        super(Settings, {
+            id: 'guildID',
+            data: 'settings'
+        });
     }
 
     get(id, key, val) {

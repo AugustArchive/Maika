@@ -125,7 +125,7 @@ module.exports = class HTTPRequest {
      * Static `GET` request
      * 
      * @param {string} uri The uri
-     * @param {HTTPRequestOptions} options The request options
+     * @param {HTTPRequestOptions} [options] The request options
      * @returns {HTTPRequest}
      */
     static get(uri, options) {
@@ -139,7 +139,7 @@ module.exports = class HTTPRequest {
      * Static `POST` request
      * 
      * @param {string} uri The uri
-     * @param {HTTPRequestOptions} options The options
+     * @param {HTTPRequestOptions} [options] The options
      * @returns {HTTPRequest}
      */
     static post(uri, options) {

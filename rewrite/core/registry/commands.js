@@ -1,22 +1,16 @@
 const { readdir, readdirSync } = require('fs');
-const Collection               = require('../collection');
+const { Collection }           = require('eris');
 const CommandProcessor         = require('../processors/commands');
 
 module.exports = class CommandRegistry {
     /**
      * Construct a new CommandRegistry instance
      * 
-     * Methods:
-     *  - `CommandRegistry.start(): void`: Start the process
-     *  - `CommandRegistry.registerCommand(command: MaikaCommand): void`: Register the command
-     *  - `CommandRegistry.reload(command: MaikaCommand): boolean`: Reload a command
-     *  - `CommandRegistry.load(command: MaikaCommand): boolean`: Load a command
-     *  - `CommandRegistry.unload(command: MaikaCommand): boolean`: Unload a command
-     * 
      * @param {import('../client')} bot The bot client
      */
     constructor(bot) {
         this.bot       = bot;
+        /** @type {Collection<import('../command')>} */
         this.commands  = new Collection();
         this.processor = new CommandProcessor(bot);
     }
@@ -24,29 +18,28 @@ module.exports = class CommandRegistry {
     /**
      * Start the command process
      */
-    async start() {}
+    async start() {
+        const modules = await readdirSync('./commands');
+        for (let i = 0; i < modules.length; i++) {
+            this.bot.logger.info(`Loading module ${modules[i]}!`);
+            readdir(`./commands/${modules[i]}`, (error, files) => {
+                if (error)
+                    this.bot.logger.error(`Cannot load module ${modules[i]}:\n${error}`);
+                
+                this.bot.logger.info(`Module ${modules[i]} has ${files.length} commands, now loading...`);
+                files.forEach(f => {
+                    try {
+                        const command = require(`../../commands/${modules[i]}/${f}`);
+                        if (command.checks.disabled)
+                            this.bot.logger.info(`Command ${command.command} is disabled, not addint to Collection...`);
 
-    /**
-     * Reload a command
-     * 
-     * @param {import('../command')} cmd The command
-     * @returns {boolean}
-     */
-    reload(cmd) {}
-
-    /**
-     * Load a command
-     * 
-     * @param {import('../command')} cmd The command
-     * @returns {boolean}
-     */
-    load(cmd) {}
-
-    /**
-     * Unload a command
-     * 
-     * @param {import('../command')} cmd The command
-     * @returns {boolean}
-     */
-    unload(cmd) {}
+                        this.commands.set(command.name, command);
+                        this.bot.logger.info(`Loaded ${command.name}!`);
+                    } catch(ex) {
+                        this.bot.logger.error(`Unable to load command ${f.split('.js', '')}:\n${ex.stack}`);
+                    }
+                });
+            });
+        }
+    }
 };

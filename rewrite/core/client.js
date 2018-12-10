@@ -5,6 +5,7 @@ const SchedulerRegistry         = require('./registry/schedulers');
 const Database                  = require('./database');
 const winston                   = require('winston');
 const RESTClient                = require('./rest');
+const SettingsProvider          = require('./providers/settings');
 
 module.exports = class MaikaClient extends DiscordClient {
     constructor() {
@@ -19,6 +20,7 @@ module.exports = class MaikaClient extends DiscordClient {
         this.schedulers   = new SchedulerRegistry(this);
         this.rest         = new RESTClient(this);
         this.database     = new Database(this);
+        this.settings     = new SettingsProvider();
         this.color        = 0xE67EDE;
         this.http         = require('./http/request');
         this.owners       = ['280158289667555328', '229552088525438977', '145557815287611393'];

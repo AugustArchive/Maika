@@ -1,9 +1,0 @@
-# AppVeyor configuration for Maika
-environment:
-  nodejs_version: "8"
-install:
-  - ps: Install-Product node $env:nodejs_version
-  - npm i
-test_script:
-  - npm test
-build: off

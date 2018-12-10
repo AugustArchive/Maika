@@ -1,6 +1,8 @@
 const Sequelize   = require('sequelize');
 const { readdir } = require('fs');
 
+const db = new Sequelize(process.env.DB_URL, { logging: true, operatorsAliases: Sequelize.Op });
+
 module.exports = class PostgreSQL {
     /**
      * Construct the Database class
@@ -9,12 +11,11 @@ module.exports = class PostgreSQL {
      */
     constructor(bot) {
         this.bot = bot;
-        this.db  = new Sequelize(process.env.DB_URL, { logging: true, operatorsAliases: Sequelize.Op });
     }
 
     async start() {
         try {
-            await this.db.authenticate();
+            await db.authenticate();
             this.bot.logger.info('Connection to PostgreSQL has been established successfully!');
             await this.registerSchemas();
         } catch(ex) {
@@ -34,5 +35,9 @@ module.exports = class PostgreSQL {
                 this.bot.logger.error(error.stack);
             files.forEach(async f => await require('../schema/' + f).sync({ alter: true }));
         });
+    }
+
+    static get database() {
+        return db;
     }
 };

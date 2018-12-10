@@ -14,16 +14,16 @@ module.exports = class HTTPResponse {
      * @returns {ResponseBody} The body from the `node-fetch` class
      */
     async json() {
-        const resp = await this.resp.buffer();
+        const raw = await this.resp.buffer();
         const headers = {};
-        for(const [h, v] of resp.headers.entries())
+        for(const [h, v] of raw.headers.entries())
             headers[h] = v;
         const res = {
-			status: response.status,
-			statusText: response.statusText,
+			status: raw.status,
+			statusText: raw.statusText,
 			headers,
-			url: response.url,
-			ok: response.ok,
+			url: raw.url,
+			ok: raw.ok,
 			raw,
 			get text() {
 				return raw.toString();
@@ -40,11 +40,13 @@ module.exports = class HTTPResponse {
 				}
 			}
         };
-        if (!resp.ok) {
+        
+        if (!raw.ok) {
             const error = new Error(`${res.status}: ${res.statusText}`);
             Object.assign(error, res);
             throw error;
         }
+
         return res;
     }
 };

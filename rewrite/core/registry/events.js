@@ -18,5 +18,16 @@ module.exports = class EventRegistry {
     /**
      * Start the event process
      */
-    async start() {}
+    async start() {
+        readdir('./events', (error, files) => {
+            if (error)
+                this.bot.logger.error(`Unable to load events:\n${error.stack}`);
+
+            this.bot.logger.info(`Now loading ${files.length} events!`);
+            files.forEach(f => {
+                const event = require(`../../events/${f}`);
+                this.processor.process(event);
+            });
+        });
+    }
 };

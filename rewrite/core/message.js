@@ -6,7 +6,6 @@ module.exports = class CommandMessage {
      * 
      * @param {import('./client')} bot The bot client
      * @param {import('eris').Message} message The event message
-     * @param {import('./command')} command The command
      * @param {string[]} args The command arguments
      */
     constructor(bot, message, command, args) {
@@ -14,7 +13,6 @@ module.exports = class CommandMessage {
 
         this.bot = bot;
         this.message = message;
-        this.command = command;
         this.args = args;
         /** @type {import('eris').Guild} */
         this.guild  = this.message.channel.guild;
