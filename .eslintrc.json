@@ -1,76 +1,18 @@
 {
     "env": {
-        "amd": false,
         "es6": true,
-        "node": true,
-        "jest": false,
-        "mongo": false,
-        "mocha": false,
-        "qunit": false,
-        "worker": true,
-        "meteor": false,
-        "jquery": false,
-        "browser": false,
-        "jasmine": false,
-        "shelljs": false,
-        "nashorn": false,
-        "commonjs": true,
-        "atomtest": false,
-        "embertest": false,
-        "phantomjs": false,
-        "protractor": false,
-        "prototypejs": false,
-        "applescript": false,
-        "greasemonkey": false,
-        "webextensions": false,
-        "serviceworker": false,
-        "shared-node-browser": false
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "globals": {
+        "window": true
     },
     "parserOptions": {
-        "ecmaVersion": 8,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "restParams": true,
-            "impliedStrict": true,
-            "jsx": true,
-            "arrowFunctions": true,
-            "binaryLiterals": true,
-            "blockBindings": true,
-            "classes": true,
-            "defaultParams": true,
-            "destructuring": true,
-            "forOf": true,
-            "generators": true,
-            "modules": true,
-            "objectLiteralComputedProperties": true,
-            "objectLiteralDuplicateProperties": true,
-            "objectLiteralShorthandMethods": true,
-            "objectLiteralShorthandProperties": true,
-            "octalLiterals": true,
-            "regexUFlag": true,
-            "regexYFlag": true,
-            "spread": true,
-            "superInFunctions": true,
-            "templateStrings": true,
-            "unicodeCodePointEscapes": true,
-            "globalReturn": true,
-            "experimentalObjectRestSpread": true
-        }
+        "ecmaVersion": 2017
     },
-    "plugins": [],
     "rules": {
-        "strict": 0,
-        "semi": "warn",
-        "indent": [
-            0,
-            4
-        ],
-        "no-undef": 1,
-        "no-global-assign": 1,
-        "comma-dangle": "warn"
-    },
-    "globals": {
-        "_config": false,
-        "console": false
+        "indent": [0, 4],
+        "no-var": 2,
+        "perfer-const": 1
     }
 }
