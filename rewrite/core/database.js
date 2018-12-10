@@ -1,7 +1,10 @@
 const Sequelize   = require('sequelize');
 const { readdir } = require('fs');
 
-const db = new Sequelize(process.env.DB_URL, { logging: true, operatorsAliases: Sequelize.Op });
+const db = new Sequelize(process.env.DB_URL, {
+    logging: false,
+    operatorsAliases: Sequelize.Op
+});
 
 module.exports = class PostgreSQL {
     /**
@@ -19,7 +22,7 @@ module.exports = class PostgreSQL {
             this.bot.logger.info('Connection to PostgreSQL has been established successfully!');
             await this.registerSchemas();
         } catch(ex) {
-            this.bot.logger.info('Unable to connect to PostgreSQL: ' + ex.stack + "\nReconnecting in 5 seconds...");
+            this.bot.logger.info('Unable to connect to PostgreSQL:\n' + ex.stack + "\nReconnecting in 5 seconds...");
             setTimeout(this.start, 5000);
         }
     }
@@ -30,10 +33,13 @@ module.exports = class PostgreSQL {
      * @returns {void}
      */
     registerSchemas() {
-        readdir('./schema', (error, files) => {
+        readdir('./models', (error, files) => {
             if (error)
                 this.bot.logger.error(error.stack);
-            files.forEach(async f => await require('../schema/' + f).sync({ alter: true }));
+            files.forEach(async(d) => {
+                const Schema = require(`../models/${d}`);
+                Schema.sync({ alter: true });
+            });
         });
     }
 

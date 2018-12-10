@@ -1,6 +1,5 @@
 const Processor          = require('../processor');
 const CommandMessage     = require('../message');
-const RatelimitProcessor = require('./ratelimits');
 
 module.exports = class CommandProcessor extends Processor {
     /**
@@ -13,8 +12,6 @@ module.exports = class CommandProcessor extends Processor {
      */
     constructor(bot) {
         super(bot);
-
-        this.ratelimit = new RatelimitProcessor(bot);
     }
 
     /**
@@ -53,12 +50,11 @@ module.exports = class CommandProcessor extends Processor {
         if (cmd[0].checks.owner && !this.bot.owners.includes(message.sender.id))
             return message.reply(`<@${message.sender.id}>, You're not my owners.`);
 
-        await this.ratelimit.process(message);
-
         try {
             await cmd[0].execute(this.bot, message);
         } catch(ex) {
-            message.reply(`<@${msg.author.id}>, an error occured while processing the \`${cmd[0].command}\` command.\n\`\`\`js\n${ex.stack > 1990 ? '-- To long to process' : ex.stack}\`\`\``);
+            message.reply(`<@${msg.author.id}>, an error occured while processing the \`${cmd[0].command}\` command. Try again later!`);
+            this.bot.logger.error(ex.stack);
         }
     }
 

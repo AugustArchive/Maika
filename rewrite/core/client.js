@@ -23,7 +23,6 @@ module.exports = class MaikaClient extends Client {
         this.settings     = new SettingsProvider();
         this.cache        = new Collection();
         this.color        = 0xE67EDE;
-        this.http         = require('./http/request');
         this.owners       = ['280158289667555328', '229552088525438977', '145557815287611393'];
         this.maintenance  = false;
         this.announcement = '0.1.0 released today!';

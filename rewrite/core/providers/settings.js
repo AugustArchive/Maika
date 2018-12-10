@@ -1,6 +1,6 @@
 const { Guild } = require('eris');
 const Provider  = require('../provider');
-const Settings  = require('../../schema/settings');
+const Settings  = require('../../models/settings');
 
 module.exports = class SettingsProvider extends Provider {
     constructor() {

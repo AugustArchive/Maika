@@ -23,6 +23,8 @@ module.exports = class SchedulerRegistry {
             this.bot.logger.info(`Loading ${files.length} schedulers!`);
             files.forEach(f => {
                 const scheduler = require(`../../schedulers/${f}`);
+                if (!scheduler.enabled)
+                    return;
                 this.tasks.set(scheduler.name, scheduler);
                 this.processor.process(scheduler);
             });

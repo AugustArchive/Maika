@@ -16,7 +16,6 @@ module.exports = class MaikaCommand {
             owner: false,
             disabled: false
         };
-        this.ratelimit = info.ratelimit || 3;
         this.fn = info.run;
     }
 

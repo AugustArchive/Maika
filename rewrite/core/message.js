@@ -32,13 +32,10 @@ module.exports = class CommandMessage {
     /**
      * Reply with a embed
      * 
-     * @param {{ content?: string; embed: import('eris').EmbedOptions }} options The options
+     * @param {import('eris').EmbedOptions} content The content
      * @returns {Promise<import('eris').Message>}
      */
-    embed(options) {
-        if (options.content)
-            return this.message.channel.createMessage({ content: options.content, embed: options.embed });
-        else
-            return this.message.channel.createMessage({ embed: options.embed });
+    embed(content) {
+        return this.message.channel.createMessage({ embed: content });
     }
 };
