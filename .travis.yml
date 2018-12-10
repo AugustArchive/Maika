@@ -8,3 +8,5 @@ node_js:
 install: npm i -g eslint
 script: npm test
 dist: xenial
+ignore:
+  - src/*
