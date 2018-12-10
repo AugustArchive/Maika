@@ -1,4 +1,4 @@
-# Maika [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n) [![Travis CI](https://travis-ci.org/auguwu/Maika.svg?branch=master)](https://travis-ci.org/auguwu/Maika)
+# Maika [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
 **Customizable, stable Discord bot made in the [Eris](https://abal.moe/Eris) library.**
 
 ## Installing
