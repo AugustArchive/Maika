@@ -1,13 +1,13 @@
-const { Client: DiscordClient } = require('eris');
-const CommandRegistry           = require('./registry/commands');
-const EventRegistry             = require('./registry/events');
-const SchedulerRegistry         = require('./registry/schedulers');
-const Database                  = require('./database');
-const winston                   = require('winston');
-const RESTClient                = require('./rest');
-const SettingsProvider          = require('./providers/settings');
+const { Client, Collection } = require('eris');
+const CommandRegistry        = require('./registry/commands');
+const EventRegistry          = require('./registry/events');
+const SchedulerRegistry      = require('./registry/schedulers');
+const Database               = require('./database');
+const winston                = require('winston');
+const RESTClient             = require('./rest');
+const SettingsProvider       = require('./providers/settings');
 
-module.exports = class MaikaClient extends DiscordClient {
+module.exports = class MaikaClient extends Client {
     constructor() {
         super(process.env.MAIKA_TOKEN, {
             maxShards: 'auto',
@@ -21,6 +21,7 @@ module.exports = class MaikaClient extends DiscordClient {
         this.rest         = new RESTClient(this);
         this.database     = new Database(this);
         this.settings     = new SettingsProvider();
+        this.cache        = new Collection();
         this.color        = 0xE67EDE;
         this.http         = require('./http/request');
         this.owners       = ['280158289667555328', '229552088525438977', '145557815287611393'];
