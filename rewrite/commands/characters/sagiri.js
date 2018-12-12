@@ -5,7 +5,10 @@ const { stripIndents } = require('common-tags');
 module.exports = new Command({
     command: 'sagiri',
     description: 'Sagiri Izumi? An uncommon name I can say so!',
-    category: 'Characters',
+    category: {
+        name: 'Characters',
+        emoji: '<:MeguLove:522281101843234837>'
+    },
     run: async(client, msg) => {
         const { body } = await request
             .get('https://lolis.services/api/characters')
@@ -14,7 +17,7 @@ module.exports = new Command({
         return msg.embed({
             description: stripIndents`
                 **Sagiri Izumi? I guess there from another anime... :|**
-                • **Anime**: ${body.anime}
+                ${DESCRIPTION} Anime: **${body.anime}**
             `,
             image: { url: body.url },
             color: client.color

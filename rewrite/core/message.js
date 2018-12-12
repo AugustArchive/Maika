@@ -8,7 +8,7 @@ module.exports = class CommandMessage {
      * @param {import('eris').Message} message The event message
      * @param {string[]} args The command arguments
      */
-    constructor(bot, message, command, args) {
+    constructor(bot, message, args) {
         Object.assign(this, message);
 
         this.bot = bot;
