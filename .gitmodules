@@ -1,0 +1,7 @@
+[submodule "frontend"]
+    path = frontend
+    url = https://github.com/MaikaBot/mafuyu.git
+    
+[submodule "webhook-server"]
+    path = webhook-server
+    url = https://github.com/MaikaBot/kaho.git
