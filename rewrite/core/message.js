@@ -17,7 +17,7 @@ module.exports = class CommandMessage {
         /** @type {import('eris').Guild} */
         this.guild  = this.message.channel.guild;
         this.sender = this.message.author;
-        this.member = this.message.member || this.guild.members.get(this.sender.id);
+        this.member = this.guild.members.get(this.sender.id) || null;
         this.me = this.guild.members.get(bot.user.id) || null;
         this.collector = new MessageCollector(bot);
     }

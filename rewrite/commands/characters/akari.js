@@ -6,7 +6,7 @@ const { DESCRIPTION } = require('../../util/embed-titles');
 module.exports = new Command({
     command: 'akari',
     description: 'Akari Akaza? Isn\'t she the protaginist from Yuru Yuri?',
-    category: { name: 'Characters', emoji: '<:MeguLove:522281101843234837>' },
+    category: { name: 'Characters', emoji: Command.emojis.Characters },
     run: async (client, msg) => {
         const req = await fetch('https://lolis.services/api/characters?type=akari', {
             method: 'GET',

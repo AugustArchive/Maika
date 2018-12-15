@@ -36,7 +36,24 @@ module.exports = class MaikaCommand {
      * Gets the node string
      */
     get node() {
-        return `[${this.category.emoji}] ${this.category.name.toLowerCase()}.${this.command}`;
+        return `${this.category.name.toLowerCase()}.${this.command}`;
+    }
+
+    /**
+     * Gets a command category's emoji
+     * 
+     * @static
+     */
+    static get emojis() {
+        return {
+            Characters: '<:MeguLove:522281101843234837>',
+            Discord: '<:discord:514626557277503488>',
+            Generic: 'ℹ',
+            Search: ':mag:',
+            Settings: ':gear:',
+            Utility: ':pick:',
+            Weeb: '<:smug:409200655505424384>'
+        };
     }
 
     /**
@@ -55,12 +72,12 @@ module.exports = class MaikaCommand {
             command: this.command,
             description: this.description,
             usage: this.usage || '',
-            category: {
+            category: this.category || {
                 name: 'Generic',
                 emoji: 'ℹ'
             },
-            aliases: [],
-            checks: {
+            aliases: this.aliases || [],
+            checks: this.aliases.checks || {
                 guild: false,
                 hidden: false,
                 owner: false,
@@ -74,17 +91,24 @@ module.exports = class MaikaCommand {
 /**
  * @typedef {Object} CommandInfo
  * @prop {string} command The command name
- * @prop {string} description The command description
+ * @prop {DescriptionSupplier | string} description The command description
  * @prop {string} [usage] The command usage
- * @prop {object} [category] The command category object
- * @prop {string} [category.name="Generic"] The command category name (If no name was described, the name would be Generic)
- * @prop {string} [category.emoji='ℹ'] The command category emoji (If it's blank, it returns the Generic's emoji)
+ * @prop {CommandCategory} [category] The command category object
  * @prop {string[]} [aliases=[]] The command aliases
  * @prop {object} [checks] The command checks
  * @prop {boolean} [checks.owner=false] Whenther or not the command should be executed by the owners
  * @prop {boolean} [checks.guild=false] Whenther or not the command should be executed in a Discord guild/server
  * @prop {boolean} [checks.hidden=false] Whenther or not the command should be hidden from the help command
  * @prop {boolean} [checks.disabled=false] Whenther or not the command should be disabled
- * @prop {number} [ratelimit=3] The command ratelimit to be executed
  * @prop {(bot: import('./client'), msg: import('./message')) => Promise<void>} run The run function
+ */
+
+/**
+ * @typedef {(client: import('./client')) => string} DescriptionSupplier
+ */
+
+/**
+ * @typedef {Object} CommandCategory
+ * @prop {string} name The command category name (If no name was described, the name would be Generic)
+ * @prop {string} emoji The command category emoji (If it's blank, it returns the Generic's emoji)
  */
