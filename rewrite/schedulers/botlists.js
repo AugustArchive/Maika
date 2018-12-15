@@ -1,4 +1,4 @@
-const request   = require('node-superfetch');
+const fetch = require('node-fetch');
 const Scheduler = require('../core/scheduler');
 
 module.exports = new Scheduler({
@@ -10,14 +10,15 @@ module.exports = new Scheduler({
         if (bot.user.id === '508842721545289731')
             return;
 
-        await request
-            .post(`https://discordbots.org/api/bots/${bot.user.id}/stats`)
-            .set('Authorization', process.env.OLIY)
-            .send({ server_count: bot.guilds.size, shard_count: bot.shards.size })
-        
-        await request
-            .post(`https://discordbotindex.com/apiv1/bot/${bot.user.id}`)
-            .set('Authorization', process.env.DERPY)
-            .send({ server_count: bot.guilds.size });
+        await fetch(`https://discordbots.org/api/bots/${bot.user.id}/stats`, {
+            method: 'POST',
+            body: { server_count: bot.guilds.size, shard_count: bot.shards.size },
+            headers: { 'User-Agent': 'Maika/DiscordBot (https://github.com/MaikaBot/Maika)', 'Authorization': process.env.OLIY }
+        });
+        await fetch(`https://discordbotindex.com/apiv1/bot/${bot.user.id}`, {
+            method: 'POST',
+            body: { server_count: bot.guilds.size },
+            headers: { 'User-Agent': 'Maika/DiscordBot (https://github.com/MaikaBot/Maika)', 'Authorization': process.env.DERPY }
+        });
     }
 });

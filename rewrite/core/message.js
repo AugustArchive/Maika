@@ -18,6 +18,7 @@ module.exports = class CommandMessage {
         this.guild  = this.message.channel.guild;
         this.sender = this.message.author;
         this.member = this.message.member || this.guild.members.get(this.sender.id);
+        this.me = this.guild.members.get(bot.user.id) || null;
         this.collector = new MessageCollector(bot);
     }
 
