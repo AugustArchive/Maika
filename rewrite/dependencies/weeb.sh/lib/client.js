@@ -1,13 +1,12 @@
-const fetch                     = require('node-fetch');
-const { USER_AGENT: UserAgent } = require('../../../util/constants');
-const RandomImageModel          = require('./models/random-image');
+const fetch = require('node-fetch');
+const RandomImageModel = require('./models/random-image');
 
 module.exports = class WeebClient {
     constructor() {
         this.options = {
             method: 'GET',
             headers: {
-                'User-Agent': UserAgent,
+                'User-Agent': 'Maika/DiscordBot (https://github.com/auguwu/Maika)',
                 'Authorization': `Wolke ${process.env.WOLKE}`
             }
         };

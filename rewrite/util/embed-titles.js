@@ -1,3 +1,4 @@
 module.exports = {
-    DESCRIPTION: '•'
+    DESCRIPTION: '•',
+    TITLE: '❯'
 };

@@ -1,14 +1,13 @@
-const fetch                     = require('node-fetch');
-const { USER_AGENT: UserAgent } = require('../../../util/constants');
-const UserModel                 = require('./models/user');
-const BeatmapModel              = require('./models/beatmap');
+const fetch = require('node-fetch');
+const UserModel = require('./models/user');
+const BeatmapModel = require('./models/beatmap');
 
 module.exports = class OsuClient {
     constructor() {
         this.options = {
             method: 'GET',
             headers: {
-                'User-Agent': UserAgent
+                'User-Agent': 'Maika/DiscordBot (https://github.com/auguwu/Maika)'
             }
         };
     }
@@ -20,7 +19,7 @@ module.exports = class OsuClient {
      * @param {0 | 1 | 2 | 3} mode The mode number
      * @returns {Promise<UserModel>}
      */
-    user(user, mode) {
+    getUser(user, mode) {
         return new Promise((resolve, reject) => {
             return fetch(`https://osu.ppy.sh/api/get_user?k=${process.env.PPY}&u=${user}&m=${mode}`, this.options)
                 .then(result => result.json())
@@ -35,7 +34,7 @@ module.exports = class OsuClient {
      * @param {string} id The beatmap ID
      * @returns {Promise<BeatmapModel>}
      */
-    beatmap(id) {
+    getBeatmap(id) {
         return new Promise((resolve, reject) => {
             return fetch(`https://osu.ppy.sh/api/get_beatmaps?k=${process.env.PPY}&b=${id}`)
                 .then(res => res.json())
