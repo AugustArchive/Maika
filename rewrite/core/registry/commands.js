@@ -36,7 +36,7 @@ module.exports = class CommandRegistry {
                         this.commands.set(command.command, command);
                         this.bot.logger.info(`Loaded command ${command.command}!`);
                     } catch(ex) {
-                        this.bot.logger.error(`Unable to load command ${f.split('.js', '')}:\n${ex.stack}`);
+                        this.bot.logger.error(`Unable to load command '${f.replace('.js', '')}':\n${ex.stack}`);
                     }
                 });
             });

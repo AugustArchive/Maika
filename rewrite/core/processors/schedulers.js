@@ -17,6 +17,8 @@ module.exports = class SchedulerProcessor extends BaseProcessor {
      * @returns {void}
      */
     async process(task) {
+        // Start the task and THEN add it to the timeout
+        await task.run(this.bot);
         setTimeout(() => task.run(this.bot), task.interval);
     }
 }

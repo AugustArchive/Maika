@@ -7,7 +7,7 @@ module.exports = new Command({
     category: { name: 'Discord Information', emoji: '<:discord:514626557277503488>' },
     checks: { guild: true },
     run: async (client, msg) => msg.embed({
-        description: (await client.rest.getGuildEmojis(msg.guild)),
+        description: (await client.rest.getGuildEmojis(msg.guild, 75)),
         color: client.color
     })
 });
