@@ -12,7 +12,7 @@ module.exports = new Command({
     run: async (client, msg) => {
         const channel = await client.rest.getChannel(msg.args.length > 0 ? msg.args.join(' ') : msg.channel.id, msg.guild);
         let embed = {
-            title: `Channel ${channel.type === 0 ? `#${channel.name}` : channel.name}`,
+            title: `[ Channel ${channel.type === 0 ? `#${channel.name}` : channel.name} ]`,
             color: client.color,
             fields: [{
                 name: `${TITLE} ID`, value: channel.id, inline: false

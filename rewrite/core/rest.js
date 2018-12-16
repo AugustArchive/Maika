@@ -76,10 +76,10 @@ module.exports = class RESTClient {
     getGuild(query) {
         return new Promise((resolve, reject) => {
             if (/^\d+$/.test(query)) {
-                const guild = this.this.bot.guilds.get(query);
+                const guild = this.bot.guilds.get(query);
                 if (guild) return resolve(guild);
             } else {
-                const guilds = this.this.bot.guilds.filter((guild) => guild.name.toLowerCase().includes(query.toLowerCase()));
+                const guilds = this.bot.guilds.filter((guild) => guild.name.toLowerCase().includes(query.toLowerCase()));
                 if (guilds.length > 0) return resolve(guilds[0]);
             }
 

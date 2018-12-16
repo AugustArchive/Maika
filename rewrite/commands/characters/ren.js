@@ -6,7 +6,7 @@ const { DESCRIPTION } = require('../../util/embed-titles');
 module.exports = new Command({
     command: 'ren',
     description: 'Ren Ekoda? That\'s not a familiar name...',
-    category: { name: 'Characters', emoji: '<:MeguLove:522281101843234837>' },
+    category: { name: 'Characters', emoji: Command.emojis.Characters },
     async run(client, msg) {
         const req = await fetch('https://lolis.services/api/characters?type=ren', {
             method: 'GET',

@@ -6,7 +6,7 @@ const { DESCRIPTION } = require('../../util/embed-titles');
 module.exports = new Command({
     command: 'sagiri',
     description: 'Sagiri Izumi? An uncommon name I can say so myself...?',
-    category: { name: 'Characters', emoji: '<:MeguLove:522281101843234837>' },
+    category: { name: 'Characters', emoji: Command.emojis.Characters },
     run: async(client, msg) => {
         const req = await fetch('https://lolis.services/api/characters?type=sagiri', {
             method: 'GET',
