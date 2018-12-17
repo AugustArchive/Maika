@@ -1,21 +1,6 @@
 # Maika [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
 **Customizable, stable Discord bot made in the [Eris](https://abal.moe/Eris) library.**
 
-## Installing
-> You can't clone Maika since I don't condone of publishing "fake" public bot clones into any bot list since you're just using my code as a base and not editing it.
->
-> If you wanna keep Maika as a base, you can but you have to follow some rules:
-
-> -> **1**: `DO NOT ADD YOUR INSTANCE TO ANY PUBLIC BOT LISTS.`
-
-> -> **2**: `Your clone must be credited (even though my license doesn't condone it but I made the source code right?)`
-
-> -> **3**: `Your instance must be privated to friends and not be a public bot.`
-
-> If you don't break any of those guidelines, you should be good of not me going to friend you and ask you to stop and it will become a big pile of mess since it's a silly argument of "cloning" another person's bot without their permission / not crediting them.
->
-> If you do credit me, you can credit me in the README.md (if it's a public GitHub repository) or in any "footer" / credits command.
-
 ## License
 ```
 Copyright (c) 2018-present auguwu
