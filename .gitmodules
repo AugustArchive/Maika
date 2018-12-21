@@ -1,3 +1,3 @@
-[submodule "miu/"]
-    path = miu/
+[submodule "miu"]
+    path = miu
     url = https://github.com/MaikaBot/miu.git
