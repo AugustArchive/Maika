@@ -1,6 +1,6 @@
 const Command = require('../../core/command');
 const { TITLE } = require('../../util/embed-titles');
-const { dateformat } = require('../../dependencies');
+const { dateformat } = require('@maika.xyz/miu');
 
 module.exports = new Command({
     command: 'channelinfo',

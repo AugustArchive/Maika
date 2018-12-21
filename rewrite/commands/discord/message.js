@@ -1,6 +1,6 @@
 const Command = require('../../core/command');
 const { stripIndents } = require('common-tags');
-const { dateformat } = require('../../dependencies');
+const { dateformat } = require('@maika.xyz/miu');
 const { elipisis } = require('../../util/string');
 
 module.exports = new Command({

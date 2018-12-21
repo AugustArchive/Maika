@@ -1,7 +1,7 @@
 const Command = require('../../core/command');
 const { stripIndents } = require('common-tags');
 const { DESCRIPTION } = require('../../util/embed-titles');
-const { dateformat } = require('../../dependencies');
+const { dateformat } = require('@maika.xyz/miu');
 
 module.exports = new Command({
     command: 'roleinfo',
@@ -24,7 +24,7 @@ module.exports = new Command({
                 ${DESCRIPTION} **Managed**: ${role.managed ? 'Yes' : 'No'}
                 ${DESCRIPTION} **Hoisted**: ${role.hoisted ? 'Yes' : 'No'}
                 ${DESCRIPTION} **Position**: ${role.position - 1}
-                ${DESCRIPTION} **Role Colour**: #${parseInt(role.color).toString(16)}
+                ${DESCRIPTION} **Role Color**: #${parseInt(role.color).toString(16)}
             `,
             color: role.color === 0 ? client.color : role.color
         });
