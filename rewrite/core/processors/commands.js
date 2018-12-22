@@ -3,10 +3,7 @@ const CommandMessage     = require('../message');
 
 module.exports = class CommandProcessor extends Processor {
     /**
-     * The command processor is the processor to process commands
-     * 
-     * Methods:
-     *  - `CommandProcessor.process(msg: Eris.Message) => void`: The process function is where the magic happens. It's an overidden function from the `BaseProcessor` class.
+     * Processor that processes all of the commands
      * 
      * @param {import('../client')} bot The bot client
      */
@@ -21,6 +18,7 @@ module.exports = class CommandProcessor extends Processor {
      * @returns {void} A void function of the command running
      */
     async process(msg) {
+        this.bot.registry.statistics.messagesSeen++;
         if (msg.author.bot || !this.bot.ready)
             return;
 
@@ -51,6 +49,10 @@ module.exports = class CommandProcessor extends Processor {
             return message.reply(`<@${message.sender.id}>, You're not my owners.`);
 
         try {
+            this.bot.registry.statistics.commandsExecuted++;
+            this.bot.registry.statistics.commandUsages[cmd[0].command] = (
+                this.bot.registry.statistics.commandUsages[cmd[0].command] || 0
+            ) + 1;
             await cmd[0].execute(this.bot, message);
         } catch(ex) {
             message.reply(`<@${msg.author.id}>, an error occured while processing the \`${cmd[0].command}\` command. Try again later!`);

@@ -46,6 +46,9 @@ module.exports = new Command({
                     },
                     {
                         name: `${TITLE} Category`, value: c.category.name, inline: true
+                    },
+                    {
+                        name: `${TITLE} Alias${c.aliases.length > 1 ? 'es' : ''}`, value: (() => (c.aliases.length > 0 ? c.aliases.join(', ') : 'None'))(), inline: true
                     }
                 ],
                 color: client.color

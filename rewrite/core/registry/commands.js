@@ -13,6 +13,11 @@ module.exports = class CommandRegistry {
         /** @type {Collection<import('../command')>} */
         this.commands  = new Collection();
         this.processor = new CommandProcessor(bot);
+        this.statistics = {
+            commandsExecuted: 0,
+            commandUsages: [],
+            messagesSeen: 0
+        };
     }
 
     /**
