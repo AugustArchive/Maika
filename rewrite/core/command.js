@@ -77,7 +77,7 @@ module.exports = class MaikaCommand {
                 emoji: 'ℹ'
             },
             aliases: this.aliases || [],
-            checks: this.aliases.checks || {
+            checks: this.checks || {
                 guild: false,
                 hidden: false,
                 owner: false,

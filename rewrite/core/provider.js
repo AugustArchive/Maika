@@ -5,6 +5,7 @@ module.exports = class MaikaProvider {
      * The Maika provider constructor
      * 
      * @param {import('sequelize').Model} table The table name
+     * @param {{ id?: string; data: string; }} options OwO?
      */
     constructor(table, { id = 'guildID', data } = {}) {
         this.table = table;
@@ -50,7 +51,7 @@ module.exports = class MaikaProvider {
     set(id, key, value) {
         const d = this.items.get(id) || {};
         d[key] = value;
-        this.items.set(id, data);
+        this.items.set(id, value);
 
         if (this.columns.data)
             return this.table.upsert({

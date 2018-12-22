@@ -20,7 +20,7 @@ module.exports = new Command({
             });
 
             for (const cat in categories)
-                helpString += `${DESCRIPTION} **\`${cat}\`**: ${categories[cat].map(s => `\`${s}\``).join(' ')}\n`;
+                helpString += `${DESCRIPTION} **${cat}**: ${categories[cat].map(s => `\`${s}\``).join(', ')}\n`;
 
             return ctx.embed({
                 title: `[ ${client.user.username}#${client.user.discriminator}'s Commands ]`,
