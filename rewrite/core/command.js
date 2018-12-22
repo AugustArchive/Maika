@@ -48,6 +48,7 @@ module.exports = class MaikaCommand {
         return {
             Characters: '<:MeguLove:522281101843234837>',
             Discord: '<:discord:514626557277503488>',
+            Fun: ':tada:',
             Generic: 'ℹ',
             Search: ':mag:',
             Settings: ':gear:',

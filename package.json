@@ -4,7 +4,7 @@
     "version": "0.1.0",
     "main": "src/bot.js",
     "dependencies": {
-        "@maika.xyz/miu": "0.0.1",
+        "@maika.xyz/miu": "0.0.2",
         "common-tags": "1.8.0",
         "dotenv": "6.2.0",
         "eris": "0.9.0",
