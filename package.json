@@ -3,6 +3,7 @@
     "description": "A customizable, stable Discord multipurpose bot made in the Eris library.",
     "version": "0.1.0",
     "main": "src/bot.js",
+    "private": true,
     "dependencies": {
         "@maika.xyz/miu": "0.0.2",
         "common-tags": "1.8.0",
