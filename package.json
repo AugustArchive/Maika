@@ -16,11 +16,11 @@
     "author": "auguwu",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/auguwu/Maika/issues"
+        "url": "https://github.com/MaikaBot/Maika/issues"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/auguwu/Maika.git"
+        "url": "https://github.com/MaikaBot/Maika.git"
     },
     "engines": {
         "node": ">=8"

@@ -1,7 +1,9 @@
-# Maika [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
-**Customizable, stable Discord bot made in the [Eris](https://abal.moe/Eris) library.**
+# Maika
+> Repository is on hold until all key components are done.
 
 ## License
+> [Maika](https://github.com/MaikaBot/Maika) is made and maintained by [auguwu](https://augu.me). Licensed under MIT.
+
 ```
 Copyright (c) 2018-present auguwu
 
