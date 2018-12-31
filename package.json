@@ -3,9 +3,12 @@
     "description": "Customizable, stable Discord multipurpose bot made in the Eris library",
     "version": "0.1.0",
     "dependencies": {
-        "@maika.xyz/kotori": "0.0.1",
+        "@maika.xyz/kotori": "0.0.2",
         "@maika.xyz/miu": "0.0.2",
         "axios": "0.18.0",
+        "common-tags": "1.8.0",
+        "eris": "0.9.0",
+        "mongoose": "5.4.1",
         "wumpston": "0.0.4"
     },
     "devDependencies": {
