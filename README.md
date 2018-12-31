@@ -1,8 +1,10 @@
-# Maika
-> Repository is on hold until all key components are done.
+# Maika <img src="https://augu.me/files/5jjtjr.png" width="400px" height="449px">
+[![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
+
+> :sparkles: **Customizable, stable Discord multipurpopse bot made in the Eris library.**
 
 ## License
-> [Maika](https://github.com/MaikaBot/Maika) is made and maintained by [auguwu](https://augu.me). Licensed under MIT.
+> [Maika](https://github.com/MaikaBot/Maika) is released under the [MIT](https://github.com/MaikaBot/Maika/blob/master/LICENSE) license.
 
 ```
 Copyright (c) 2018-present auguwu
