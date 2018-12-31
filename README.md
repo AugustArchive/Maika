@@ -1,4 +1,4 @@
-# Maika <img src="https://augu.me/files/5jjtjr.png" width="400px" height="449px">
+# Maika <img src="https://augu.me/files/5jjtjr.png">
 [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
 
 > :sparkles: **Customizable, stable Discord multipurpopse bot made in the Eris library.**
