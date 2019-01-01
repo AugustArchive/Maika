@@ -1,6 +1,6 @@
 import { ISchema } from '@maika.xyz/kotori';
 
-export class GuildSchema extends ISchema {
+class GuildSchema extends ISchema {
     constructor() {
         super({
             name: 'guilds',
@@ -18,7 +18,7 @@ export class GuildSchema extends ISchema {
                         type: String,
                         default: '⭐'
                     },
-                    starThreshold: {
+                    threshold: {
                         type: Number,
                         default: 1
                     },
@@ -46,3 +46,5 @@ export class GuildSchema extends ISchema {
         });
     }
 };
+
+export = GuildSchema;

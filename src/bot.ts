@@ -17,5 +17,6 @@ new KotoriClient({
         maxShards: 'auto',
         disableEveryone: true,
         autoreconnect: true
-    }
+    },
+    
 }).start();

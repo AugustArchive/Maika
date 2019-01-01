@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@maika.xyz/eris-utils/-/eris-utils-0.0.2.tgz#2761404b39cc255d379380f9dea5bc4dffc3d208"
   integrity sha512-i64YB9YVoTCg7i1S+e5sVCnzUGJ3mQ5pdyfoQ5O46cTKiYxYoPEKfj7dp09dv+cJpnFIYpHeXUD/GmwYR+xBmg==
 
+"@maika.xyz/eris-utils@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@maika.xyz/eris-utils/-/eris-utils-0.0.4.tgz#b56e62536802a80e4b58b440f0b3596ff4252163"
+  integrity sha512-wfoghDXB+NAnUp9+X9QgbyJsiKFPDnVjopLBngNby7iAK12EMvjBnjD3MRJeB6aRV6Rz4H3FxLwnnN1ekl/08w==
+
 "@maika.xyz/kotori@0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@maika.xyz/kotori/-/kotori-0.0.2.tgz#dfaf5378f52a37f7300f49a2bde6cd0c85602faa"
@@ -93,6 +98,11 @@ debug@3.1.0, debug@=3.1.0:
   integrity sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==
   dependencies:
     ms "2.0.0"
+
+dotenv@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
+  integrity sha512-HygQCKUBSFl8wKQZBSemMywRWcEDNidvNbjGVyZu3nbZ8qq9ubiPoGLMdRDpfSrpkkm9BXYFkpKxxFX38o/76w==
 
 eris@0.9.0:
   version "0.9.0"
