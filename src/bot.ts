@@ -18,5 +18,5 @@ new KotoriClient({
         disableEveryone: true,
         autoreconnect: true
     },
-    
+    dbURI: (process.env.DB_URL) as string
 }).start();

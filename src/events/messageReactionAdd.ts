@@ -79,7 +79,7 @@ export class MessageReactionAddEvent extends Event {
                     channelID: mes.channel.id,
                     stars: threshold,
                     embed: embed.build(),
-                    boardChannelID: message.id
+                    messageID: message.id
                 });
             }
         });
