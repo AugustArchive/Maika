@@ -1,4 +1,4 @@
-node_modules/
-import/
-.env
-dist/
+.gradle/
+.idea/
+build/
+out/
