@@ -1,9 +1,20 @@
-<img src="https://augu.me/files/g4fseu.png" align="center" alt="Maika Avatar">
+<img src="https://augu.me/files/g4fseu.png" align="left" alt="Maika Avatar">
+
 # Maika [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
 > :sparkles: **Customizable, stable Discord multipurpopse bot made in the Eris library.**
 
 ## Contributing
 Pull Requests are accepted, but you will have to lint the code (`yarn lint` or `npm run lint`) and see if it has errors and such.
+
+## TODO
+- Actually do the Music plugin (might come in an later release)
+- Add functionality to donators
+  - Smaller throttle (cooldowns)
+  - More coins
+  - Custom Badge
+  - Patreon Bot (might not come true)
+  - More to come?
+- Image Manipulation (unique or use Dank Memer's service) (might not come true)
 
 ## License
 > [Maika](https://github.com/MaikaBot/Maika) is released under the [MIT](https://github.com/MaikaBot/Maika/blob/master/LICENSE) license and maintained by [auguwu](https://augu.me)
