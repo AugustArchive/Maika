@@ -1,10 +1,12 @@
-# Maika
-[![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
+<img src="https://augu.me/files/g4fseu.png" align="center" alt="Maika Avatar">
+# Maika [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
+> :sparkles: **Customizable, stable Discord multipurpopse bot made in the Eris library.**
 
-> :sparkles: **Customizable, stable Discord multipurpopse bot made in the JDA library.**
+## Contributing
+Pull Requests are accepted, but you will have to lint the code (`yarn lint` or `npm run lint`) and see if it has errors and such.
 
 ## License
-> [Maika](https://github.com/MaikaBot/Maika) is released under the [MIT](https://github.com/MaikaBot/Maika/blob/master/LICENSE) license.
+> [Maika](https://github.com/MaikaBot/Maika) is released under the [MIT](https://github.com/MaikaBot/Maika/blob/master/LICENSE) license and maintained by [auguwu](https://augu.me)
 
 ```
 Copyright (c) 2018-present auguwu

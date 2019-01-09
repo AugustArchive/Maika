@@ -4,7 +4,9 @@
     "version": "0.1.0",
     "main": "src/bot.js",
     "author": "auguwu (augu@voided.pw)",
-    "bugs": { "url": "https://github.com/MaikaBot/Maika/issues" },
+    "bugs": {
+        "url": "https://github.com/MaikaBot/Maika/issues"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/MaikaBot/Maika"
@@ -16,6 +18,9 @@
         "axios": "0.18.0",
         "dotenv": "6.2.0",
         "eris": "0.9.0",
+        "eslint-config-xo": "^0.25.1",
+        "i18n": "^0.8.3",
+        "lavalink": "^2.3.1",
         "mongoose": "5.4.2",
         "winston": "3.1.0"
     },
