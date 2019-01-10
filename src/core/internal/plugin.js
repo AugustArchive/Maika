@@ -15,6 +15,7 @@ module.exports = class MaikaPlugin {
         /** @type {Collection<string, MaikaCommand>} */
         this.commands = new Collection();
         this.file = null;
+        this.disabled = info.disabled || false;
 
         for (let i = 0; i < info.commands.length; i++)
             this.commands.set(info.commands[i].command, info.commands[i]);
@@ -51,6 +52,18 @@ module.exports = class MaikaPlugin {
             this.commands.filter(c => c.command === name || c.aliases.includes(name))[0]
         );
     }
+
+    /**
+     * Reloads the current plugin
+     * @param {import('./client')} client The client
+     */
+    reload(client) {
+        const instance = client.manager.plugins.get(this.name);
+        const plugin = require(instance.file);
+        delete require.cache[plugin];
+        client.manager.plugins.delete(plugin.name);
+        client.manager.registerPlugin(plugin.name);
+    }
 }
 
 /**
@@ -60,6 +73,7 @@ module.exports = class MaikaPlugin {
  * @prop {boolean} visible Should the plugin be visiable to all users?
  * @prop {string} emoji The emoji for the plugin commands
  * @prop {MaikaCommand[]} commands The array of commands to add
+ * @prop {boolean} [disabled] If the plugin should be disabled
  */
 
 /**

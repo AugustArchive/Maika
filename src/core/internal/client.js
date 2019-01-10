@@ -9,6 +9,7 @@ const winston = require('winston');
 const { MessageEmbed, Collection } = require('@maika.xyz/eris-utils');
 const i18nStore = require('../stores/i18n');
 const { Cluster } = require('lavalink');
+const RESTClient = require('./rest');
 
 i18nStore.bootstrap();
 
@@ -36,9 +37,11 @@ module.exports = class MaikaClient extends Client {
                 winston.format.printf(info => `[${info.timestamp}] [${info.level}] <=> ${info.message}`)
             )
         });
+        this.rest = new RESTClient(this);
         /** @type {Collection<string, import('./audio/audio-player')>} */
         this.players = new Collection();
 
+        // Emitters for only one time events (schedulers & lavalink)
         this.once('ready', () => {
             this.schedulers.tasks.map((s) => s.run(this));
             this.lavalink = new Cluster({
@@ -86,5 +89,25 @@ module.exports = class MaikaClient extends Client {
             process.env.LAVALINK_PASSWORD
         ].join('|'), 'gi');
         return str.replace(regex, '--snip--');
+    }
+
+    /**
+     * Delays an action for `x` many milliseconds
+     * @param {number} ms Thew number to sleep
+     * @returns {Promise<any>} An empty promise that it actually slept / delayed
+     */
+    sleep(ms) {
+        return new Promise((res) => setTimeout(res(), ms));
+    }
+
+    /**
+     * Reboots Maika (for emergency purposes)
+     * @returns {void} nOOP
+     */
+    async reboot() {
+        this.client.logger.warn('Maika is being rebooted!');
+        await this.disconnect({ reconnect: false });
+        await this.sleep(60 * 1000);
+        this.bootstrap();
     }
 };

@@ -16,6 +16,13 @@ Pull Requests are accepted, but you will have to lint the code (`yarn lint` or `
   - More to come?
 - Image Manipulation (unique or use Dank Memer's service) (might not come true)
 
+## Running
+As per the developement team, (if you wanna run Maika) we expect you to know how to run Maika. All you need is [RethinkDB](https://github.com/MaikaBot/Maika/blob/master/README.md#why-rethinkdb) and MongoDB.
+
+## Why RethinkDB
+We use RethinkDB for interval cache.
+But August, why not use Redis to cache daily & reminder interval cache? Because I don't wanna run Redis on my machine (because I'm lazy to install it) and I don't know how. (~~You can try to submit a Pull Request to use Redis for interval cache~~) But, we use MongoDB for guilds, users, tags, levels, etc as it's main database.
+
 ## License
 > [Maika](https://github.com/MaikaBot/Maika) is released under the [MIT](https://github.com/MaikaBot/Maika/blob/master/LICENSE) license and maintained by [auguwu](https://augu.me)
 

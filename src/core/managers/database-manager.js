@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const { Collection } = require('@maika.xyz/eris-utils');
+const { readdir } = require('fs');
 
 module.exports = class DatabaseManager {
     /**
@@ -12,5 +13,38 @@ module.exports = class DatabaseManager {
         this.client = client;
         /** @type {Collection<string, mongoose.Schema>} */
         this.schemas = new Collection();
+        this.m = mongoose;
+    }
+
+    /**
+     * Connects to the database
+     */
+    async connect() {
+        mongoose.Promise = global.Promise;
+        await mongoose.connect(process.env.DB_URI, { useNewUrlParser: true });
+        mongoose
+            .connection
+            .on('open', () => this.client.logger.info(`Successfully connected to the database with uri: ${process.env.DB_URI}`))
+            .on('error', (error) => this.client.logger.error(`Unable to connect to the database with uri: ${process.env.DB_URI}\n${error.stack}`));
+        this.loadSchemas();
+    }
+
+    /**
+     * Loads the schemas
+     * @returns {DatabaseManager} Instance to chain
+     */
+    loadSchemas() {
+        readdir('./models', (error, files) => {
+            if (error)
+                this.client.logger.error(`Unable to load mongoose models:\n${error.stack}`);
+
+            files.forEach((f) => {
+                // Must return an object { name: 'name', schema: new mongoose.Schema() }
+                const Model = require(`../../models/${f}`);
+                this.schemas.set(Model.name, Model.schema);
+                mongoose.model(Model.name, Model.schema, Model.name);
+                this.client.logger.info(`Loaded ${Model.name} schema!`);
+            });
+        });
     }
 }
