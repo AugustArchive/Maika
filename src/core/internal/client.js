@@ -38,9 +38,8 @@ module.exports = class MaikaClient extends Client {
         this.players = new Collection();
         this.translate = i18nStore.i18n().__;
 
-        // Emitters for only one time events (schedulers & lavalink)
         this.once('ready', () => {
-            this.schedulers.tasks.map((s) => s.run(this));
+            this.schedulers.tasks.forEach((s) => s.run(this));
             this.lavalink = new Cluster({
                 nodes: [{
                     hosts: {

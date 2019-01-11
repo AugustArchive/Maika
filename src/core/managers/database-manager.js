@@ -40,10 +40,10 @@ module.exports = class DatabaseManager {
 
             files.forEach((f) => {
                 // Must return an object { name: 'name', schema: new mongoose.Schema() }
-                const Model = require(`../../models/${f}`);
-                this.schemas.set(Model.name, Model.schema);
-                mongoose.model(Model.name, Model.schema, Model.name);
-                this.client.logger.info(`Loaded ${Model.name} schema!`);
+                const model = require(`../../models/${f}`);
+                this.schemas.set(model.name, model.schema);
+                mongoose.model(model.name, model.schema, model.name);
+                this.client.logger.info(`Loaded the ${model.name} schema!`);
             });
         });
     }

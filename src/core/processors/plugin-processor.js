@@ -38,6 +38,8 @@ module.exports = class PluginProcessor {
             uQuery.save();
         }
 
+        // TODO: Level System
+
         let prefix;
         // A space (that represents the mention message) is there so people won't do `@Maikahelp` but `@Maika help`
         const mention = new RegExp(`^<@!?${this.client.user.id}> `).exec(msg.content);
@@ -96,7 +98,6 @@ module.exports = class PluginProcessor {
         }
 
         try {
-            //TODO: Probs make this a bit more efficent
             const result = await plug.run(this.client, message);
 
             if (!result) {
