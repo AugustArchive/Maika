@@ -7,11 +7,8 @@ const SchedulerManager = require('../managers/scheduler-manager');
 const DatabaseManager = require('../managers/database-manager');
 const winston = require('winston');
 const { MessageEmbed, Collection } = require('@maika.xyz/eris-utils');
-const i18nStore = require('../stores/i18n-store');
 const { Cluster } = require('lavalink');
 const RESTClient = require('./rest');
-
-i18nStore.bootstrap();
 
 module.exports = class MaikaClient extends Client {
     constructor() {
@@ -36,7 +33,6 @@ module.exports = class MaikaClient extends Client {
         this.rest = new RESTClient(this);
         /** @type {Collection<string, import('./audio/audio-player')>} */
         this.players = new Collection();
-        this.translate = i18nStore.i18n().__;
 
         this.once('ready', () => {
             this.schedulers.tasks.forEach((s) => s.run(this));
@@ -53,6 +49,7 @@ module.exports = class MaikaClient extends Client {
                 send: (guildID, packet) => {
                     const shardID = this.guildShardMap[guildID];
                     const shard = this.shards.get(shardID);
+                    
                     if (!shard)
                         return;
     
@@ -82,7 +79,8 @@ module.exports = class MaikaClient extends Client {
             process.env.WOLKE,
             process.env.PPY,
             this.token,
-            process.env.LAVALINK_PASSWORD
+            process.env.LAVALINK_PASSWORD,
+            process.env.LAVALINK_HOST
         ].join('|'), 'gi');
         return str.replace(regex, '--snip--');
     }
