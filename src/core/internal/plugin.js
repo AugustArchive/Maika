@@ -86,11 +86,13 @@ module.exports = class MaikaPlugin {
  * @prop {number} [throttle=3] The command cooldown number, returns 3 as it's default throttle number
  * @prop {boolean} [owner=false] If the command should be ran by the developers
  * @prop {boolean} [guild=false] If the command should be ran in a Discord server.
+ * @prop {Permission[]} [permissions] Any user permissions to check before processing a command
  * @prop {CommandRun} run The run function
  */
 
 /**
  * @typedef {(client: import('./client'), ctx: import('./context')) => IPromisedCommand} CommandRun
- * @typedef {Promise<string | import('@maika.xyz/eris-utils').EmbedObject | void>} IPromisedCommand
+ * @typedef {Promise<string | import('@maika.xyz/eris-utils').MessageEmbed | void>} IPromisedCommand
  * @typedef {(client: import('./client')) => string} DescriptionSupplier
+ * @typedef {"createInstantInvite" | "kickMembers" | "banMembers" | "administrator" | "manageChannels" | "manageGuild" | "addReactions" | "viewAuditLogs" | "voicePrioritySpeaker" | "readMessages" | "sendMessages" | "sendTTSMessages" | "manageMessages" | "embedLinks" | "attachFiles" | "readMessageHistory" | "mentionEveryone" | "externalEmojis" | "voiceConnect" | "voiceSpeak" | "voiceMuteMembers" | "voiceDeafenMembers"| "voiceUseVAD" | "changeNickname" | "manageNicknames" | "manageRoles" | "manageWebhooks" | "manageEmojis"} Permission
  */

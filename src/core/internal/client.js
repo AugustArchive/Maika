@@ -7,7 +7,7 @@ const SchedulerManager = require('../managers/scheduler-manager');
 const DatabaseManager = require('../managers/database-manager');
 const winston = require('winston');
 const { MessageEmbed, Collection } = require('@maika.xyz/eris-utils');
-const i18nStore = require('../stores/i18n');
+const i18nStore = require('../stores/i18n-store');
 const { Cluster } = require('lavalink');
 const RESTClient = require('./rest');
 
@@ -25,10 +25,6 @@ module.exports = class MaikaClient extends Client {
         this.events = new EventManager(this);
         this.schedulers = new SchedulerManager(this);
         this.database = new DatabaseManager(this);
-        this.embed = new MessageEmbed()
-            .setColor(0xE67EDE)
-            .setAuthor(`${this.client.user.username}#${this.client.user.discriminator}`, null, this.user.avatarURL)
-            .setFooter(`Running v${require('../../package').version} | Made by auguwu & other contributors`);
         this.logger = winston.createLogger({
             transports: [new winston.transports.Console()],
             format: winston.format.combine(
@@ -40,6 +36,7 @@ module.exports = class MaikaClient extends Client {
         this.rest = new RESTClient(this);
         /** @type {Collection<string, import('./audio/audio-player')>} */
         this.players = new Collection();
+        this.translate = i18nStore.i18n().__;
 
         // Emitters for only one time events (schedulers & lavalink)
         this.once('ready', () => {
@@ -101,13 +98,33 @@ module.exports = class MaikaClient extends Client {
     }
 
     /**
+     * Destroy the Maika instance
+     * @returns {Promise<void>} An empty promise
+     */
+    async destroy() {
+        await this.disconnect({ reconnect: false });
+        await this.database.destroy();
+    }
+
+    /**
      * Reboots Maika (for emergency purposes)
      * @returns {void} nOOP
      */
     async reboot() {
         this.client.logger.warn('Maika is being rebooted!');
-        await this.disconnect({ reconnect: false });
+        await this.destroy();
         await this.sleep(60 * 1000);
         this.bootstrap();
+    }
+
+    /**
+     * Gets the normal embed
+     * @returns {import('@maika.xyz/eris-utils').MessageEmbed} The message embed
+     */
+    getEmbed() {
+        return new MessageEmbed()
+            .setColor(0xE67EDE)
+            .setAuthor(`${this.client.user.username}#${this.client.user.discriminator}`, null, this.user.avatarURL)
+            .setFooter(`Running v${require('../../package').version} | Made by auguwu & other contributors`);
     }
 };
