@@ -4,6 +4,7 @@
     "version": "0.1.0",
     "main": "src/bot.js",
     "author": "auguwu (augu@voided.pw)",
+    "private": true,
     "bugs": {
         "url": "https://github.com/MaikaBot/Maika/issues"
     },
@@ -33,5 +34,10 @@
     },
     "engines": {
         "node": ">=8"
+    },
+    "scripts": {
+        "start": "cd src && node bot.js",
+        "preinstall": "npm i -g eslint",
+        "lint": "npm run preinstall && eslint . --fix"
     }
 }
