@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = class ArrayUtil {
     /**
      * Truncate an Array by pieces

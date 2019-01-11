@@ -1,5 +1,3 @@
-'use strict';
-
 const { Collection } = require('@maika.xyz/eris-utils');
 
 module.exports = class MaikaPlugin {

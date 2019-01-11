@@ -1,5 +1,3 @@
-'use strict';
-
 const { Schema } = require('mongoose');
 module.exports = {
     name: 'user',

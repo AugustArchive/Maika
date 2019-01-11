@@ -1,5 +1,3 @@
-'use strict';
-
 const PluginProcessor = require('../processors/plugin-processor');
 const { Collection } = require('@maika.xyz/eris-utils');
 const { readdir } = require('fs');

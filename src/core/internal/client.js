@@ -80,7 +80,8 @@ module.exports = class MaikaClient extends Client {
             process.env.PPY,
             this.token,
             process.env.LAVALINK_PASSWORD,
-            process.env.LAVALINK_HOST
+            process.env.LAVALINK_HOST,
+            process.env.DB_URI
         ].join('|'), 'gi');
         return str.replace(regex, '--snip--');
     }

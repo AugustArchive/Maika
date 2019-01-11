@@ -10,7 +10,6 @@
     "rules": {
         "indent": ["error", 4],
         "no-var": ["error"],
-        "strict": ["error", "global"],
         "valid-jsdoc": ["error", {
             "requireReturn": false,
             "requireReturnDescription": false,

@@ -1,5 +1,3 @@
-'use strict';
-
 const { truncate } = require('../../util/array');
 
 module.exports = class RESTClient {

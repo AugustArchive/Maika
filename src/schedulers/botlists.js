@@ -1,5 +1,3 @@
-'use strict';
-
 const { Scheduler } = require('../core');
 const { post } = require('axios');
 

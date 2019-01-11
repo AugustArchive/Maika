@@ -1,5 +1,3 @@
-'use strict';
-
 const { Event } = require('../core');
 module.exports = class ReadyEvent extends Event {
     constructor(client) {

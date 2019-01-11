@@ -1,5 +1,3 @@
-'use strict';
-
 const { Plugin } = require('../core');
 
 module.exports = new Plugin({

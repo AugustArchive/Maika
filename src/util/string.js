@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = class StringUtil {
     /**
      * Truncate a long `string` into a shorter string

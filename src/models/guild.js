@@ -1,5 +1,3 @@
-'use strict';
-
 const { Schema } = require('mongoose');
 module.exports = {
     name: 'guilds',
@@ -30,9 +28,6 @@ module.exports = {
             sendMessage: { type: Boolean, default: false }
         },
         tags: { type: Array, default: [] },
-        blacklist: {
-            is: { type: Boolean, default: false },
-            reason: { type: String, default: null }
-        }
+        blacklist: []
     })
 };

@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = class MaikaEvent {
     /**
      * Create a new Event instance

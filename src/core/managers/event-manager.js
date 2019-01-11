@@ -1,5 +1,3 @@
-'use strict';
-
 const { readdir } = require('fs');
 const EventProcessor = require('../processors/event-processor');
 

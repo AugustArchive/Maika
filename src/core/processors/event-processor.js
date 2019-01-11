@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = class EventProcessor {
     /**
      * Create a new Event processor instance to process all emitted events

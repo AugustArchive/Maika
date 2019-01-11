@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = class AudioPlayer {
     /**
      * Construct a new Audio player

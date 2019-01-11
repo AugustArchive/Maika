@@ -1,5 +1,3 @@
-'use strict';
-
 const MessageCollector = require('./collector');
 
 module.exports = class CommandContext {

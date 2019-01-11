@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = class MaikaScheduler {
     /**
      * Create a new Maika scheduler instance

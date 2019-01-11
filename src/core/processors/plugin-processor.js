@@ -1,5 +1,3 @@
-'use strict';
-
 const { Collection } = require('@maika.xyz/eris-utils');
 const CommandContext = require('../internal/context');
 const { stripIndents } = require('common-tags');
@@ -38,7 +36,7 @@ module.exports = class PluginProcessor {
             uQuery.save();
         }
 
-        // TODO: Level System
+        // TODO: Level System here
 
         let prefix;
         // A space (that represents the mention message) is there so people won't do `@Maikahelp` but `@Maika help`
@@ -112,7 +110,7 @@ module.exports = class PluginProcessor {
             message.embed(
                 embed
                     .setDescription(stripIndents`
-                        Command \`${plug.command}\` has failed to execute. This should not happen.
+                        Command \`${plug.command}\` has failed to execute.
                         Message: **\`${ex.message}\`**
                         Report this to \`auguwu#5820\` or \`void#0001\` here: ***<https://discord.gg/7TtMP2n>***~
                     `)
