@@ -1,5 +1,3 @@
-'use strict';
-
 const { Client } = require('eris');
 const PluginManager = require('../managers/plugin-manager');
 const EventManager = require('../managers/event-manager');
