@@ -1,6 +1,4 @@
-<img src="https://augu.me/files/g4fseu.png" align="center" alt="Maika Avatar">
-
-# Maika [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
+# <img src="https://augu.me/files/g4fseu.png" align="center" height="250px" width="250px" alt="Maika Avatar"> Maika [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
 > :sparkles: **Customizable, stable Discord multipurpopse bot made in the Eris library.**
 
 ## Contributing
@@ -13,8 +11,9 @@ Pull Requests are accepted, but you will have to lint the code (`yarn lint` or `
   - More coins
   - Custom Badge
   - Patreon Bot (might not come true)
-  - More to come?
+  - More to come~...
 - Image Manipulation (unique or use Dank Memer's service) (might not come true)
+- Level System (~~maybe better then MEE6, I honestly don't know~~)
 
 ## Running
 As per the developement team, (if you wanna run Maika) we expect you to know how to run Maika. All you need is [RethinkDB](https://github.com/MaikaBot/Maika/blob/master/README.md#why-rethinkdb) and MongoDB.
