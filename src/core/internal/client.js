@@ -7,6 +7,7 @@ const winston = require('winston');
 const { MessageEmbed, Collection } = require('@maika.xyz/eris-utils');
 const { Cluster } = require('lavalink');
 const RESTClient = require('./rest');
+const Webserver = require('../../../website/server');
 
 module.exports = class MaikaClient extends Client {
     constructor() {
@@ -31,14 +32,15 @@ module.exports = class MaikaClient extends Client {
         this.rest = new RESTClient(this);
         /** @type {Collection<string, import('./audio/audio-player')>} */
         this.players = new Collection();
+        this.website = Webserver(this);
 
         this.once('ready', () => {
             this.schedulers.tasks.forEach((s) => s.run(this));
             this.lavalink = new Cluster({
                 nodes: [{
                     hosts: {
-                        ws: `ws://${process.env.LAVALINK_HOST}:1334`,
-                        rest: `http://${process.env.LAVALINK_HOST}:2337`
+                        ws: `ws://${process.env.LAVALINK_HOST}:2333`,
+                        rest: `http://${process.env.LAVALINK_HOST}:2333`
                     },
                     password: process.env.LAVALINK_PASSWORD,
                     shardCount: 1,
@@ -79,7 +81,8 @@ module.exports = class MaikaClient extends Client {
             this.token,
             process.env.LAVALINK_PASSWORD,
             process.env.LAVALINK_HOST,
-            process.env.DB_URI
+            process.env.DB_URI,
+            process.env.RETHINKDB_HOST
         ].join('|'), 'gi');
         return str.replace(regex, '--snip--');
     }

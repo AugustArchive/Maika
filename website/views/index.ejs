@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><%= user.username %>#<%= user.discriminator %></title>
+        <title><%= user.username %>#<%= user.discriminator %> &bull; Developer List</title>
         <link rel="stylesheet" href="css/minified/bootstrap.min.css" />
         <link rel="stylesheet" href="css/mafuyu.css" />
         <link rel="icon" href="<%= user.avatarURL %>" />
         <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.9"></script>
     </head>
     <body id="app">
-        
+       <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">
+                <img class="circle no-colour" src="<%= user.avatarURL %>" alt="Maika" width="30" height="30">
+                <%= user.username %>#<%= user.discriminator %>
+            </a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/discord">Community</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/github">GitHub</a>
+                    </li>
+                </ul>
+            </div>
+       </nav>
+       <div clas="jumbotron jumbotron-fluid">
+            <div class="container">
+                <img class="circle" src="<%= user.avatarURL %>" alt="Maika" width="250" height="250">
+                <h1 class="display-4"><%= user.username %>#<%= user.discriminator %></div>
+                <p class="lead"><div class="typed"></div></p>
+            </div>
+       </div>
+       <script src="js/features.js"></script>
     </body>
 </html>

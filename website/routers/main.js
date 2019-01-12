@@ -10,8 +10,8 @@ module.exports = class MainRouter extends Router {
         this
             .router
             .get('/', (_, res) => res.render('index.ejs', { user: this.client.user }))
-            .get('/discord', (_, res) => res.redirect(''))
-            .get('/github', (_, res) => res.redirect(''))
+            .get('/discord', (_, res) => res.redirect('https://discord.gg/7TtMP2n'))
+            .get('/github', (_, res) => res.redirect('https://github.com/MaikaBot'))
             .get('/statistics', (_, res) => res.render('statistics.ejs', {
                 guilds: this.client.guilds.size,
                 users: this.client.users.size,

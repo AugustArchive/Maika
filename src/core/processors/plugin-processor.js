@@ -17,7 +17,7 @@ module.exports = class PluginProcessor {
      * Process all the Plugin commands (emitted from `messageCreate` event)
      * @param {import('eris').Message} msg The message that is from the event
      */
-    process(msg) {
+    async process(msg) {
         if (msg.author.bot && !this.client.ready)
             return;
 

@@ -6,8 +6,13 @@ body#app {
 }
 
 /* Image */
-image.circle {
+img.circle {
     border: 5px solid #E67EDE;
+    border-radius: 50%;
+}
+
+/* Returns a no colour border */
+img.no-colour {
     border-radius: 50%;
 }
 
@@ -25,5 +30,5 @@ h1.format {
 /* Paragraph Format */
 p.format {
     font-family: 'Raleway' sans-serif;
-    font-size: 120px;
+    font-size: 55px;
 }

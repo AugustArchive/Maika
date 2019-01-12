@@ -1,4 +1,3 @@
-const auth = require('./middleware/discord-middleware');
 const express = require('express');
 const winston = require('winston');
 const { readdir } = require('fs'); 
@@ -29,7 +28,7 @@ module.exports = class MaikaWebsite {
         // Use MongoDB for getting guilds and such
         this.r = require('rethinkdbdash')({
             db: 'Maika',
-            host: '127.0.0.1',
+            host: process.env.RETHINKDB_HOST,
             port: 28015
         });
 
@@ -42,7 +41,7 @@ module.exports = class MaikaWebsite {
      * @returns {MaikaWebsite} Chainable instance
      */
     processRouters() {
-        readdir('./routers', (error, files) => {
+        readdir('../website/routers', (error, files) => {
             if (error)
                 this.logger.error(`Unable to build routers:\n${error.stack}`);
 
@@ -65,7 +64,6 @@ module.exports = class MaikaWebsite {
     processWebsite() {
         this
             .app
-            .use(auth(this.r))
             .use(express.static(path.join(__dirname, '..', 'public')))
             .set('view engine', 'ejs')
             .set('views', path.join(__dirname, '..', 'views'));

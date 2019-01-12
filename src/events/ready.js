@@ -16,6 +16,8 @@ module.exports = class ReadyEvent extends Event {
             });
 
         this.client.logger.info('Maika successfully connected to Discord OwO');
-        // this.client.startAllFeeds();
+        // this.client.startRedditFeeds();
+        // this.client.startTwitchFeeds();
+        this.client.website.bootstrap();
     }
 }

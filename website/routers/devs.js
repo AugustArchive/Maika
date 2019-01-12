@@ -4,10 +4,6 @@ module.exports = class DevRouter extends Router {
     constructor(client) {
         super(client, '/devs');
 
-        /**
-         * The developers
-         * @type {DeveloperInfo[]}
-         */
         this.devs = [
             {
                 name: 'auguwu',
@@ -18,9 +14,10 @@ module.exports = class DevRouter extends Router {
             },
             {
                 name: 'void',
-                description: '',
+                description: '(info soon)',
                 role: 'Grammar Nazi, Community Manager',
-                github: 'https://github.com/voiduwu'
+                github: 'https://github.com/voiduwu',
+                website: 'https://voided.pw'
             }
         ];
     }
@@ -34,12 +31,3 @@ module.exports = class DevRouter extends Router {
             }));
     }
 }
-
-/**
- * @typedef {Object} DeveloperInfo
- * @prop {string} name The developer's online alias
- * @prop {string} description A bit about themselves
- * @prop {string} role The role they do (e.g: Lead Developer, Merchanise Manager)
- * @prop {string} [github] Their github profile
- * @prop {string} [website] Their website url
- */
