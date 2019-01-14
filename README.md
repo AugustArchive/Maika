@@ -3,6 +3,9 @@
 # Maika [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
 > :sparkles: **Customizable, stable Discord multipurpopse bot made in the Eris library.**
 
+# :warning: DEVELOPEMENT HAS STOPPED FOR A WHILE
+I stopped development because my machine's screen broke and I need to replace it, so, developement speed will be below par. (~~I wrote this while doing my math test, I should go back to it.~~)
+
 ## Contributing
 Pull Requests are accepted, but you will have to lint the code (`yarn lint` or `npm run lint`) and see if it has errors and such.
 
