@@ -1,5 +1,3 @@
-<img src="https://augu.me/files/g4fseu.png" align="center" height="250px" width="250px" alt="Maika Avatar">
-
 # Maika [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
 > :sparkles: **Customizable, stable Discord multipurpopse bot made in the Eris library.**
 
