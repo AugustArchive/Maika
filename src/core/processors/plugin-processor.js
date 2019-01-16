@@ -4,7 +4,7 @@ const { stripIndents } = require('common-tags');
 
 module.exports = class PluginProcessor {
     /**
-     * Create a new instance of the PLugin processor to process all plugins
+     * Create a new instance of the Plugin processor to process all plugins
      * @param {import('../internal/client')} client The client
      */
     constructor(client) {
@@ -87,7 +87,7 @@ module.exports = class PluginProcessor {
                 const left = (time - now) / 1000;
                 message.embed(
                     embed
-                        .setDescription(`**${msg.author.username}, the command \`${plug.command}\` is currently on cooldown for another ${left > 1 ? `${left.toFixed(0)} seconds` : `${left.toFixed(0)} second`} left**`)
+                        .setDescription(`**${msg.author.username}, the command \`${plug.command}\` is currently on cooldown for another ${left > 1 ? `${left.toFixed(0)} seconds.` : `${left.toFixed(0)} second.`}**`)
                 );
             }
 
@@ -96,15 +96,7 @@ module.exports = class PluginProcessor {
         }
 
         try {
-            const result = await plug.run(this.client, message);
-
-            if (!result) {
-                return;
-            } else if (result instanceof require('@maika.xyz/eris-utils').MessageEmbed) {
-                message.embed(result);
-            } else {
-                return message.send(result);
-            }
+            await this.runCommand(message);
         } catch(ex) {
             const embed = this.client.getEmbed();
             message.embed(
@@ -129,5 +121,18 @@ module.exports = class PluginProcessor {
     getPermissions(ctx, command, sender) {
         const needed = command.permissions.filter(perm => sender.permission.has(perm));
         ctx.send(`:pencil: **|** Sorry but you will need **${needed.length > 1 ? `the following permission: ${needed}` : `the following permissions: ${needed.join(', ')}`}**.`);
+    }
+    
+    runCommand(message) {
+        const result = await plug.run(this.client, message);
+
+        // TODO: If Maika doesn't have permissions to send embeds, unembeify it.
+        if (!result) {
+            return;
+        } else if (result instanceof require('@maika.xyz/eris-utils').MessageEmbed) {
+            message.embed(result);
+        } else {
+            return message.send(result);
+        }
     }
 }
