@@ -3,9 +3,6 @@
 # Maika [![Discord](https://discordapp.com/api/guilds/382725233695522816/embed.png)](https://discord.gg/7TtMP2n)
 > :sparkles: **Customizable, stable Discord multipurpopse bot made in the Eris library.**
 
-# :warning: DEVELOPEMENT HAS STOPPED FOR A WHILE
-I stopped development because my machine's screen broke and I need to replace it, so, developement speed will be below par. (~~I wrote this while doing my math test, I should go back to it.~~)
-
 ## Contributing
 Pull Requests are accepted, but you will have to lint the code (`yarn lint` or `npm run lint`) and see if it has errors and such.
 
@@ -13,9 +10,8 @@ Pull Requests are accepted, but you will have to lint the code (`yarn lint` or `
 - Actually do the Music plugin (might come in an later release)
 - Add functionality to donators
   - Smaller throttle (cooldowns)
-  - More coins
+  - More coins while winning or dailies.
   - Custom Badge
-  - Patreon Bot (might not come true)
   - More to come~...
 - Image Manipulation (unique or use Dank Memer's service) (might not come true)
 - Level System (~~maybe better then MEE6, I honestly don't know~~)
@@ -25,7 +21,8 @@ As per the developement team, (if you wanna run Maika) we expect you to know how
 
 ## Why RethinkDB
 We use RethinkDB for interval cache.
-But August, why not use Redis to cache daily & reminder interval cache? Because I don't wanna run Redis on my machine (because I'm lazy to install it) and I don't know how. (~~You can try to submit a Pull Request to use Redis for interval cache~~) But, we use MongoDB for guilds, users, tags, levels, etc as it's main database.
+
+But August, why not use Redis to cache daily & reminder interval cache? Because I don't wanna run Redis on my machine (because I'm lazy to install it) and I don't know how. (~~You can try to submit a Pull Request to use Redis for interval cache~~) But, we use MongoDB as the primary/main database.
 
 ## License
 > [Maika](https://github.com/MaikaBot/Maika) is released under the [MIT](https://github.com/MaikaBot/Maika/blob/master/LICENSE) license and maintained by [auguwu](https://augu.me)
