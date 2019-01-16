@@ -3,13 +3,9 @@
 ################
 
 daysUntilLock: 10
-
 exemptLabels: []
-
 lockLabel: dead
-
 lockComment: >
   This thread has been automatically locked since there wasn't
-  any activity after it was closed; open a new issue for related bugs.
-
+  any activity after it was closed, please open a new issue for related bugs. :)
 setLockReason: true
