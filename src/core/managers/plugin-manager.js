@@ -29,7 +29,7 @@ module.exports = class PluginManager {
                     const plugin = require(join(__dirname, '..', '..', 'plugins', f));
                     this.registerPlugin(plugin, { file: f });
                 } catch(ex) {
-                    this.client.logger.error(`Unable to load plugin "${ex.replace('.js', '')}":\n${ex.stack}`);
+                    this.client.logger.error(`Unable to load plugin "${ex}":\n${ex.stack}`);
                 }
             });
         });
