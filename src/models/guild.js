@@ -21,11 +21,9 @@ module.exports = {
             enabled: { type: Boolean, default: false },
             channelID: { type: String, default: null }
         },
-        // TODO: Leveling System (better (or worst idk) then MEE6)
-        leveling: {
+        social: {
             enabled: { type: Boolean, default: false },
-            // If it should say the message that a user leveled up.
-            sendMessage: { type: Boolean, default: false }
+            levelNotice: { type: Boolean, default: false}
         },
         tags: { type: Array, default: [] },
         blacklist: []

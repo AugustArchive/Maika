@@ -1,4 +1,5 @@
 const { Schema } = require('mongoose');
+const Badges = require('./badges');
 module.exports = {
     name: 'user',
     model: new Schema({
@@ -6,9 +7,8 @@ module.exports = {
         coins: { type: Number, default: 0 },
         tags: { type: Array, default: [] },
         profile: {
-            // TODO: Leveling system
             level: { type: Number, default: 0 },
-            badge: { type: String, default: ':heart: **User**' },
+            badge: { type: String, default: Badges.USER },
             description: { type: String, default: 'Use `x;profile --description <desc>` to set a description!' }
         }
     })

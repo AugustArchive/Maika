@@ -36,10 +36,10 @@ module.exports = class PluginProcessor {
             uQuery.save();
         }
 
-        // TODO: Level System here
+        if (guild['social'].levelSystem)
+            await this.executeSocialMonitor(msg, guild, user);
 
         let prefix;
-        // A space (that represents the mention message) is there so people won't do `@Maikahelp` but `@Maika help`
         const mention = new RegExp(`^<@!?${this.client.user.id}> `).exec(msg.content);
         const prefixes = [process.env.MAIKA_PREFIX, 'x!', `${mention}`, guild.prefix];
 
@@ -123,7 +123,11 @@ module.exports = class PluginProcessor {
         ctx.send(`:pencil: **|** Sorry but you will need **${needed.length > 1 ? `the following permission: ${needed}` : `the following permissions: ${needed.join(', ')}`}**.`);
     }
     
-    runCommand(message) {
+    /**
+     * Run the command
+     * @param {CommandContext} message The command message
+     */
+    async runCommand(message) {
         const result = await plug.run(this.client, message);
 
         // TODO: If Maika doesn't have permissions to send embeds, unembeify it.
@@ -132,7 +136,20 @@ module.exports = class PluginProcessor {
         } else if (result instanceof require('@maika.xyz/eris-utils').MessageEmbed) {
             message.embed(result);
         } else {
-            return message.send(result);
+            message.send(result);
         }
+    }
+
+    /**
+     * Runs the "levels" system
+     * @param {import('eris').Message} message The message
+     * @param {any} guild The guild schema
+     * @param {any} schema The user schema
+     * @returns {void} nOOP that shit- I mean, noop.
+     */
+    async executeSocialMonitor(message, guild, schema) {
+        const Monitor = require('../../monitors/levels');
+        const mon = new Monitor(this.client);
+        await mon.run(message, guild, schema);
     }
 }
