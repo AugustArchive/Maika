@@ -8,7 +8,6 @@ module.exports = class CommandContext {
      * @param {string[]} args The args that was from the message create event
      */
     constructor(client, msg, args) {
-        Object.assign(this, msg);
         this.client = client;
         this.message = msg;
         this.args = args;
@@ -43,7 +42,15 @@ module.exports = class CommandContext {
      * @returns {import('eris').Guild}
      */
     get guild() {
-        return this.channel.guild;
+        return this.message.channel.guild;
+    }
+
+    /**
+     * The channel
+     * @returns {import('eris').TextableChannel}
+     */
+    get channel() {
+        return this.message.channel;
     }
 
     /**
@@ -57,23 +64,23 @@ module.exports = class CommandContext {
 
     /**
      * Send an embed w/o content
-     * @param {import('@maika.xyz/eris-utils').MessageEmbed} content The embed
+     * @param {import('eris').EmbedOptions} content The embed
      * @returns {PromisedMessage}
      */
     embed(content) {
-        return this.message.channel.createMessage({ embed: content.build() });
+        return this.message.channel.createMessage({ embed: content });
     }
 
     /**
      * Send an embed with content
      * @param {string} content The content to send
-     * @param {import('@maika.xyz/eris-utils').MessageEmbed} embed The embed to send
+     * @param {import('eris').EmbedOptions} embed The embed to send
      * @returns {PromisedMessage}
      */
     raw(content, embed) {
         return this.message.channel.createMessage({
             content, 
-            embed: embed.build()
+            embed: embed
         });
     }
 

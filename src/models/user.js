@@ -1,8 +1,8 @@
 const { Schema } = require('mongoose');
-const Badges = require('./badges');
+const Badges = require('../util/badges');
 module.exports = {
     name: 'user',
-    model: new Schema({
+    schema: new Schema({
         userID: { type: String, default: null },
         coins: { type: Number, default: 0 },
         tags: { type: Array, default: [] },

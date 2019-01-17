@@ -1,4 +1,4 @@
-var typed = new Typed('.features', {
+let typed = new Typed('.features', {
     // nani!?
     strings: [
         'Multipurpose Discord bot for Music',

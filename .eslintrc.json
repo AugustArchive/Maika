@@ -1,5 +1,4 @@
 {
-    "extends": "xo",
     "parserOptions": {
         "ecmaVersion": 2018
     },
@@ -10,7 +9,7 @@
     "rules": {
         "indent": ["error", 4],
         "no-var": ["error"],
-        "valid-jsdoc": ["error", {
+        "valid-jsdoc": ["warn", {
             "requireReturn": false,
             "requireReturnDescription": false,
             "prefer": {

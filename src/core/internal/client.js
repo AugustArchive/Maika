@@ -4,7 +4,7 @@ const EventManager = require('../managers/event-manager');
 const SchedulerManager = require('../managers/scheduler-manager');
 const DatabaseManager = require('../managers/database-manager');
 const winston = require('winston');
-const { MessageEmbed, Collection } = require('@maika.xyz/eris-utils');
+const { Collection } = require('@maika.xyz/eris-utils');
 const { Cluster } = require('lavalink');
 const RESTClient = require('./rest');
 const Webserver = require('../../../website/server');
@@ -33,6 +33,7 @@ module.exports = class MaikaClient extends Client {
         /** @type {Collection<string, import('./audio/audio-player')>} */
         this.players = new Collection();
         this.website = Webserver(this);
+        this.color = 0xE67EDE;
 
         this.once('ready', () => {
             this.schedulers.tasks.forEach((s) => s.run(this));
@@ -120,10 +121,7 @@ module.exports = class MaikaClient extends Client {
      * Gets the normal embed
      * @returns {import('@maika.xyz/eris-utils').MessageEmbed} The message embed
      */
-    getEmbed() {
-        return new MessageEmbed()
-            .setColor(0xE67EDE)
-            .setAuthor(`${this.client.user.username}#${this.client.user.discriminator}`, null, this.user.avatarURL)
-            .setFooter(`Running v${require('../../package').version} | Made by auguwu & other contributors`);
+    getFooter() {
+        return `Running v${require('../../../package').version} | Made by auguwu & other contributors`;
     }
 };

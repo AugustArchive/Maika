@@ -90,7 +90,7 @@ module.exports = class MaikaPlugin {
 
 /**
  * @typedef {(client: import('./client'), ctx: import('./context')) => IPromisedCommand} CommandRun
- * @typedef {Promise<string | import('@maika.xyz/eris-utils').MessageEmbed | void>} IPromisedCommand
+ * @typedef {Promise<void>} IPromisedCommand
  * @typedef {(client: import('./client')) => string} DescriptionSupplier
  * @typedef {"createInstantInvite" | "kickMembers" | "banMembers" | "administrator" | "manageChannels" | "manageGuild" | "addReactions" | "viewAuditLogs" | "voicePrioritySpeaker" | "readMessages" | "sendMessages" | "sendTTSMessages" | "manageMessages" | "embedLinks" | "attachFiles" | "readMessageHistory" | "mentionEveryone" | "externalEmojis" | "voiceConnect" | "voiceSpeak" | "voiceMuteMembers" | "voiceDeafenMembers"| "voiceUseVAD" | "changeNickname" | "manageNicknames" | "manageRoles" | "manageWebhooks" | "manageEmojis"} Permission
  */

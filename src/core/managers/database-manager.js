@@ -37,10 +37,9 @@ module.exports = class DatabaseManager {
                 this.client.logger.error(`Unable to load mongoose models:\n${error.stack}`);
 
             files.forEach((f) => {
-                // Must return an object { name: 'name', schema: new mongoose.Schema() }
                 const model = require(`../../models/${f}`);
                 this.schemas.set(model.name, model.schema);
-                mongoose.model(model.name, model.schema, model.name);
+                mongoose.model(model.name, model.schema);
                 this.client.logger.info(`Loaded the ${model.name} schema!`);
             });
         });

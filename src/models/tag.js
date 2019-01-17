@@ -1,7 +1,7 @@
 const { Schema } = require('mongoose');
 module.exports = {
     name: 'tag',
-    model: new Schema({
+    schema: new Schema({
         // The guild ID
         guildID: { type: String, default: null },
 

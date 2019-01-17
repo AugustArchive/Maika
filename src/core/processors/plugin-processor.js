@@ -36,8 +36,8 @@ module.exports = class PluginProcessor {
             uQuery.save();
         }
 
-        if (guild['social'].levelSystem)
-            await this.executeSocialMonitor(msg, guild, user);
+        //if (guild['social'].levelSystem)
+            //await this.executeSocialMonitor(msg, guild, user);
 
         let prefix;
         const mention = new RegExp(`^<@!?${this.client.user.id}> `).exec(msg.content);
@@ -80,15 +80,17 @@ module.exports = class PluginProcessor {
             timestamps.set(msg.author.id, now);
             setTimeout(() => timestamps.delete(msg.author.id), throttle);
         } else {
-            const embed = this.client.getEmbed();
             const time = timestamps.get(msg.author.id) + throttle;
 
             if (now < time) {
                 const left = (time - now) / 1000;
-                message.embed(
-                    embed
-                        .setDescription(`**${msg.author.username}, the command \`${plug.command}\` is currently on cooldown for another ${left > 1 ? `${left.toFixed(0)} seconds.` : `${left.toFixed(0)} second.`}**`)
-                );
+                message.embed({
+                    description: `**${msg.author.username}, the command \`${plug.command}\` is currently on cooldown for another ${left > 1 ? `${left.toFixed(0)} seconds.` : `${left.toFixed(0)} second.`}**`,
+                    color: this.client.color,
+                    footer: {
+                        text: this.client.getFooter()
+                    }
+                });
             }
 
             timestamps.set(msg.author.id, now);
@@ -96,17 +98,17 @@ module.exports = class PluginProcessor {
         }
 
         try {
-            await this.runCommand(message);
+            await plug.run(this.client, message);
         } catch(ex) {
-            const embed = this.client.getEmbed();
-            message.embed(
-                embed
-                    .setDescription(stripIndents`
-                        Command \`${plug.command}\` has failed to execute.
-                        Message: **\`${ex.message}\`**
-                        Report this to \`auguwu#5820\` or \`void#0001\` here: ***<https://discord.gg/7TtMP2n>***~
-                    `)
-            );
+            message.embed({
+                description: stripIndents`
+                    Command \`${plug.command}\` has failed to execute.
+                    Message: **\`${ex.message}\`**
+                    Report this to \`auguwu#5820\` or \`void#0001\` here: ***<https://discord.gg/7TtMP2n>***~
+                `,
+                color: this.client.color,
+                footer: { text: this.client.getFooter() }
+            });
             this.client.logger.error(`Unexpected error while running the ${plug.command} command:\n${ex.stack}`);
         }
     }
@@ -121,23 +123,6 @@ module.exports = class PluginProcessor {
     getPermissions(ctx, command, sender) {
         const needed = command.permissions.filter(perm => sender.permission.has(perm));
         ctx.send(`:pencil: **|** Sorry but you will need **${needed.length > 1 ? `the following permission: ${needed}` : `the following permissions: ${needed.join(', ')}`}**.`);
-    }
-    
-    /**
-     * Run the command
-     * @param {CommandContext} message The command message
-     */
-    async runCommand(message) {
-        const result = await plug.run(this.client, message);
-
-        // TODO: If Maika doesn't have permissions to send embeds, unembeify it.
-        if (!result) {
-            return;
-        } else if (result instanceof require('@maika.xyz/eris-utils').MessageEmbed) {
-            message.embed(result);
-        } else {
-            message.send(result);
-        }
     }
 
     /**

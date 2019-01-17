@@ -88,25 +88,25 @@ module.exports = class RESTClient {
     getChannel(query, guild) {
         return new Promise((resolve, reject) => {
             if (/^\d+$/.test(query)) {
-              if (guild) {
-                if (!guild.channels.has(query)) reject();
-                resolve(guild.channels.get(query));
-              } else {
-                const channel = channel in this.client.channelGuildMap && this.client.guilds.get(this.client.channelGuildMap[query]).channels.get(query);
-                if (channel) return resolve(channel);
-              }
+                if (guild) {
+                    if (!guild.channels.has(query)) reject();
+                    resolve(guild.channels.get(query));
+                } else {
+                    const channel = channel in this.client.channelGuildMap && this.client.guilds.get(this.client.channelGuildMap[query]).channels.get(query);
+                    if (channel) return resolve(channel);
+                }
             } else if (/^<#(\d+)>$/.test(channel)) {
-              const match = query.match(/^<#(\d+)>$/);
-              if (guild) {
-                if (!guild.channels.has(match[1])) reject();
-                resolve(guild.channels.get(match[1]));
-              } else {
-                const channel = match[1] in this.client.channelGuildMap && this.client.guilds.get(this.client.channelGuildMap[match[1]]).channels.get(query);
-                if (channel) return resolve(channel);
-              }
+                const match = query.match(/^<#(\d+)>$/);
+                if (guild) {
+                    if (!guild.channels.has(match[1])) reject();
+                    resolve(guild.channels.get(match[1]));
+                } else {
+                    const channel = match[1] in this.client.channelGuildMap && this.client.guilds.get(this.client.channelGuildMap[match[1]]).channels.get(query);
+                    if (channel) return resolve(channel);
+                }
             } else if (guild) {
-              const channel = guild.channels.filter((channel) => channel.name.toLowerCase().includes(query.toLowerCase()));
-              if (channel.length > 0) return resolve(channel[0]);
+                const channel = guild.channels.filter((channel) => channel.name.toLowerCase().includes(query.toLowerCase()));
+                if (channel.length > 0) return resolve(channel[0]);
             } 
       
             reject();

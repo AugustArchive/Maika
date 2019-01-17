@@ -24,15 +24,9 @@ module.exports = class MaikaWebsite {
                 )
             )
         });
-        // ONLY USE RETHINKDB FOR USER CACHE
-        // Use MongoDB for getting guilds and such
-        this.r = require('rethinkdbdash')({
-            db: 'Maika',
-            host: process.env.RETHINKDB_HOST,
-            port: 28015
-        });
 
-        this.processRouters()
+        this
+            .processRouters()
             .processWebsite();
     }
 
