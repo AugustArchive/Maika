@@ -3,7 +3,7 @@ const PluginManager = require('../managers/plugin-manager');
 const EventManager = require('../managers/event-manager');
 const SchedulerManager = require('../managers/scheduler-manager');
 const DatabaseManager = require('../managers/database-manager');
-const winston = require('winston');
+const Hideri = require('@maika.xyz/hideri');
 const { Collection } = require('@maika.xyz/eris-utils');
 const { Cluster } = require('lavalink');
 const RESTClient = require('./rest');
@@ -21,19 +21,14 @@ module.exports = class MaikaClient extends Client {
         this.events = new EventManager(this);
         this.schedulers = new SchedulerManager(this);
         this.database = new DatabaseManager(this);
-        this.logger = winston.createLogger({
-            transports: [new winston.transports.Console()],
-            format: winston.format.combine(
-                winston.format.colorize({ level: true }),
-                winston.format.timestamp({ format: 'hh:MM:ss'}),
-                winston.format.printf(info => `[${info.timestamp}] [${info.level}] <=> ${info.message}`)
-            )
-        });
+        this.logger = new Hideri.Logger();
         this.rest = new RESTClient(this);
         /** @type {Collection<string, import('./audio/audio-player')>} */
         this.players = new Collection();
         this.website = Webserver(this);
         this.color = 0xE67EDE;
+        this.emojis = require('../../util/objects/emojis');
+        this.owners = ['280158289667555328', '229552088525438977'];
 
         this.once('ready', () => {
             this.schedulers.tasks.forEach((s) => s.run(this));

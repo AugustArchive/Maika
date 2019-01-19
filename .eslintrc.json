@@ -14,13 +14,14 @@
             "requireReturnDescription": false,
             "prefer": {
                 "return": "returns",
-                "arg": "param"
+                "arg": "param",
+                "property": "prop"
             },
             "preferType": {
                 "String": "string",
                 "Number": "number",
                 "Boolean": "boolean",
-                "Symbol": "symbol",
+                "Symbol": "Symbol",
                 "object": "object",
                 "function": "Function",
                 "array": "Array",

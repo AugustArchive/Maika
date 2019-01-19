@@ -1,5 +1,5 @@
+const Hideri = require('@maika.xyz/hideri');
 const express = require('express');
-const winston = require('winston');
 const { readdir } = require('fs'); 
 const path = require('path');
 
@@ -14,16 +14,7 @@ module.exports = class MaikaWebsite {
         this.app.disable('x-powered-by');
         // This is the logger for the initial website (i.e: this class only)
         // Use MaikaClient.logger for other class parts (i.e: routers & middleware)
-        this.logger = winston.createLogger({
-            transports: [new winston.transports.Console()],
-            format: winston.format.combine(
-                winston.format.colorize({ level: true }),
-                winston.format.timestamp({ format: 'hh:MM:ss' }),
-                winston.format.printf(
-                    info => `[${info.timestamp}] [${info.level} | Website] <=> ${info.message}`
-                )
-            )
-        });
+        this.logger = new Hideri.Logger();
 
         this
             .processRouters()

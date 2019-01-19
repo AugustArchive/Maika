@@ -1,6 +1,8 @@
 const { Collection } = require('@maika.xyz/eris-utils');
 const CommandContext = require('../internal/context');
 const { stripIndents } = require('common-tags');
+const GuildSchema = require('../../models/guild');
+const UserSchema = require('../../models/user');
 
 module.exports = class PluginProcessor {
     /**
@@ -21,23 +23,19 @@ module.exports = class PluginProcessor {
         if (msg.author.bot && !this.client.ready)
             return;
 
-        const guild = this.client.database.m.connection.collection('guilds').findOne({ guildID: msg.channel.guild.id });
-        const user = this.client.database.m.connection.collection('users').findOne({ userID: msg.author.id });
-
+        const guild = GuildSchema.findOne({ guildID: msg.channel.guild.id });
         if (!guild) {
-            const guildSchema = this.client.database.schemas.get('guilds');
-            const query = new guildSchema({ guildID: msg.channel.guild.id });
+            const query = new guild({ guildID: msg.channel.guild.id });
             query.save();
+            this.client.logger.verbose(`Added guild ${msg.channel.guild.name} to the database!`);
         }
 
+        const user = UserSchema.findOne({ userID: msg.author.id });
         if (!user) {
-            const userSchema = this.client.database.schemas.get('users');
-            const uQuery = new userSchema({ userID: msg.author.id });
-            uQuery.save();
+            const query = new user({ userID: msg.author.id });
+            query.save();
+            this.client.logger.verbose(`Added user ${msg.author.username} to the database!`);
         }
-
-        //if (guild['social'].levelSystem)
-            //await this.executeSocialMonitor(msg, guild, user);
 
         let prefix;
         const mention = new RegExp(`^<@!?${this.client.user.id}> `).exec(msg.content);
@@ -63,7 +61,7 @@ module.exports = class PluginProcessor {
         if (plug.guild && msg.channel.type === 1)
             return message.send(`:x: **|** You must be in a guild to run the **\`${plug.command}\`** command.`);
         
-        if (plug.owner && !['280158289667555328', '229552088525438977'].includes(msg.author.id))
+        if (plug.owner && !this.client.owners.includes(message.sender.id))
             return message.send(`:x: **|** You have inefficent permissions to execute the **\`${plug.command}\`** command. (**Developer**)`);
 
         if (plug.permissions && plug.permissions.some(pe => !msg.member.permission.has(pe)))
@@ -104,7 +102,7 @@ module.exports = class PluginProcessor {
                 description: stripIndents`
                     Command \`${plug.command}\` has failed to execute.
                     Message: **\`${ex.message}\`**
-                    Report this to \`auguwu#5820\` or \`void#0001\` here: ***<https://discord.gg/7TtMP2n>***~
+                    Report this to \`auguwu#5820\` or \`void#0001\` here: ***<https://discord.gg/7TtMP2n>***
                 `,
                 color: this.client.color,
                 footer: { text: this.client.getFooter() }

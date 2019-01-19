@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const { Collection } = require('@maika.xyz/eris-utils');
-const { readdir } = require('fs');
 
 module.exports = class DatabaseManager {
     /**
@@ -9,8 +7,6 @@ module.exports = class DatabaseManager {
      */
     constructor(client) {
         this.client = client;
-        /** @type {Collection<string, mongoose.Schema>} */
-        this.schemas = new Collection();
         this.m = mongoose;
     }
 
@@ -22,27 +18,8 @@ module.exports = class DatabaseManager {
         await mongoose.connect(process.env.DB_URI, { useNewUrlParser: true });
         mongoose
             .connection
-            .on('connected', () => this.client.logger.info(`Successfully connected to the database with uri: ${process.env.DB_URI}`))
+            .on('open', () => this.client.logger.info(`Successfully connected to the database with uri: ${process.env.DB_URI}`))
             .on('error', (error) => this.client.logger.error(`Unable to connect to the database with uri: ${process.env.DB_URI}\n${error.stack}`));
-        this.loadSchemas();
-    }
-
-    /**
-     * Loads the schemas
-     * @returns {DatabaseManager} Instance to chain
-     */
-    loadSchemas() {
-        readdir('./models', (error, files) => {
-            if (error)
-                this.client.logger.error(`Unable to load mongoose models:\n${error.stack}`);
-
-            files.forEach((f) => {
-                const model = require(`../../models/${f}`);
-                this.schemas.set(model.name, model.schema);
-                mongoose.model(model.name, model.schema);
-                this.client.logger.info(`Loaded the ${model.name} schema!`);
-            });
-        });
     }
 
     /**
@@ -50,7 +27,7 @@ module.exports = class DatabaseManager {
      */
     async destroy() {
         await mongoose.connection.close(() => {
-            this.client.logger.warn('Database was destroyed (maybe someone did MaikaClient#destroy function?)');
+            this.client.logger.warn('Database was destroyed for an odd reason... :(');
         });
     }
 }

@@ -1,4 +1,6 @@
 const MessageCollector = require('./collector');
+const GuildSchema = require('../../models/guild');
+const UserSchema = require('../../models/user');
 
 module.exports = class CommandContext {
     /**
@@ -80,7 +82,7 @@ module.exports = class CommandContext {
     raw(content, embed) {
         return this.message.channel.createMessage({
             content, 
-            embed: embed
+            embed
         });
     }
 
@@ -94,8 +96,87 @@ module.exports = class CommandContext {
         const channel = await user.getDMChannel();
         channel.createMessage(content);
     }
+
+    /**
+     * Send a message & await an message
+     * @param {string} content The content to send
+     * @param {IAwait} options The awaiting message options
+     * @returns {PromisedMessage}
+     */
+    async awaitReply(content, options) {
+        this.send(content);
+        const message = await this.collector.awaitMessage(options.filter, options.options);
+        return message;
+    }
+
+    /**
+     * Gets the guild settings
+     * @param {string} guildID The guild ID
+     */
+    async getGuildSettings(guildID) {
+        const guild = GuildSchema.findOne({ guildID });
+        if (!guild) {
+            const query = new guild({ guildID });
+            query.save();
+            this.client.logger.verbose(`Added guild ${guildID} to the database!`);
+        }
+
+        return await guild
+            .lean()
+            .exec();
+    }
+
+    /**
+     * Gets the user settings
+     * @param {string} userID The user ID
+     */
+    async getUserSettings(userID) {
+        const user = UserSchema.findOne({ userID });
+        if (!user) {
+            const query = new user({ userID });
+            query.save();
+            this.client.logger.verbose(`Added user ${userID} to the database!`);
+        }
+
+        return await user
+            .lean()
+            .exec();
+    }
+
+    /**
+     * Updates the guild settings
+     * @param {MaikaDocumentOptions} options The options to update
+     */
+    updateGuildSettings(options) {
+        GuildSchema
+            .update(options.condition, options.document, options.callback)
+            .exec();
+    }
+
+    /**
+     * Updates the user settings
+     * @param {MaikaDocumentOptions} options The options to update
+     */
+    updateUserSettings(options) {
+        UserSchema
+            .update(options.condition, options.document, options.callback)
+            .exec();
+    }
 }
 
 /**
  * @typedef {Promise<import('eris').Message>} PromisedMessage
+ */
+
+/**
+ * @typedef {Object} IAwait
+ * @prop {import('./collector').AwaitMessageInfo} options The options
+ * @prop {(msg: import('eris').Message) => boolean} filter The filter
+ */
+
+/**
+ * @typedef {Object} MaikaDocumentOptions
+ * @prop {any} condition The condition
+ * @prop {any} document The document to insert
+ * @prop {(error: Error, data: any) => void} callback The callback
  */

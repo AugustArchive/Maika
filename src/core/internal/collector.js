@@ -41,7 +41,6 @@ module.exports = class MessageCollector {
 }
 
 /**
- * The info for awaiting messages
  * @typedef {object} AwaitMessageInfo
  * @prop {string} channelID The channel ID
  * @prop {string} userID The user ID
