@@ -28,9 +28,7 @@ module.exports = new Plugin({
         },
         {
             command: 'changelog',
-            description: (client) => stripIndents`
-                Grabs the last 10 commits from ${client.user.username}'s repository!
-            `,
+            description: (client) => `Grabs the last 10 commits from ${client.user.username}'s repository!`,
             usage: '[limit]',
             aliases: ['commits'],
             run: async (client, ctx) => {
@@ -71,9 +69,7 @@ module.exports = new Plugin({
         },
         {
             command: 'help',
-            description: (client) => stripIndents`
-                Shows documentation on ${client.user.username}'s plugins or gets help on a command/plugin.
-            `,
+            description: (client) => `Shows documentation on ${client.user.username}'s plugins or gets help on a command/plugin.`,
             usage: '[plugin|:command]',
             aliases: ['halp', 'h', '?', 'plugin', 'plugins'],
             run: async (client, ctx) => {
@@ -126,7 +122,7 @@ module.exports = new Plugin({
                                         name: 'Usage', value: `${guild['prefix']}${c.command}${c.usage ? ` ${c.usage}` : ''}`, inline: true
                                     },
                                     {
-                                        name: 'Plugin', value: toUpper(args[1]), inline: true
+                                        name: 'Plugin', value: toUpper(args[0]), inline: true
                                     },
                                     {
                                         name: 'Aliases', value: (() => {
@@ -173,6 +169,72 @@ module.exports = new Plugin({
                         return ctx.send(`${client.emojis.ERROR} **|** Unknown plugin: \`${arg}\`.`);
                 }
             }
+        },
+        {
+            command: 'invite',
+            description: (client) => `Invite ${client.user.username} to your server or join my Discord server!`,
+            aliases: ['inviteme', 'support'],
+            run: (client, ctx) => ctx.embed({
+                title: `${client.user.username}'s Links`,
+                description: stripIndents`
+                    **Invite**: <https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot>
+                    **Discord**: <https://discord.gg/7TtMP2n>
+                `,
+                color: client.color,
+                footer: { text: client.getFooter() }
+            })
+        },
+        {
+            command: 'ping',
+            description: (client) => `Latency numbers for ${client.user.username}.`,
+            aliases: ['pong'],
+            run: async(client, ctx) => {
+                let startedAt = Date.now();
+                const message = await ctx.send(`${client.emojis.INFO} **|** Pong?`);
+                await message.delete();
+                ctx.raw(`${client.emojis.GEARS} **|** Pong!`, {
+                    description: stripIndents`
+                        **Shard #${ctx.guild.shard.id}**: ${ctx.guild.shard.latency}ms
+                        **Message Deletion**: ${Date.now() - startedAt}ms
+                    `,
+                    color: client.color,
+                    footer: { text: client.getFooter() }
+                });
+            }
+        },
+        {
+            command: 'shardinfo',
+            description: (client) => `Shows ${client.user.username}'s shard information.`,
+            usage: '[shard_id]',
+            aliases: ['shards', 's'],
+            guild: true,
+            run: async(client, ctx) => {
+                const startedAt = Date.now();
+                const message = await ctx.send(`${client.emojis.INFO} **|** Grabbing shard information...`);
+                let map = '';
+                client.shards.map((s) => map += `Shard #${s.id} :: ${s.latency}ms | ${s.status} (${s.id === ctx.guild.shard.id ? 'current': ''})`);
+                await message.delete();
+                ctx.code('asciidoc', stripIndents`
+                    Done At  :: ${Date.now() - startedAt}ms
+                    ${map}
+                `);
+            }
+        },
+        {
+            command: 'source',
+            description: (client) => `${client.user.username}'s source code.`,
+            run: (client, ctx) => ctx.send(`${client.emojis.GEARS} **|** <https://github.com/MaikaBot/Maika>`)
+        },
+        //{
+            //command: 'stats',
+            //description: (client) => `${client.user.username}'s realtime statistics`,
+            //aliases: ['botinfo', 'bot', 'statistics'],
+            //run: (client, ctx) => ctx.embed()
+        //},
+        {
+            command: 'uptime',
+            description: (client) => `How long ${client.user.username} was up for.`,
+            run: (client, ctx) => ctx.send(`${client.emojis.GEARS} **|** ${require('@maika.xyz/miu').humanize(Date.now() - client.startTime)}`)
         }
     ]
 });

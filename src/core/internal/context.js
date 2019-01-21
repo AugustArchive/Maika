@@ -94,17 +94,26 @@ module.exports = class CommandContext {
      */
     async dm(content, user = this.sender) {
         const channel = await user.getDMChannel();
-        channel.createMessage(content);
+        return channel.createMessage(content);
+    }
+
+    /**
+     * Sends a codeblock in the current channel
+     * @param {string} lang The language
+     * @param {string} content The content to send
+     * @returns {PromisedMessage}
+     */
+    code(lang, content) {
+        return this.send(`\`\`\`${lang || null}\n${content}\`\`\``);
     }
 
     /**
      * Send a message & await an message
-     * @param {string} content The content to send
      * @param {IAwait} options The awaiting message options
      * @returns {PromisedMessage}
      */
-    async awaitReply(content, options) {
-        this.send(content);
+    async awaitReply(options) {
+        this.send(options.content);
         const message = await this.collector.awaitMessage(options.filter, options.options);
         return message;
     }
@@ -170,7 +179,8 @@ module.exports = class CommandContext {
 
 /**
  * @typedef {Object} IAwait
- * @prop {import('./collector').AwaitMessageInfo} options The options
+ * @prop {string} content The content to send
+ * @prop {import('./collector').AwaitMessageInfo} info The options
  * @prop {(msg: import('eris').Message) => boolean} filter The filter
  */
 

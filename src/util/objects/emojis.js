@@ -1,6 +1,6 @@
 module.exports = {
     MONEY_BAG: ':moneybag:',
-    INFO: ':informational_source:',
+    INFO: ':information_source:',
     WARNING: ':warning:',
     ERROR: ':x:',
     NO_PERMS: ':name_badge:',
