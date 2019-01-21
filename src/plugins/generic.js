@@ -79,7 +79,7 @@ module.exports = new Plugin({
             run: async (client, ctx) => {
                 let categories = [];
                 let guild = await ctx.getGuildSettings(ctx.guild.id);
-                console.log(guild);
+
                 if (!ctx.args[0]) {
                     client
                         .manager
@@ -123,21 +123,21 @@ module.exports = new Plugin({
                                 description: typeof c.description === 'function' ? c.description(client) : c.description,
                                 fields: [
                                     {
-                                        name: 'Usage', value: `${c.command}${c.usage ? ` ${c.usage}` : ''}`, inline: true
+                                        name: 'Usage', value: `${guild['prefix']}${c.command}${c.usage ? ` ${c.usage}` : ''}`, inline: true
                                     },
                                     {
                                         name: 'Plugin', value: toUpper(args[1]), inline: true
                                     },
                                     {
                                         name: 'Aliases', value: (() => {
-                                            return c.aliases.length > 1 ? 'No aliases.' : aliases.join(', ')
+                                            return c.aliases && c.aliases.length > 1 ? 'No aliases.': aliases.join(', ')
                                         })(), inline: true
                                     },
-                                    {
-                                        name: 'Permissions Required', value: (() => {
-                                            return c.permissions.length > 0 ? 'No permissions.' : permissions.map(s => `\`${s}\``).join('`, `')
-                                        })(), inline: true
-                                    },
+                                    //{
+                                       //name: 'Permissions Required', value: (() => {
+                                            //return c.permissions && c.permissions.length > 0 ? 'No permissions.' : permissions.map(s => `\`${s}\``).join('`, `')
+                                        //})(), inline: true
+                                    //},
                                     {
                                         name: 'Guild Only', value: c.guild ? 'Yes' : 'No', inline: true
                                     },

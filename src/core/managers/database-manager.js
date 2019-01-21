@@ -18,7 +18,7 @@ module.exports = class DatabaseManager {
         await mongoose.connect(process.env.DB_URI, { useNewUrlParser: true });
         mongoose
             .connection
-            .on('open', () => this.client.logger.info(`Successfully connected to the database with uri: ${process.env.DB_URI}`))
+            .on('connected', () => this.client.logger.info(`Successfully connected to the database with uri: ${process.env.DB_URI}`))
             .on('error', (error) => this.client.logger.error(`Unable to connect to the database with uri: ${process.env.DB_URI}\n${error.stack}`));
     }
 

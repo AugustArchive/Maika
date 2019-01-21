@@ -20,19 +20,21 @@ module.exports = class PluginProcessor {
      * @param {import('eris').Message} msg The message that is from the event
      */
     async process(msg) {
-        if (msg.author.bot && !this.client.ready)
+        if (msg.author.bot || !this.client.ready)
             return;
 
-        const guild = GuildSchema.findOne({ guildID: msg.channel.guild.id });
+        const guildS = GuildSchema.findOne({ guildID: msg.channel.guild.id });
+        const guild = await guildS.lean().exec();
         if (!guild) {
-            const query = new guild({ guildID: msg.channel.guild.id });
+            const query = new GuildSchema({ guildID: msg.channel.guild.id });
             query.save();
             this.client.logger.verbose(`Added guild ${msg.channel.guild.name} to the database!`);
         }
 
         const user = UserSchema.findOne({ userID: msg.author.id });
-        if (!user) {
-            const query = new user({ userID: msg.author.id });
+        const q = await user.lean().exec();
+        if (!q) {
+            const query = new UserSchema({ userID: msg.author.id });
             query.save();
             this.client.logger.verbose(`Added user ${msg.author.username} to the database!`);
         }

@@ -115,15 +115,15 @@ module.exports = class CommandContext {
      */
     async getGuildSettings(guildID) {
         const guild = GuildSchema.findOne({ guildID });
-        if (!guild) {
-            const query = new guild({ guildID });
+        const q = await guild.lean().exec();
+
+        if (!q) {
+            const query = new GuildSchema({ guildID });
             query.save();
             this.client.logger.verbose(`Added guild ${guildID} to the database!`);
         }
 
-        return await guild
-            .lean()
-            .exec();
+        return q;
     }
 
     /**
@@ -132,15 +132,15 @@ module.exports = class CommandContext {
      */
     async getUserSettings(userID) {
         const user = UserSchema.findOne({ userID });
-        if (!user) {
-            const query = new user({ userID });
+        const q = await user.lean().exec();
+
+        if (!q) {
+            const query = new UserSchema({ userID });
             query.save();
             this.client.logger.verbose(`Added user ${userID} to the database!`);
         }
 
-        return await user
-            .lean()
-            .exec();
+        return q;
     }
 
     /**
