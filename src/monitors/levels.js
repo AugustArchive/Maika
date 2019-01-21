@@ -11,45 +11,42 @@ module.exports = class LevelMonitor {
 
     /**
      * Runs the "levels" monitor
-     * @param {import('eris').Message} message THe message
-     * @param {any} guild THe guild schema
-     * @param {any} schema The user schema
+     * @param {import('../core/internal/context')} ctx Command context
      * @returns {void} NOOP
      */
-    async run(message, guild, schema) {
+    async run(ctx) {
         if (
-            message.author.bot ||
-            !message.channel.guild ||
-            !message.member
+            ctx.message.author.bot ||
+            !ctx.guild ||
+            !ctx.member
         ) return;
 
-        const points = { max: guild['social'].points.max, min: guild['social'].points.min };
-        const rewardedPoints = reward(points.min, points.max);
-        const currentLevel = Math.floor(0.1 * Math.sqrt(schema['profile'].points));
-        await schema.update({ 'userID': message.author.id }, {
-            '$set': {
-                'profile.points': rewardedPoints
-            }
-        }, async (error) => {
-            if (error)
-                message.channel.createMessage('Sorry but I was unable to reward `' + rewardedPoints + '` points to you! :(');
-
-            if (schema['profile'].points < currentLevel)
-                // Disabled by default
-                if (guild['social'].levelNotice)
-                    message.channel.createMessage(`:tada: **|** <@${message.author.id}>, you have leveled up to \`${currentLevel}\`. It's not a birthday party for you, BAKA!`);
-
-            await schema.update(
-                {
-                    'userID': message.author.id
-                },
-                {
-                    'profile.level': currentLevel
-                }, error => {
+        const guild = await ctx.getGuildSettings(ctx.guild.id);
+        const user = await ctx.getUserSettings(ctx.sender.id);
+        const rewarded = reward(guild['social'].max, guild['social'].min);
+        const current = Math.floor(0.1 * Math.sqrt(user['profile'].points));
+        ctx
+            .updateUserSettings({
+                condition: { userID: ctx.sender.id },
+                document: { profile: { points: rewarded } },
+                callback: (error) => {
                     if (error)
-                        message.channel.createMessage(':x: **|** Unable to set your level, <@' + message.author.id + '>. :(');
+                        ctx.send(`${this.client.emojis.NO_PERMS} **|** <@${ctx.sender.id}>, I wasn't able to reward \`${rewarded}\` points to you. :(`);
+
+                    if (user['profile'].points < current)
+                        if (guild['social'].levelNotice)
+                            ctx.send(`${this.client.emojis.YAY} **|** <@${ctx.sender.id}>, you have leveled up to \`${current}\`. It's not an achivement, you baka!`);
+
+                    ctx
+                        .updateUserSettings({
+                            condition: { userID: ctx.sender.id },
+                            document: { profile: { level: current } },
+                            callback: (error) => {
+                                if (error)
+                                    ctx.send(`${this.client.emojis.NO_PERMS} **|** Unable to set level.`);
+                            }
+                        })
                 }
-            );
-        });
+            });
     }
 };

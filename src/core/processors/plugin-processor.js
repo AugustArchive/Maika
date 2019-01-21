@@ -50,11 +50,13 @@ module.exports = class PluginProcessor {
         if (!prefix)
             return;
 
-        // Start command process
         const args = msg.content.slice(prefix.length).trim().split(/ +/g);
         const message = new CommandContext(this.client, msg, args);
         const commandName = args.shift();
         const plugin = this.client.manager.plugins.filter(pl => pl.hasCommand(commandName));
+
+        if (guild['social'].enabled)
+            this.executeSocialMonitor(message);
 
         if (plugin.length < 1)
             return;
@@ -127,14 +129,12 @@ module.exports = class PluginProcessor {
 
     /**
      * Runs the "levels" system
-     * @param {import('eris').Message} message The message
-     * @param {any} guild The guild schema
-     * @param {any} schema The user schema
+     * @param {CommandContext} ctx The message
      * @returns {void} nOOP that shit- I mean, noop.
      */
-    async executeSocialMonitor(message, guild, schema) {
+    async executeSocialMonitor(ctx) {
         const Monitor = require('../../monitors/levels');
         const mon = new Monitor(this.client);
-        await mon.run(message, guild, schema);
+        await mon.run(ctx);
     }
 }

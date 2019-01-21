@@ -5,5 +5,6 @@ module.exports = {
     ERROR: ':x:',
     NO_PERMS: ':name_badge:',
     MUSICAL_NOTES: ':musical_notes:',
-    GEARS: ':gear:'
+    GEARS: ':gear:',
+    YAY: ':tada:'
 };

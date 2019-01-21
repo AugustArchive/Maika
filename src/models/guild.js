@@ -22,7 +22,9 @@ const schema = new mangoose.Schema({
     },
     social: {
         enabled: { type: Boolean, default: false },
-        levelNotice: { type: Boolean, default: false}
+        levelNotice: { type: Boolean, default: false },
+        max: { type: Number, default: 10 },
+        min: { type: Number, default: 1 }
     },
     tags: { type: Array, default: [] },
     blacklist: []
