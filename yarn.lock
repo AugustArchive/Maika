@@ -321,10 +321,9 @@ encodeurl@~1.0.2:
   resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
   integrity sha1-rT/0yG7C0CkyL1oCw6mmBslbP1k=
 
-eris@0.9.0:
+"eris@github:abalabahaha/eris#dev":
   version "0.9.0"
-  resolved "https://registry.yarnpkg.com/eris/-/eris-0.9.0.tgz#a2796839f7768cd40645c2c6b1bf0c86ba3147f3"
-  integrity sha512-U3/fv/wF2nA7Pc003v2cMXfTXvz8OySZYE21Zpx3ipm5sKbHWjcwDGdNXbp2Nb7fUip/IIjA/5540YDcqyQSvQ==
+  resolved "https://codeload.github.com/abalabahaha/eris/tar.gz/f919f961b16b5943a794e9052a7c7f27dbb5074f"
   dependencies:
     ws "^6.0.0"
   optionalDependencies:

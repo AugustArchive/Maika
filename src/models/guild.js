@@ -1,7 +1,7 @@
 const mangoose = require('mongoose');
 
 const schema = new mangoose.Schema({
-    guildID: { type: String, required: true },
+    guildID: String,
     prefix: { type: String, default: process.env.MAIKA_PREFIX },
     reddit: {
         enabled: { type: Boolean, default: false },
@@ -14,9 +14,10 @@ const schema = new mangoose.Schema({
     starboard: {
         threshold: { type: Number, default: 1 },
         enabled: { type: Boolean, default: false },
-        channelID: { type: String, default: null }
+        channelID: { type: String, default: null },
+        emoji: { type: String, default: '⭐' }
     },
-    logging: {
+    modlog: {
         enabled: { type: Boolean, default: false },
         channelID: { type: String, default: null }
     },
@@ -26,8 +27,16 @@ const schema = new mangoose.Schema({
         max: { type: Number, default: 10 },
         min: { type: Number, default: 1 }
     },
-    tags: { type: Array, default: [] },
-    blacklist: []
+    suggestions: {
+        enabled: { type: Boolean, default: false },
+        channelID: { type: String, default: null },
+        yesEmoji: { type: String, default: '✅' },
+        noEmoji: { type: String, default: '❌' }
+    },
+    tags: [],
+    blacklist: [],
+    selfAssignable: [],
+    autoroles: []
 });
 
 module.exports = mangoose.model('guilds', schema);

@@ -1,7 +1,11 @@
 const { Event } = require('../core');
+const statues = require('../assets/game-statuses');
+
 module.exports = class ReadyEvent extends Event {
     constructor(client) {
         super(client, 'ready');
+
+        this.current = statues.Statuses[Math.floor(Math.random() * statues.Statuses.length)];
     }
 
     emit() {
@@ -10,11 +14,10 @@ module.exports = class ReadyEvent extends Event {
             this.client.destroy();
         }
 
-        for (const s of this.client.shards.map(_ => _))
-            this.client.editStatus('online', {
-                name: `${process.env.MAIKA_PREFIX}help | [${s.id}] | ${this.client.guilds.size} Guild${this.client.guilds.size > 1 ? 's' : ''}`
-            });
-
+        this.client.editStatus('online', {
+            name: this.current.name,
+            type: this.current.type
+        });
         this.client.logger.info('Maika successfully connected to Discord OwO');
         // this.client.startRedditFeeds();
         // this.client.startTwitchFeeds();

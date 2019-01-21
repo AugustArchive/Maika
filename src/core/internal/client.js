@@ -8,6 +8,7 @@ const { Collection } = require('@maika.xyz/eris-utils');
 const { Cluster } = require('lavalink');
 const RESTClient = require('./rest');
 const Webserver = require('../../../website/server');
+const GuildSettings = require('../settings/guild-settings');
 
 module.exports = class MaikaClient extends Client {
     constructor() {
@@ -29,6 +30,7 @@ module.exports = class MaikaClient extends Client {
         this.color = 0xE67EDE;
         this.emojis = require('../../util/objects/emojis');
         this.owners = ['280158289667555328', '229552088525438977'];
+        this.settings = new GuildSettings(this);
 
         this.once('ready', () => {
             this.schedulers.tasks.forEach((s) => s.run(this));
