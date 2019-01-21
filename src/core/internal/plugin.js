@@ -54,13 +54,14 @@ module.exports = class MaikaPlugin {
     /**
      * Reloads the current plugin
      * @param {import('./client')} client The client
+     * @returns {boolean} yes
      */
     reload(client) {
-        const instance = client.manager.plugins.get(this.name);
-        const plugin = require(instance.file);
+        const plugin = require(`../../plugins/${this.file}`);
         delete require.cache[plugin];
         client.manager.plugins.delete(plugin.name);
         client.manager.registerPlugin(plugin.name);
+        return true;
     }
 }
 

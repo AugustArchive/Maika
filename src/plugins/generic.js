@@ -130,9 +130,9 @@ module.exports = new Plugin({
                                         })(), inline: true
                                     },
                                     //{
-                                       //name: 'Permissions Required', value: (() => {
-                                            //return c.permissions && c.permissions.length > 0 ? 'No permissions.' : permissions.map(s => `\`${s}\``).join('`, `')
-                                        //})(), inline: true
+                                    //name: 'Permissions Required', value: (() => {
+                                    //return c.permissions && c.permissions.length > 0 ? 'No permissions.' : permissions.map(s => `\`${s}\``).join('`, `')
+                                    //})(), inline: true
                                     //},
                                     {
                                         name: 'Guild Only', value: c.guild ? 'Yes' : 'No', inline: true
@@ -226,10 +226,10 @@ module.exports = new Plugin({
             run: (client, ctx) => ctx.send(`${client.emojis.GEARS} **|** <https://github.com/MaikaBot/Maika>`)
         },
         //{
-            //command: 'stats',
-            //description: (client) => `${client.user.username}'s realtime statistics`,
-            //aliases: ['botinfo', 'bot', 'statistics'],
-            //run: (client, ctx) => ctx.embed()
+        //command: 'stats',
+        //description: (client) => `${client.user.username}'s realtime statistics`,
+        //aliases: ['botinfo', 'bot', 'statistics'],
+        //run: (client, ctx) => ctx.embed()
         //},
         {
             command: 'uptime',
