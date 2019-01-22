@@ -23,7 +23,7 @@ module.exports = class LevelMonitor {
 
         const guild = await ctx.getGuildSettings(ctx.guild.id);
         const user = await ctx.getUserSettings(ctx.sender.id);
-        const rewarded = reward(guild['social'].max, guild['social'].min);
+        const rewarded = reward(guild['social'].min, guild['social'].max);
         const current = Math.floor(0.1 * Math.sqrt(user['profile'].points));
         ctx
             .updateUserSettings({
@@ -43,9 +43,9 @@ module.exports = class LevelMonitor {
                             document: { profile: { level: current } },
                             callback: (error) => {
                                 if (error)
-                                    ctx.send(`${this.client.emojis.NO_PERMS} **|** Unable to set level.`);
+                                    this.client.logger.warn(`Unable to set level.\n${error.stack}`);
                             }
-                        })
+                        });
                 }
             });
     }
