@@ -1,36 +1,28 @@
-const { Collection } = require('@maika.xyz/eris-utils');
+const { Collection } = require('eris');
 const CommandContext = require('../internal/context');
 const { stripIndents } = require('common-tags');
-const GuildSchema = require('../../models/guild');
 const UserSchema = require('../../models/user');
 
-module.exports = class PluginProcessor {
+module.exports = class pluginProcessor {
     /**
-     * Create a new instance of the Plugin processor to process all plugins
+     * Create a new instance of the plugin processor to process all plugins
      * @param {import('../internal/client')} client The client
      */
     constructor(client) {
         this.client = client;
-        /** @type {Collection<string, Collection<string, number>>} */
+        /** @type {Collection<Collection<number>>} */
         this.ratelimits = new Collection();
     }
 
     /**
-     * Process all the Plugin commands (emitted from `messageCreate` event)
+     * Process all the plugin commands (emitted from `messageCreate` event)
      * @param {import('eris').Message} msg The message that is from the event
      */
     async process(msg) {
         if (msg.author.bot || !this.client.ready)
             return;
 
-        const guildS = GuildSchema.findOne({ guildID: msg.channel.guild.id });
-        const guild = await guildS.lean().exec();
-        if (!guild) {
-            const query = new GuildSchema({ guildID: msg.channel.guild.id });
-            query.save();
-            this.client.logger.verbose(`Added guild ${msg.channel.guild.name} to the database!`);
-        }
-
+        const guild = await this.client.settings.get(msg.channel.guild.id);
         const user = UserSchema.findOne({ userID: msg.author.id });
         const q = await user.lean().exec();
         if (!q) {
@@ -54,29 +46,27 @@ module.exports = class PluginProcessor {
         const message = new CommandContext(this.client, msg, args);
         const commandName = args.shift();
         const plugin = this.client.manager.plugins.filter(pl => pl.hasCommand(commandName));
+        const command = plugin[0].getCommand(commandName);
+
+        if (!command)
+            return;
 
         if (guild['social'].enabled)
             this.executeSocialMonitor(message);
 
-        if (plugin.length < 1)
-            return;
+        if (command.guild && msg.channel.type === 1)
+            return message.send(`:x: **|** You must be in a guild to run the **\`${command.command}\`** command.`);
+        else if (command.owner && !this.client.owners.includes(message.sender.id))
+            return message.send(`:x: **|** You have inefficent permissions to execute the **\`${command.command}\`** command. (**Developer**)`);
+        else if (command.permissions && command.permissions.some(pe => !msg.member.permission.has(pe)))
+            return this.getPermissions(message, command.command, msg.member);
 
-        const plug = plugin[0].getCommand(commandName);
-        if (plug.guild && msg.channel.type === 1)
-            return message.send(`:x: **|** You must be in a guild to run the **\`${plug.command}\`** command.`);
-        
-        if (plug.owner && !this.client.owners.includes(message.sender.id))
-            return message.send(`:x: **|** You have inefficent permissions to execute the **\`${plug.command}\`** command. (**Developer**)`);
-
-        if (plug.permissions && plug.permissions.some(pe => !msg.member.permission.has(pe)))
-            return this.getPermissions(message, plug.command, msg.member);
-
-        if (!this.ratelimits.has(plug.command))
-            this.ratelimits.set(plug.command, new Collection());
+        if (!this.ratelimits.has(command.command))
+            this.ratelimits.set(command.command, new Collection());
 
         const now = Date.now();
-        const timestamps = this.ratelimits.get(plug.command);
-        const throttle = (plug.throttle || 3) * 1000;
+        const timestamps = this.ratelimits.get(command.command);
+        const throttle = (command.throttle || 3) * 1000;
 
         if (!timestamps.has(msg.author.id)) {
             timestamps.set(msg.author.id, now);
@@ -87,7 +77,7 @@ module.exports = class PluginProcessor {
             if (now < time) {
                 const left = (time - now) / 1000;
                 message.embed({
-                    description: `**${msg.author.username}, the command \`${plug.command}\` is currently on cooldown for another ${left > 1 ? `${left.toFixed(0)} seconds.` : `${left.toFixed(0)} second.`}**`,
+                    description: `**${msg.author.username}, the command \`${command.command}\` is currently on cooldown for another ${left > 1 ? `${left.toFixed(0)} seconds.` : `${left.toFixed(0)} second.`}**`,
                     color: this.client.color,
                     footer: {
                         text: this.client.getFooter()
@@ -100,31 +90,31 @@ module.exports = class PluginProcessor {
         }
 
         try {
-            await plug.run(this.client, message);
+            await command.run(this.client, message);
         } catch(ex) {
             message.embed({
                 description: stripIndents`
-                    Command \`${plug.command}\` has failed to execute.
+                    Command \`${command.command}\` has failed to execute.
                     Message: **\`${ex.message}\`**
                     Report this to \`auguwu#5820\` or \`void#0001\` here: ***<https://discord.gg/7TtMP2n>***
                 `,
                 color: this.client.color,
                 footer: { text: this.client.getFooter() }
             });
-            this.client.logger.error(`Unexpected error while running the ${plug.command} command:\n${ex.stack}`);
+            this.client.logger.error(`Unexpected error while running the ${command.command} command:\n${ex.stack}`);
         }
     }
 
     /**
      * Checks the sender's permission
      * @param {CommandContext} ctx The command context
-     * @param {import('../internal/plugin').MaikaCommand} command The command
+     * @param {import('../internal/command')} command The command
      * @param {import('eris').Member} sender The member
      */
     // TODO: not be lazy and actually name it something that it is
     getPermissions(ctx, command, sender) {
         const needed = command.permissions.filter(perm => sender.permission.has(perm));
-        ctx.send(`:pencil: **|** Sorry but you will need **${needed.length > 1 ? `the following permission: ${needed}` : `the following permissions: ${needed.join(', ')}`}**.`);
+        ctx.send(`:pencil: **|** Sorry but you will need **${needed.length > 1 ? `the following permission: ${needed[0]}` : `the following permissions: ${needed.join(', ')}`}**.`);
     }
 
     /**

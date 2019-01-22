@@ -1,4 +1,4 @@
-const { Collection } = require('@maika.xyz/eris-utils');
+const { Collection } = require('eris');
 const { readdir } = require('fs');
 
 module.exports = class SchedulerManager {
@@ -8,7 +8,7 @@ module.exports = class SchedulerManager {
      */
     constructor(client) {
         this.client = client;
-        /** @type {Collection<string, import('../internal/scheduler')>} */
+        /** @type {Collection<import('../internal/scheduler')>} */
         this.tasks = new Collection();
     }
 

@@ -38,6 +38,13 @@
   dependencies:
     axios "0.18.0"
 
+"@maika.xyz/miu@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@maika.xyz/miu/-/miu-0.1.0.tgz#c18324b2f7e31493bc7e9acc3d5aa3c6aedb2e8e"
+  integrity sha512-crn8y+q8FIgp0aKOPxxpcf2yuH3buR8166zwNT8sIB0jNuMvwkOidLGFIA1MZcV7YBP8kO2vGV0AUKaCazt42A==
+  dependencies:
+    axios "0.18.0"
+
 accepts@~1.3.5:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/accepts/-/accepts-1.3.5.tgz#eb777df6011723a3b14e8a72c0805c8e86746bd2"

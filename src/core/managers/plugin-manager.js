@@ -1,5 +1,5 @@
 const PluginProcessor = require('../processors/plugin-processor');
-const { Collection } = require('@maika.xyz/eris-utils');
+const { Collection } = require('eris');
 const { readdir } = require('fs');
 const { join } = require('path');
 
@@ -10,7 +10,7 @@ module.exports = class PluginManager {
      */
     constructor(client) {
         this.client = client;
-        /** @type {Collection<string, import('../internal/plugin')>} */
+        /** @type {Collection<import('../internal/plugin')>} */
         this.plugins = new Collection();
         this.processor = new PluginProcessor(client);
     }
@@ -27,7 +27,7 @@ module.exports = class PluginManager {
             files.forEach((f) => {
                 try {
                     const plugin = require(join(__dirname, '..', '..', 'plugins', f));
-                    this.registerPlugin(plugin, { file: f });
+                    this.register(plugin, { file: f });
                 } catch(ex) {
                     this.client.logger.error(`Unable to load plugin "${ex}":\n${ex.stack}`);
                 }
@@ -36,12 +36,12 @@ module.exports = class PluginManager {
     }
 
     /**
-     * Registers the plugin
+     * Registers the plugin (reloading / loading)
      * @param {import('../internal/plugin')} plugin The plugin
-     * @param {{ file: string; }} [options] Any options to pass
+     * @param {{ file: string; }} options Any options to pass
      * @returns {void} nOOP
      */
-    registerPlugin(plugin, options) {
+    register(plugin, options) {
         plugin.setFile(options.file);
         if (this.plugins.has(plugin.name))
             this.client.logger.warn(`Unable to register ${plugin.name}; already registered.`);
@@ -51,5 +51,20 @@ module.exports = class PluginManager {
 
         this.plugins.set(plugin.name, plugin);
         this.client.logger.info(`Loaded plugin: ${plugin.name}!`);
+    }
+
+    /**
+     * Deregisters the plugin (unloading)
+     * @param {import('../internal/plugin')} pl The plugin
+     * @returns {boolean}
+     */
+    deregister(pl) {
+        if (!this.plugins.has(pl.name)) {
+            this.plugins.logger.warn(`Unable to deregister plugin ${pl.name}; doesn't exist.`);
+            return false;
+        }
+
+        this.plugins.delete(pl.name);
+        return true;
     }
 }

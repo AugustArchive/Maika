@@ -67,6 +67,10 @@ module.exports = class GuildSettings {
             .lean()
             .exec();
     }
+
+    get schema() {
+        return GuildSchema;
+    }
 }
 
 /**

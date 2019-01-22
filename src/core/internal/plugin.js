@@ -1,4 +1,5 @@
-const { Collection } = require('@maika.xyz/eris-utils');
+const { Collection } = require('eris');
+const Command = require('./command');
 
 module.exports = class MaikaPlugin {
     /**
@@ -10,13 +11,13 @@ module.exports = class MaikaPlugin {
         this.description = info.description;
         this.visible = info.visible || true;
         this.emoji = info.emoji || 'ℹ';
-        /** @type {Collection<string, MaikaCommand>} */
+        /** @type {Collection<import('./command')>} */
         this.commands = new Collection();
         this.file = null;
         this.disabled = info.disabled || false;
 
         for (let i = 0; i < info.commands.length; i++)
-            this.commands.set(info.commands[i].command, info.commands[i]);
+            this.commands.set(info.commands[i].command, new Command(info.commands[i]));
     }
 
     /**
@@ -35,33 +36,16 @@ module.exports = class MaikaPlugin {
      * @returns {boolean}
      */
     hasCommand(name) {
-        return (
-            this.commands.filter(c => c.command === name || c.aliases.includes(name)).length > 0
-        );
+        return this.commands.filter(c => c.command === name || c.aliases.includes(name)).length > 0;
     }
 
     /**
      * Gets the command instance
      * @param {string} name The command name
-     * @returns {MaikaCommand} The command instance
+     * @returns {import('./command')[]} The command instance
      */
     getCommand(name) {
-        return (
-            this.commands.filter(c => c.command === name || c.aliases.includes(name))[0]
-        );
-    }
-
-    /**
-     * Reloads the current plugin
-     * @param {import('./client')} client The client
-     * @returns {boolean} yes
-     */
-    reload(client) {
-        const plugin = require(`../../plugins/${this.file}`);
-        delete require.cache[plugin];
-        client.manager.plugins.delete(plugin.name);
-        client.manager.registerPlugin(plugin.name);
-        return true;
+        return this.commands.filter(c => c.command === name || c.aliases.includes(name))[0];
     }
 }
 
@@ -71,27 +55,14 @@ module.exports = class MaikaPlugin {
  * @prop {string} description The plugin description
  * @prop {boolean} [visible] Should the plugin be visiable to all users?
  * @prop {string} [emoji] The emoji for the plugin commands
- * @prop {MaikaCommand[]} commands The array of commands to add
+ * @prop {import('./command').CommandInfo[]} commands The array of commands to add
  * @prop {boolean} [disabled] If the plugin should be disabled
- */
-
-/**
- * @typedef {Object} MaikaCommand
- * @prop {string} command The command name
- * @prop {string | DescriptionSupplier} description The command description
- * @prop {string} [usage] The command usage
- * @prop {string} [category='Generic'] The command category, returns Generic as it's default category
- * @prop {string[]} [aliases=[]] The command aliases, returns an Array of no aliases were found
- * @prop {number} [throttle=3] The command cooldown number, returns 3 as it's default throttle number
- * @prop {boolean} [owner=false] If the command should be ran by the developers
- * @prop {boolean} [guild=false] If the command should be ran in a Discord server.
- * @prop {Permission[]} [permissions] Any user permissions to check before processing a command
- * @prop {CommandRun} run The run function
  */
 
 /**
  * @typedef {(client: import('./client'), ctx: import('./context')) => IPromisedCommand} CommandRun
  * @typedef {Promise<void>} IPromisedCommand
  * @typedef {(client: import('./client')) => string} DescriptionSupplier
+ * @typedef {String[]} CommandAlias
  * @typedef {"createInstantInvite" | "kickMembers" | "banMembers" | "administrator" | "manageChannels" | "manageGuild" | "addReactions" | "viewAuditLogs" | "voicePrioritySpeaker" | "readMessages" | "sendMessages" | "sendTTSMessages" | "manageMessages" | "embedLinks" | "attachFiles" | "readMessageHistory" | "mentionEveryone" | "externalEmojis" | "voiceConnect" | "voiceSpeak" | "voiceMuteMembers" | "voiceDeafenMembers"| "voiceUseVAD" | "changeNickname" | "manageNicknames" | "manageRoles" | "manageWebhooks" | "manageEmojis"} Permission
  */

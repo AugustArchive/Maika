@@ -15,12 +15,18 @@ module.exports = class ReadyEvent extends Event {
         }
 
         this.client.editStatus('online', {
-            name: this.current.name,
+            name: this.current.name.replace('{{prefix}}', process.env.MAIKA_PREFIX),
             type: this.current.type
         });
         this.client.logger.info('Maika successfully connected to Discord OwO');
         // this.client.startRedditFeeds();
         // this.client.startTwitchFeeds();
         this.client.website.bootstrap();
+        setTimeout(() => {
+            this.client.editStatus('online', {
+                name: this.current.name,
+                type: this.current.type
+            });
+        }, 60 * 1000);
     }
 }

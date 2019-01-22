@@ -1,10 +1,11 @@
 const { Plugin } = require('../core');
 const axios = require('axios');
 const child = require('child_process');
+const util = require('util');
 
 module.exports = new Plugin({
     name: 'developers',
-    description: 'Easy to use developer commands for the devs.',
+    description: 'Easy to use developer commands for the developers.',
     visible: false,
     commands: [
         {
@@ -26,11 +27,15 @@ module.exports = new Plugin({
                     script = script.replace(/--slient|-s/i, '');
 
                 try {
-                    let result = await eval(isAsync ? `(async() => {${script}})()`: script);
-                    if (typeof result === 'string') result = require('util').inspect(script);
+                    let result = await eval(isAsync? `(async() => {${script}})()`: script);
+                    if (typeof result !== 'string')
+                        result = util.inspect(result, {
+                            depth: +!(util.inspect(result, { depth: 1 })),
+                            showHidden: true
+                        });
                     result = client.redact(result);
 
-                    if (result.length > 1992) {
+                    if (result.length > 1990) {
                         const resp = await axios.post('https://hastebin.com/documents', {
                             headers: { 'User-Agent': 'Maika/DiscordBot' },
                             data: result
@@ -41,7 +46,7 @@ module.exports = new Plugin({
                             ctx.raw(`***Took ${Date.now() - startedAt}ms to execute.***`, {
                                 description: `\`\`\`js\n${result}\`\`\``,
                                 color: 0x00FF00,
-                                text: { footer: `Evaluation succeeded | ${client.getFooter()}` }
+                                footer: { text: `Evaluation succeeded | ${client.getFooter()}` }
                             });
                     }
                 } catch(ex) {
@@ -49,7 +54,7 @@ module.exports = new Plugin({
                         ctx.raw(`***Took ${Date.now() - startedAt}ms to execute.***`, {
                             description: `\`\`\`js\n${ex.message}\`\`\``,
                             color: 0xFF0000,
-                            text: { footer: `Evaluation failed | ${client.getFooter()}` }
+                            footer: { text: `Evaluation failed | ${client.getFooter()}` }
                         });
                 }
             }

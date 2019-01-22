@@ -79,8 +79,7 @@ module.exports = class MaikaClient extends Client {
             this.token,
             process.env.LAVALINK_PASSWORD,
             process.env.LAVALINK_HOST,
-            process.env.DB_URI,
-            process.env.RETHINKDB_HOST
+            process.env.DB_URI
         ].join('|'), 'gi');
         return str.replace(regex, '--snip--');
     }
@@ -115,10 +114,29 @@ module.exports = class MaikaClient extends Client {
     }
 
     /**
-     * Gets the normal embed
-     * @returns {import('@maika.xyz/eris-utils').MessageEmbed} The message embed
+     * Gets the footer
+     * @returns {string} The footer text
      */
     getFooter() {
         return `Running v${require('../../../package').version} | Made by auguwu & other contributors`;
+    }
+
+    /**
+     * Starts all reddit feeds
+     * @returns {void}
+     */
+    async startRedditFeeds() {
+        this
+            .guilds
+            .forEach(async(_) => {
+                const stream = await this.settings.schema.find({ 'reddit.enabled': true }).cursor();
+                stream.on('data', (gu) => {
+                    const reddit = new RedditFeed(this, { subreddit: `https://reddit.com/r/${gu['reddit'].subreddit}` });
+                    reddit.bootstrap({
+                        channel: gu['reddit'].channelID,
+                        ratelimit: 5 * 1000
+                    });
+                });
+            });
     }
 };

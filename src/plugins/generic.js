@@ -74,7 +74,7 @@ module.exports = new Plugin({
             aliases: ['halp', 'h', '?', 'plugin', 'plugins'],
             run: async (client, ctx) => {
                 let categories = [];
-                let guild = await ctx.getGuildSettings(ctx.guild.id);
+                let guild = await client.settings.get(ctx.guild.id);
 
                 if (!ctx.args[0]) {
                     client
@@ -234,6 +234,7 @@ module.exports = new Plugin({
         {
             command: 'uptime',
             description: (client) => `How long ${client.user.username} was up for.`,
+            aliases: [],
             run: (client, ctx) => ctx.send(`${client.emojis.GEARS} **|** ${require('@maika.xyz/miu').humanize(Date.now() - client.startTime)}`)
         }
     ]

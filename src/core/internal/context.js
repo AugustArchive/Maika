@@ -119,23 +119,6 @@ module.exports = class CommandContext {
     }
 
     /**
-     * Gets the guild settings
-     * @param {string} guildID The guild ID
-     */
-    async getGuildSettings(guildID) {
-        const guild = GuildSchema.findOne({ guildID });
-        const q = await guild.lean().exec();
-
-        if (!q) {
-            const query = new GuildSchema({ guildID });
-            query.save();
-            this.client.logger.verbose(`Added guild ${guildID} to the database!`);
-        }
-
-        return q;
-    }
-
-    /**
      * Gets the user settings
      * @param {string} userID The user ID
      */
