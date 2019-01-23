@@ -9,6 +9,7 @@ const { Cluster } = require('lavalink');
 const RESTClient = require('./rest');
 const Webserver = require('../../../website/server');
 const GuildSettings = require('../settings/guild-settings');
+const RedditFeed = require('./feeds/reddit');
 
 module.exports = class MaikaClient extends Client {
     constructor() {
