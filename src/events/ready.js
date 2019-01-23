@@ -1,11 +1,11 @@
 const { Event } = require('../core');
-const statues = require('../assets/game-statuses');
+const { Statues } = require('../assets/game-statuses');
 
 module.exports = class ReadyEvent extends Event {
     constructor(client) {
         super(client, 'ready');
 
-        this.current = statues.Statuses[Math.floor(Math.random() * statues.Statuses.length)];
+        this.current = Statuses[Math.floor(Math.random() * Statuses.length)];
     }
 
     emit() {
@@ -21,10 +21,10 @@ module.exports = class ReadyEvent extends Event {
         this.client.logger.info('Maika successfully connected to Discord OwO');
         // this.client.startRedditFeeds();
         // this.client.startTwitchFeeds();
-        this.client.website.bootstrap();
+        // this.client.website.bootstrap();
         setTimeout(() => {
             this.client.editStatus('online', {
-                name: this.current.name,
+                name: this.current.name.replace('{{prefix}}', process.env.MAIKA_PREFIX),
                 type: this.current.type
             });
         }, 60 * 1000);
