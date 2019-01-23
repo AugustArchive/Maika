@@ -120,10 +120,8 @@ module.exports = new Plugin({
                             return ctx.send(`${client.emojis.WARNING} **|** Unable to find the module named: \`${ctx.args[0].toLowerCase()}\`.`);
                         }
 
-                        await message.edit(`${client.emojis.WARNING} **|** Reloading plguin \`${filtered[0].name}\`...`);
+                        await message.edit(`${client.emojis.WARNING} **|** Reloading plugin \`${filtered[0].name}\`...`);
                         delete require.cache[require('path').join(__dirname, filtered[0].file)];
-                        const pl = require(require('path').join(__dirname, filtered[0].file));
-                        client.manager.register(pl, { file: pl.file });
                         await message.delete();
                         ctx.send(`${client.emojis.INFO} **|** Reloaded plugin \`${filtered[0].name}\`.`);
                     }
