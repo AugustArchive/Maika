@@ -60,7 +60,7 @@ module.exports = class PluginManager {
      */
     deregister(pl) {
         if (!this.plugins.has(pl.name)) {
-            this.plugins.logger.warn(`Unable to deregister plugin ${pl.name}; doesn't exist.`);
+            this.client.logger.warn(`Unable to deregister plugin ${pl.name}; doesn't exist.`);
             return false;
         }
 
