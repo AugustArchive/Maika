@@ -15,12 +15,14 @@ Pull Requests are accepted, but you will have to lint the code (`yarn lint` or `
 - Level System (~~maybe better then MEE6, I honestly don't know~~)
 
 ## Running
-As per the developement team, (if you wanna run Maika) we expect you to know how to run Maika. All you need is [RethinkDB](https://github.com/MaikaBot/Maika/blob/master/README.md#why-rethinkdb) and MongoDB.
+As per the developement team, (if you wanna run Maika) we expect you to know how to run Maika. All you need is Redis, Lavalink, & MongoDB. We expect you to know how to clone Maika
 
-## Why RethinkDB
-We use RethinkDB for interval cache.
+### Running: `.env`
+You must create the .env file in the root directory (`$HOME/Maika`), but in a later commit, there is an .env example so rename it.
 
-But August, why not use Redis to cache daily & reminder interval cache? Because I don't wanna run Redis on my machine (because I'm lazy to install it) and I don't know how. (~~You can try to submit a Pull Request to use Redis for interval cache~~) But, we use MongoDB as the primary/main database.
+**Windows**: `soon`
+
+**Linux / MacOS**: `mv $HOME/Maika/.env-example $HOME/Maika/.env`
 
 ## License
 > [Maika](https://github.com/MaikaBot/Maika) is released under the [MIT](https://github.com/MaikaBot/Maika/blob/master/LICENSE) license and maintained by [auguwu](https://augu.me)
