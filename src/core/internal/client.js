@@ -3,13 +3,14 @@ const PluginManager = require('../managers/plugin-manager');
 const EventManager = require('../managers/event-manager');
 const SchedulerManager = require('../managers/scheduler-manager');
 const DatabaseManager = require('../managers/database-manager');
+const AudioManager = require('../managers/audio-manager');
 const Hideri = require('@maika.xyz/hideri');
-const { Collection } = require('@maika.xyz/eris-utils');
 const { Cluster } = require('lavalink');
 const RESTClient = require('./rest');
 const Webserver = require('../../../website/server');
 const GuildSettings = require('../settings/guild-settings');
 const RedditFeed = require('./feeds/reddit');
+const RedisClient = require('./redis');
 
 module.exports = class MaikaClient extends Client {
     constructor() {
@@ -25,13 +26,16 @@ module.exports = class MaikaClient extends Client {
         this.database = new DatabaseManager(this);
         this.logger = new Hideri.Logger();
         this.rest = new RESTClient(this);
-        /** @type {Collection<string, import('./audio/audio-player')>} */
-        this.players = new Collection();
         this.website = Webserver(this);
         this.color = 0xE67EDE;
         this.emojis = require('../../util/objects/emojis');
         this.owners = ['280158289667555328', '229552088525438977'];
         this.settings = new GuildSettings(this);
+        this.audio = new AudioManager(this);
+        this.redis = new RedisClient(this, {
+            uri: process.env.REDIS_URI,
+            password: process.env.REDIS_PASSWORD
+        });
 
         this.once('ready', () => {
             this.schedulers.tasks.forEach((s) => s.run(this));
@@ -63,6 +67,7 @@ module.exports = class MaikaClient extends Client {
         this.events.start();
         this.schedulers.start();
         this.database.connect();
+        this.redis.connect();
         await super.connect()
             .then(() => this.logger.info("Maika is now connecting to Discord."));
     }
@@ -80,7 +85,9 @@ module.exports = class MaikaClient extends Client {
             this.token,
             process.env.LAVALINK_PASSWORD,
             process.env.LAVALINK_HOST,
-            process.env.DB_URI
+            process.env.DB_URI,
+            process.env.REDIS_URI,
+            process.env.REDIS_PASSWORD
         ].join('|'), 'gi');
         return str.replace(regex, '--snip--');
     }

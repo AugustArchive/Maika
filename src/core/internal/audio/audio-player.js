@@ -36,9 +36,7 @@ module.exports = class AudioPlayer {
      * @returns {boolean}
      */
     get busy() {
-        return (
-            this.playing || this.paused
-        );
+        return this.playing || this.paused;
     }
 
     /**
@@ -81,19 +79,20 @@ module.exports = class AudioPlayer {
     }
 
     /**
-     * Stops the player
+     * Skips the song that Maika is playing
      */
-    stop() {
+    skip() {
         this.player.stop();
     }
 
     /**
      * Ends the audio player
      */
-    endSession() {
-        this.client.players.delete(this.guildID);
+    destroy() {
+        this.client.audio.destroy(this.guildID);
         this.stop();
         this.player.destroy();
+        this.sendMessage(`${this.client.emojis.INFO} **|** Thanks for playing music with me! If you want more bandwith & more nodes in other countries, consider donating! Use the "donate" command for more info. (Donating is optional, not required)`);
     }
 
     /**
