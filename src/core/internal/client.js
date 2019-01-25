@@ -4,10 +4,10 @@ const EventManager = require('../managers/event-manager');
 const SchedulerManager = require('../managers/scheduler-manager');
 const DatabaseManager = require('../managers/database-manager');
 const AudioManager = require('../managers/audio-manager');
+const LanguageManager = require('../managers/language-manager');
 const Hideri = require('@maika.xyz/hideri');
 const { Cluster } = require('lavalink');
 const RESTClient = require('./rest');
-const Webserver = require('../../../website/server');
 const GuildSettings = require('../settings/guild-settings');
 const RedditFeed = require('./feeds/reddit');
 const RedisClient = require('./redis');
@@ -26,7 +26,6 @@ module.exports = class MaikaClient extends Client {
         this.database = new DatabaseManager(this);
         this.logger = new Hideri.Logger();
         this.rest = new RESTClient(this);
-        this.website = Webserver(this);
         this.color = 0xE67EDE;
         this.emojis = require('../../util/objects/emojis');
         this.owners = ['280158289667555328', '229552088525438977'];
@@ -36,6 +35,7 @@ module.exports = class MaikaClient extends Client {
             uri: process.env.REDIS_URI,
             password: process.env.REDIS_PASSWORD
         });
+        this.languages = new LanguageManager(this);
 
         this.once('ready', () => {
             this.schedulers.tasks.forEach((s) => s.run(this));

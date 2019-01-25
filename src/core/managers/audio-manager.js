@@ -33,11 +33,12 @@ module.exports = class AudioManager {
      * Creates a new instance of the Audio player
      * @param {string} guildID The guild ID
      * @param {string} channelID The channel ID
-     * @returns {void}
+     * @returns {AudioPlayer} The audio player instance
      */
     create(guildID, channelID) {
         const player = new AudioPlayer(this.client, guildID, channelID);
         this.players.set(guildID, player);
+        return player;
     }
 
     /**

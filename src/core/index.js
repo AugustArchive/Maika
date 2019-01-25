@@ -2,5 +2,6 @@ module.exports = {
     Client: require('./internal/client'),
     Event: require('./internal/event'),
     Plugin: require('./internal/plugin'),
-    Scheduler: require('./internal/scheduler')
+    Scheduler: require('./internal/scheduler'),
+    Language: require("./internal/language")
 };

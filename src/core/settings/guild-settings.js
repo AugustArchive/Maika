@@ -28,20 +28,17 @@ module.exports = class GuildSettings {
      * Updates any guild settings
      * @param {string} guildID The guild ID
      * @param {any} obj The object to update
-     * @returns {Promise<boolean>}
+     * @returns {Promise}
      */
     update(guildID, obj) {
-        return new Promise((resolve, reject) => {
-            GuildSchema
-                .update({
-                    guildID
-                }, obj, (error) => {
-                    if (error)
-                        reject(false);
+        this
+            .schema
+            .update({ guildID }, obj, (error, data) => {
+                if (error)
+                    return Promise.reject(error);
 
-                    resolve(true);
-                });
-        });
+                Promise.resolve(data);
+            }).exec();
     }
 
     /**
@@ -64,7 +61,6 @@ module.exports = class GuildSettings {
         const guild = GuildSchema.findOne({ guildID: id });
         guild
             .remove()
-            .lean()
             .exec();
     }
 

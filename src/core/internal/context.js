@@ -1,6 +1,5 @@
 const MessageCollector = require('./collector');
-const GuildSchema = require('../../models/guild');
-const UserSchema = require('../../models/user');
+const UserSettings = require('../settings/user-settings');
 
 module.exports = class CommandContext {
     /**
@@ -53,6 +52,43 @@ module.exports = class CommandContext {
      */
     get channel() {
         return this.message.channel;
+    }
+
+    /**
+     * Gets the user's settings
+     * @returns {UserSettings}
+     */
+    get userSettings() {
+        return new UserSettings(this.client);
+    }
+
+    /**
+     * Translate the locale and return the string
+     * @param {string} key The key
+     * @param {any} args The arguments
+     * @returns {string} The translated string
+     * @example
+     * 
+     * const str = ctx.translate('locale.translator');
+     * ctx.send(str);
+     */
+    translate(key, args = {}) {
+        const user = this.userSettings.get(this.sender.id);
+        if (!this.client.languages.locales.includes(user.locale))
+            return `${this.client.emojis.ERROR} **|** Locale \`${user.locale}\` doesn't exist.`;
+
+        const processed = this.client.languages.locales[user.locale].map[key];
+        if (!processed)
+            return key;
+
+        const templates = processed.match(this.client.languages.moustache) || [];
+        for (const t of templates) {
+            const destructured = this.client.languages.moustache.exec(t);
+            processed = processed.replace(t, String(args[destructured[1]]) || '?');
+            this.client.languages.moustache.lastIndex = 0;
+        }
+
+        return processed;
     }
 
     /**
@@ -116,43 +152,6 @@ module.exports = class CommandContext {
         this.send(options.content);
         const message = await this.collector.awaitMessage(options.filter, options.options);
         return message;
-    }
-
-    /**
-     * Gets the user settings
-     * @param {string} userID The user ID
-     */
-    async getUserSettings(userID) {
-        const user = UserSchema.findOne({ userID });
-        const q = await user.lean().exec();
-
-        if (!q) {
-            const query = new UserSchema({ userID });
-            query.save();
-            this.client.logger.verbose(`Added user ${userID} to the database!`);
-        }
-
-        return q;
-    }
-
-    /**
-     * Updates the guild settings
-     * @param {MaikaDocumentOptions} options The options to update
-     */
-    updateGuildSettings(options) {
-        GuildSchema
-            .update(options.condition, options.document, options.callback)
-            .exec();
-    }
-
-    /**
-     * Updates the user settings
-     * @param {MaikaDocumentOptions} options The options to update
-     */
-    updateUserSettings(options) {
-        UserSchema
-            .update(options.condition, options.document, options.callback)
-            .exec();
     }
 }
 

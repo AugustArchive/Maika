@@ -18,7 +18,6 @@ module.exports = class RedisClient extends Redis {
      * @returns {void}
      */
     async connect() {
-        await super.connect();
         super.on('error', (error) => this.client.logger.error(error.stack));
         super.on('ready', () => this.client.logger.info('Connected to Redis!'));
     }

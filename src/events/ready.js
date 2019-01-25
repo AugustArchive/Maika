@@ -1,5 +1,5 @@
 const { Event } = require('../core');
-const { Statues } = require('../assets/game-statuses');
+const { Statuses } = require('../assets/game-statuses');
 
 module.exports = class ReadyEvent extends Event {
     constructor(client) {
@@ -19,9 +19,7 @@ module.exports = class ReadyEvent extends Event {
             type: this.current.type
         });
         this.client.logger.info('Maika successfully connected to Discord OwO');
-        // this.client.startRedditFeeds();
-        // this.client.startTwitchFeeds();
-        // this.client.website.bootstrap();
+        this.client.startRedditFeeds();
         setTimeout(() => {
             this.client.editStatus('online', {
                 name: this.current.name.replace('{{prefix}}', process.env.MAIKA_PREFIX),

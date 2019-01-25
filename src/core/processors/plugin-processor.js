@@ -76,7 +76,7 @@ module.exports = class pluginProcessor {
 
             if (now < time) {
                 const left = (time - now) / 1000;
-                message.embed({
+                return message.embed({
                     description: `**${msg.author.username}, the command \`${command.command}\` is currently on cooldown for another ${left > 1 ? `${left.toFixed(0)} seconds.` : `${left.toFixed(0)} second.`}**`,
                     color: this.client.color,
                     footer: {
