@@ -275,6 +275,27 @@ module.exports = new Plugin({
             }
         },
         {
+            command: 'snipe',
+            description: 'Snipe a deleted message',
+            aliases: ['snipe-message'],
+            run: async (client, ctx) => {
+                const cached = await client.redis.get(`deleted-${ctx.channel.id}`)
+                    .then(res => res? JSON.parse(res): undefined);
+
+                if (!cached)
+                    return ctx.send(`${client.emojis.ERROR} **|** No messages that have been deleted here.`);
+
+                return ctx.embed({
+                    author: {
+                        name: `${cached.user.username}#${cached.user.discriminator} in #${ctx.channel.name}`
+                    },
+                    description: require('../util/string').elipisis(cached.content, 2048),
+                    footer: { text: client.getFooter() },
+                    timestamp: new Date(cached.timestamp).toISOString()
+                });
+            }
+        },
+        {
             command: 'suggest',
             description: "Suggests a random plugin or command you never tried.",
             usage: '[--plugin | --command]',

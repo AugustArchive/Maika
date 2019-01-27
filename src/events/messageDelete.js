@@ -5,18 +5,17 @@ module.exports = class MessageDeletedEvent extends Event {
         super(client, 'messageDelete');
     }
 
-    run(message) {
+    async emit(message) {
         if (!message.channel || !message.author)
             return;
 
-        this
+        await this
             .client
             .redis
-            .set(`deleted-${message.id}`, JSON.stringify({
-                author: message.author.toJSON(),
+            .set(`deleted-${message.channel.id}`, JSON.stringify({
+                user: message.author.toJSON(),
                 content: message.content,
-                timestamp: message.timestamp,
-                channel: message.channel
+                timestamp: message.timestamp
             }), 'EX', 60 * 60);
         this.client.logger.info(`Sniped message ${message.content}!`);
     }
