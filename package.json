@@ -15,7 +15,7 @@
     "readme": "https://maikabot.xyz",
     "dependencies": {
         "@maika.xyz/eris-utils": "0.1.0",
-        "@maika.xyz/hideri": "0.0.1",
+        "@maika.xyz/hideri": "0.0.2",
         "@maika.xyz/miu": "0.1.0",
         "axios": "0.18.0",
         "common-tags": "1.8.0",
