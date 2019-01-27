@@ -9,8 +9,7 @@ module.exports = class MaikaPlugin {
     constructor(info) {
         this.name = info.name;
         this.description = info.description;
-        this.visible = info.visible || true;
-        this.emoji = info.emoji || 'ℹ';
+        this.visible = info.visible;
         /** @type {Collection<import('./command')>} */
         this.commands = new Collection();
         this.file = null;
@@ -54,7 +53,6 @@ module.exports = class MaikaPlugin {
  * @prop {string} name The plugin name
  * @prop {string} description The plugin description
  * @prop {boolean} [visible] Should the plugin be visiable to all users?
- * @prop {string} [emoji] The emoji for the plugin commands
  * @prop {import('./command').CommandInfo[]} commands The array of commands to add
  * @prop {boolean} [disabled] If the plugin should be disabled
  */

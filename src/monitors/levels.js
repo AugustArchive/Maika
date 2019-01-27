@@ -21,32 +21,35 @@ module.exports = class LevelMonitor {
             !ctx.member
         ) return;
 
-        const guild = await ctx.getGuildSettings(ctx.guild.id);
-        const user = await ctx.getUserSettings(ctx.sender.id);
-        const rewarded = reward(guild['social'].min, guild['social'].max);
+        const guild = await this.client.settings.get(ctx.guild.id);
+        const user = await ctx.userSettings.get(ctx.sender.id);
+        const rewarded = reward(guild['social'].min || 1, guild['social'].max || 10);
         const current = Math.floor(0.1 * Math.sqrt(user['profile'].points));
         ctx
-            .updateUserSettings({
-                condition: { userID: ctx.sender.id },
-                document: { profile: { points: rewarded } },
-                callback: (error) => {
-                    if (error)
-                        ctx.send(`${this.client.emojis.NO_PERMS} **|** <@${ctx.sender.id}>, I wasn't able to reward \`${rewarded}\` points to you. :(`);
-
-                    if (user['profile'].points < current)
-                        if (guild['social'].levelNotice)
-                            ctx.send(`${this.client.emojis.YAY} **|** <@${ctx.sender.id}>, you have leveled up to \`${current}\`. It's not an achivement, you baka!`);
-
-                    ctx
-                        .updateUserSettings({
-                            condition: { userID: ctx.sender.id },
-                            document: { profile: { level: current } },
-                            callback: (error) => {
-                                if (error)
-                                    this.client.logger.warn(`Unable to set level.\n${error.stack}`);
-                            }
-                        });
+            .userSettings
+            .schema
+            .updateOne({
+                userID: ctx.sender.id
+            },
+            {
+                profile: {
+                    points: (user.profile.points === 0? rewarded: user.profile.points + rewarded)
                 }
+            }, (error) => {
+                if (error)
+                    ctx.send(`${this.client.emojis.NO_PERMS} **|** <@${ctx.sender.id}>, I wasn't able to reward \`${rewarded}\` points to you. :(`);
+
+                if (user['profile'].points < current)
+                    if (guild['social'].levelNotice)
+                        ctx.send(`${this.client.emojis.YAY} **|** <@${ctx.sender.id}>, you have leveled up to \`${current}\`. It's not an achivement, you baka!`);
+
+                ctx
+                    .userSettings
+                    .schema
+                    .updateOne({ userID: ctx.sender.id }, { profile: { level: (user.profile.level === 0? current: user.profile.level + current) } }, (error) => {
+                        if (error)
+                            this.client.logger.error(error);
+                    });
             });
     }
 };

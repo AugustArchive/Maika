@@ -51,9 +51,6 @@ module.exports = class pluginProcessor {
         if (!command)
             return;
 
-        if (guild['social'].enabled)
-            this.executeSocialMonitor(message);
-
         if (command.guild && msg.channel.type === 1)
             return message.send(`:x: **|** You must be in a guild to run the **\`${command.command}\`** command.`);
         else if (command.owner && !this.client.owners.includes(message.sender.id))

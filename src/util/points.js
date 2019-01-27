@@ -6,10 +6,6 @@ module.exports = class PointUtil {
      * @returns {number} The rewarded points
      */
     static getPoints(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return (
-            Math.floor(Math.random() * (max - min)) + min
-        );
+        return Math.floor(Math.random() * max) + min;
     }
 };

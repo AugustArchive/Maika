@@ -4,7 +4,6 @@ const EventManager = require('../managers/event-manager');
 const SchedulerManager = require('../managers/scheduler-manager');
 const DatabaseManager = require('../managers/database-manager');
 const AudioManager = require('../managers/audio-manager');
-const LanguageManager = require('../managers/language-manager');
 const Hideri = require('@maika.xyz/hideri');
 const { Cluster } = require('lavalink');
 const RESTClient = require('./rest');
@@ -35,7 +34,6 @@ module.exports = class MaikaClient extends Client {
             uri: process.env.REDIS_URI,
             password: process.env.REDIS_PASSWORD
         });
-        this.languages = new LanguageManager(this);
 
         this.once('ready', () => {
             this.schedulers.tasks.forEach((s) => s.run(this));

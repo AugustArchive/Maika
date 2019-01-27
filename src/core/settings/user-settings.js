@@ -22,14 +22,13 @@ module.exports = class UserSettings {
      * @returns {Settings}
      */
     async get(userID) {
-        const user = await this.schema.findOne({ userID })
-            .lean()
-            .exec();
+        const user = UserSchema.findOne({ userID });
+        const query = await user.lean().exec();
 
-        if (!user)
+        if (!query)
             this.create(userID);
 
-        return user;
+        return query;
     }
 
     /**
@@ -38,7 +37,7 @@ module.exports = class UserSettings {
      * @returns {void}
      */
     create(id) {
-        const user = new this.schema({ userID: id });
+        const user = new UserSchema({ userID: id });
         user.save();
         this.client.logger.verbose(`Added user ${this.client.users.get(id).username} to the database.`);
     }
@@ -51,9 +50,8 @@ module.exports = class UserSettings {
      */
     update(id, document) {
         return new Promise((resolve, reject) => {
-            this
-                .schema
-                .update({ userID: id }, document, (error) => {
+            UserSchema
+                .updateOne({ userID: id }, document, (error) => {
                     if (error)
                         reject(false);
 

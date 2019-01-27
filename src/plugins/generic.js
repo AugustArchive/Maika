@@ -80,7 +80,7 @@ module.exports = new Plugin({
                     client
                         .manager
                         .plugins
-                        .filter(pl => client.owners.includes(ctx.sender.id) ? true: !pl.visible)
+                        .filter(pl => !pl.visible)
                         .forEach((pl) => {
                             if (!categories.includes(pl))
                                 categories.push(pl);
@@ -93,7 +93,7 @@ module.exports = new Plugin({
                             **To get help on a plugin, do \`${guild['prefix']}help <pluginName>\` to view it's commands.**
                             **To get help on a command, do \`${guild['prefix']}help --command <pluginName:commandName>\`**
 
-                            ${categories.map(s => `\`${s.name}\`: **${s.description}** (${s.commands.size} Commands)`).join('\n')}
+                            ${categories.map(s => `\`${s.name}\`: **${s.description}** (${s.commands.size} Command${s.commands.size > 1? 's': ''})`).join('\n')}
                         `,
                         color: client.color,
                         footer: { text: `${client.manager.plugins.size} Plugins | ${client.getFooter()}` }
@@ -105,10 +105,8 @@ module.exports = new Plugin({
                         return ctx.send(`${client.emojis.ERROR} **|** You must provide an argument for command searches.\nExample: \`${guild['prefix']}help --command generic:donate\``);
 
                     const args = ctx.args[1].split(':');
-                    const plugin = client.manager.plugins.filter(
-                        (pl) => pl.name === args[0]
-                    );
-                    const isPlugin = (plugin.length > 0 ? true : false);
+                    const plugin = client.manager.plugins.filter((pl) => pl.name === args[0]);
+                    const isPlugin = (plugin.length > 0? true: false);
 
                     if (isPlugin) {
                         const command = plugin[0].hasCommand(args[1]);
@@ -126,19 +124,19 @@ module.exports = new Plugin({
                                     },
                                     {
                                         name: 'Aliases', value: (() => {
-                                            return c.aliases && c.aliases.length > 1 ? 'No aliases.': aliases.join(', ')
+                                            return c.aliases.length > 1? 'No aliases.': c.aliases.join(', ')
                                         })(), inline: true
                                     },
                                     //{
                                     //name: 'Permissions Required', value: (() => {
-                                    //return c.permissions && c.permissions.length > 0 ? 'No permissions.' : permissions.map(s => `\`${s}\``).join('`, `')
+                                    //return c.permissions.length > 1? 'No permissions.': c.permissions.map(s => `\`${s}\``).join('`, `')
                                     //})(), inline: true
                                     //},
                                     {
-                                        name: 'Guild Only', value: c.guild ? 'Yes' : 'No', inline: true
+                                        name: 'Guild Only', value: c.guild? 'Yes': 'No', inline: true
                                     },
                                     {
-                                        name: 'Owner Only', value: c.owner ? 'Yes' : 'No', inline: true
+                                        name: 'Owner Only', value: c.owner? 'Yes': 'No', inline: true
                                     }
                                 ],
                                 color: client.color,
@@ -150,9 +148,7 @@ module.exports = new Plugin({
                         return ctx.send(`${client.emojis.ERROR} **|** Unknown plugin: \`${args[0]}\`.`);
                 } else {
                     const arg = ctx.args[0];
-                    const plugin = client.manager.plugins.filter(
-                        (pl) => pl.name === arg.toLowerCase()
-                    );
+                    const plugin = client.manager.plugins.filter((pl) => pl.name === arg.toLowerCase());
 
                     if (plugin.length > 0) {
                         const pl = plugin[0];
@@ -160,10 +156,11 @@ module.exports = new Plugin({
                             title: `Plugin ${toUpper(pl.name)}`,
                             description: stripIndents`
                                 **${pl.description}**
+                                
                                 ${pl.commands.map(s => `\`${guild['prefix']}${s.command}${s.usage ? ` ${s.usage}` : ''}\`: **${(typeof s.description === 'function' ? s.description(client) : s.description)}**`).join('\n')}
                             `,
                             color: client.color,
-                            footer: { text: `${pl.commands.size} commands in the ${toUpper(pl.name)} plugin | ${client.getFooter()}` }
+                            footer: { text: `${pl.commands.size} commands | ${client.getFooter()}` }
                         });
                     } else
                         return ctx.send(`${client.emojis.ERROR} **|** Unknown plugin: \`${arg}\`.`);

@@ -63,35 +63,6 @@ module.exports = class CommandContext {
     }
 
     /**
-     * Translate the locale and return the string
-     * @param {string} key The key
-     * @param {any} args The arguments
-     * @returns {string} The translated string
-     * @example
-     * 
-     * const str = ctx.translate('locale.translator');
-     * ctx.send(str);
-     */
-    translate(key, args = {}) {
-        const user = this.userSettings.get(this.sender.id);
-        if (!this.client.languages.locales.includes(user.locale))
-            return `${this.client.emojis.ERROR} **|** Locale \`${user.locale}\` doesn't exist.`;
-
-        const processed = this.client.languages.locales[user.locale].map[key];
-        if (!processed)
-            return key;
-
-        const templates = processed.match(this.client.languages.moustache) || [];
-        for (const t of templates) {
-            const destructured = this.client.languages.moustache.exec(t);
-            processed = processed.replace(t, String(args[destructured[1]]) || '?');
-            this.client.languages.moustache.lastIndex = 0;
-        }
-
-        return processed;
-    }
-
-    /**
      * Send a message to the current channel
      * @param {string} content The content to send
      * @returns {PromisedMessage}

@@ -115,7 +115,7 @@ module.exports = new Plugin({
                         });
                     } else {
                         const filtered = client.manager.plugins.filter((m) => m.name.toLowerCase() === ctx.args[0].toLowerCase());
-                        if (!filtered.length < 1) {
+                        if (filtered.length < 1) {
                             await message.delete();
                             return ctx.send(`${client.emojis.WARNING} **|** Unable to find the module named: \`${ctx.args[0].toLowerCase()}\`.`);
                         }

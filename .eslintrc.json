@@ -8,27 +8,6 @@
     },
     "rules": {
         "indent": ["error", 4],
-        "no-var": ["error"],
-        "valid-jsdoc": ["warn", {
-            "requireReturn": false,
-            "requireReturnDescription": false,
-            "prefer": {
-                "return": "returns",
-                "arg": "param",
-                "property": "prop"
-            },
-            "preferType": {
-                "String": "string",
-                "Number": "number",
-                "Boolean": "boolean",
-                "Symbol": "Symbol",
-                "object": "object",
-                "function": "Function",
-                "array": "Array",
-                "date": "Date",
-                "error": "Error",
-                "null": "void"
-            }
-        }]
+        "no-var": ["error"]
     }
 }
