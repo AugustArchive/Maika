@@ -9,14 +9,21 @@ module.exports = class MaikaPlugin {
     constructor(info) {
         this.name = info.name;
         this.description = info.description;
-        this.visible = info.visible;
+        this.visible = info.visible || true;
         /** @type {Collection<import('./command')>} */
         this.commands = new Collection();
         this.file = null;
         this.disabled = info.disabled || false;
 
-        for (let i = 0; i < info.commands.length; i++)
+        info.commands.forEach((command) => {
+            if (command.disabled)
+                return;
+
+            if (this.commands.has(command.command))
+                return;
+
             this.commands.set(info.commands[i].command, new Command(info.commands[i]));
+        });
     }
 
     /**
@@ -52,15 +59,14 @@ module.exports = class MaikaPlugin {
  * @typedef {Object} PluginMeta
  * @prop {string} name The plugin name
  * @prop {string} description The plugin description
- * @prop {boolean} [visible] Should the plugin be visiable to all users?
+ * @prop {boolean} [visible=true] Should the plugin be visiable to all users?
  * @prop {import('./command').CommandInfo[]} commands The array of commands to add
- * @prop {boolean} [disabled] If the plugin should be disabled
+ * @prop {boolean} [disabled=false] If the plugin should be disabled
  */
 
 /**
  * @typedef {(client: import('./client'), ctx: import('./context')) => IPromisedCommand} CommandRun
  * @typedef {Promise<void>} IPromisedCommand
- * @typedef {(client: import('./client')) => string} DescriptionSupplier
  * @typedef {String[]} CommandAlias
  * @typedef {"createInstantInvite" | "kickMembers" | "banMembers" | "administrator" | "manageChannels" | "manageGuild" | "addReactions" | "viewAuditLogs" | "voicePrioritySpeaker" | "readMessages" | "sendMessages" | "sendTTSMessages" | "manageMessages" | "embedLinks" | "attachFiles" | "readMessageHistory" | "mentionEveryone" | "externalEmojis" | "voiceConnect" | "voiceSpeak" | "voiceMuteMembers" | "voiceDeafenMembers"| "voiceUseVAD" | "changeNickname" | "manageNicknames" | "manageRoles" | "manageWebhooks" | "manageEmojis"} Permission
  */

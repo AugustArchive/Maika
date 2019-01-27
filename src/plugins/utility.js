@@ -278,6 +278,7 @@ module.exports = new Plugin({
             command: 'snipe',
             description: 'Snipe a deleted message',
             aliases: ['snipe-message'],
+            disabled: true,
             run: async (client, ctx) => {
                 const cached = await client.redis.get(`deleted-${ctx.channel.id}`)
                     .then(res => res? JSON.parse(res): undefined);
@@ -296,13 +297,13 @@ module.exports = new Plugin({
             }
         },
         {
-            command: 'suggest',
+            command: 'random-suggestion',
             description: "Suggests a random plugin or command you never tried.",
             usage: '[--plugin | --command]',
-            aliases: ['suggest-plugin', 'suggest-command'],
+            aliases: ['suggest-plugin', 'suggest-command', 'random-command', 'random-plugin'],
             run: (client, ctx) => {
                 if (!ctx.args[0])
-                    return ctx.raw(`${client.emojis.INFO} **|** \`suggest\` subcommands:`, {
+                    return ctx.raw(`${client.emojis.INFO} **|** \`random-suggestion\` subcommands:`, {
                         description: stripIndents`
                             \`--plugin\`: Suggests a random plugin.
                             \`--command\`: Suggests a random command.
@@ -312,7 +313,7 @@ module.exports = new Plugin({
                     });
 
                 if (!['--plugin', '--command'].includes(ctx.args[0]))
-                    return ctx.raw(`${client.emojis.INFO} **|** \`suggest\` subcommands:`, {
+                    return ctx.raw(`${client.emojis.INFO} **|** \`random-suggestion\` subcommands:`, {
                         description: stripIndents`
                             \`--plugin\`: Suggests a random plugin.
                             \`--command\`: Suggests a random command.
@@ -328,7 +329,7 @@ module.exports = new Plugin({
                             ${client.emojis.INFO} **|** Have you ever used the \`${randomized.name}\` plugin?
                             *${randomized.description}*
 
-                            Has ${randomized.commands.size} commands inside of the \`${randomized.name}\` plugin.
+                            Has ${randomized.commands.size} command${randomized.commands.size > 1 ? 's' : ''} inside of the \`${randomized.name}\` plugin.
                         `);
                     } break;
                     case '--command': {
