@@ -111,6 +111,136 @@ module.exports = new Plugin({
                     ctx.send(`${client.emojis.ERROR} **|** Unknown message id.`);
                 }
             }
+        },
+        {
+            command: 'roleinfo',
+            description: 'Shows information on a Discord role',
+            usage: '<role>',
+            aliases: ['role-info', 'roleinformation'],
+            guild: true,
+            run: async(client, ctx) => {
+                if (!ctx.args[0])
+                    return ctx.send(`${client.emojis.ERROR} **|** Missing \`<role\` argument.`);
+
+                const role = await client.rest.getRole(ctx.args[0], ctx.guild);
+                return ctx.embed({
+                    title: `[ Role ${role.name} ]`,
+                    color: role.color === 0? client.color: role.color,
+                    description: stripIndents`
+                        **ID**: ${role.id}
+                        **Created At**: ${dateformat(role.createdAt, 'mm/dd/yyyy hh:MM:ssTT')}
+                        **Position**: ${role.position - 1}
+                        **Mentionable**: ${role.mentionable? 'Yes': 'No'}
+                        **Hoisted**: ${role.hoisted? 'Yes': 'No'}
+                        **Managed**: ${role.managed? 'Yes': 'No'}
+                        **Color**: #${parseInt(role.color).toString(16)}
+                    `,
+                    footer: { text: client.getFooter() }
+                });
+            }
+        },
+        {
+            command: 'serverinfo',
+            description: 'Grabs information about a Discord guild',
+            usage: '[server]',
+            aliases: [
+                'server-info', 
+                'serverinformation', 
+                'server-information', 
+                'server', 
+                'guild', 
+                'guildinfo', 
+                'guildinformation', 
+                'guild-information'
+            ],
+            guild: true,
+            run: async(client, ctx) => {
+                const guild = await client.rest.getGuild(ctx.args.length > 0? ctx.args.join(' '): ctx.guild.id);
+                return ctx.embed({
+                    title: `[ Guild ${guild.name} ]`,
+                    description: stripIndents`
+                        **ID**: ${guild.id}
+                        **Created At**: ${dateformat(guild.createdAt, 'mm/dd/yyyy hh:MM:ssTT')}
+                        **Region**: ${guild.region}
+                        **Owner**: <@${guild.ownerID}> (\`${guild.ownerID}\`)
+                        **Members**: ${guild.memberCount.toLocaleString()}
+                        **Roles [${guild.roles.size}]**: ${guild.roles.map(s => `<@&${s.id}>`).join(', ')}
+                        **Emojis [${guild.emojis.length}]**: ${await client.rest.getGuildEmojis(guild, 25)}
+                    `,
+                    color: client.color,
+                    footer: { text: client.getFooter() },
+                    icon: { url: guild.icon? guild.iconURL: null }
+                });
+            }
+        },
+        {
+            command: 'userinfo',
+            description: "Grabs information about a Discord user or yourself.",
+            usage: '[user]',
+            aliases: ['user', 'user-info', 'user-information', 'userinformation'],
+            run: async(client, ctx) => {
+                const user = await client.rest.getUser(ctx.args.length > 0? ctx.args.join(' '): ctx.sender.id);
+                const embed = {
+                    title: `[ User ${user.username}#${user.discriminator} ]`,
+                    color: client.color,
+                    fields: [
+                        {
+                            name: 'ID', value: user.id, inline: false
+                        },
+                        {
+                            name: 'Created At', value: dateformat(user.createdAt, 'mm/dd/yyyy hh:MM:ssTT'), inline: true
+                        },
+                        {
+                            name: 'Bot', value: user.bot? 'Yes': 'No'
+                        }
+                    ],
+                    thumbnail: { url: user.avatarURL || user.defaultAvatarURL }
+                };
+
+                if (ctx.guild && ctx.guild.members.has(user.id)) {
+                    const member = ctx.guild.members.get(user.id);
+                    if (member.nick)
+                        embed.fields.push({ name: 'Nickname', value: member.nick, inline: true });
+
+                    embed.fields.push({
+                        name: 'Status', value: client.determineStatus(member.status), inline: true
+                    });
+                    embed.fields.push({
+                        name: `Roles [${member.roles.length}]`, value: member.roles.map(s => `<@&${s}>`).join(', '), inline: true
+                    });
+                    embed.fields.push({
+                        name: 'Mutual Guilds', value: client.guilds.filter(s => s.members.has(user.id)).map(s => `**${s.name}**`).join(', '), inline: true
+                    });
+                    
+                    if (member.game)
+                        embed.description = `${(member.game.type === 0 ? 'Playing' : member.game.type === 1 ? 'Streaming' : member.game.type === 2 ? 'Listening to' : member.game.type === 3 ? 'Watching' : '')} **${member.game.name}**`;
+
+                    embed.fields.push({
+                        name: 'Joined At', value: dateformat(member.joinedAt, 'mm/dd/yyyy hh:MM:ssTT'), inline: true
+                    });
+
+                    if (member.voiceState.channelID && msg.guild.channels.has(member.voiceState.channelID)) {
+                        const voiceChannel = msg.guild.channels.get(member.voiceState.channelID);
+                        embed.fields.push({
+                            name: 'Voice Channel',
+                            value: voiceChannel.name,
+                            inline: true
+                        });
+                        embed.fields.push({
+                            name: 'Mute',
+                            value: member.voiceState.mute || member.voiceState.self_mute ? 'Yes' : 'No',
+                            inline: true
+                        });
+                        embed.fields.push({
+                            name: 'Deaf',
+                            value: member.voiceState.deaf || member.voiceState.self_deaf ? 'Yes' : 'No',
+                            inline: true
+                        });
+                    }
+                }
+
+                return ctx.embed(embed);
+            }
         }
     ]
 });

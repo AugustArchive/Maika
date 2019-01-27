@@ -18,5 +18,6 @@ module.exports = class MessageDeletedEvent extends Event {
                 timestamp: message.timestamp,
                 channel: message.channel
             }), 'EX', 60 * 60);
+        this.client.logger.info(`Sniped message ${message.content}!`);
     }
 }

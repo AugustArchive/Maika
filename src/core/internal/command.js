@@ -27,3 +27,7 @@ module.exports = class MaikaCommand {
  * @prop {import('./plugin').Permission[]} [permissions] Any user permissions to check before processing a command
  * @prop {import('./plugin').CommandRun} run The run function
  */
+
+/**
+ * @typedef {(client: import('./client')) => string} DescriptionSupplier
+ */

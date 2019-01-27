@@ -25,7 +25,7 @@ module.exports = class MaikaClient extends Client {
         this.database = new DatabaseManager(this);
         this.logger = Hideri.create();
         this.rest = new RESTClient(this);
-        this.color = 0xE67EDE;
+        this.color = 15105758;
         this.emojis = require('../../util/objects/emojis');
         this.owners = ['280158289667555328', '229552088525438977'];
         this.settings = new GuildSettings(this);
@@ -144,5 +144,14 @@ module.exports = class MaikaClient extends Client {
                     });
                 });
             });
+    }
+
+    /**
+     * Determines the status of a user
+     * @param {string} status The status
+     * @returns {string} The status into a stirng
+     */
+    determineStatus(status) {
+        return status === 'online'? '<:online:457289010037915660> **Online**': status === 'idle'? '<:away:457289009912217612> **Away**': status === 'dnd'? '<:dnd:457289032330772502> **Do not Disturb**': '<:offline:457289010084184066> **Offline**';
     }
 };
