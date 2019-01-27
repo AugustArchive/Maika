@@ -23,10 +23,10 @@
   resolved "https://registry.yarnpkg.com/@maika.xyz/eris-utils/-/eris-utils-0.1.0.tgz#9c0b4ec42d11fd307d7c8fc48aed5d41ac04ea09"
   integrity sha512-0Vxu2XFpxwuVkxrQ9+LbbPXK7TtY8+L6/AwFfN8E48hW8ZUpz/4y4qJ3B+5KyylAm4nAZ2t3b+AiyyQfMUMHIA==
 
-"@maika.xyz/hideri@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@maika.xyz/hideri/-/hideri-0.0.1.tgz#4e7f0d3bf9c8b9fd97c843e1bbbab98f82a1ecad"
-  integrity sha512-bHbFm0gWmjLKEfmGyIWzoI0NPSbXeakOsoidNwSPtdKShrH3lMS4pCpguAx6/vOdqRvz/utAninEpMlj5+BURw==
+"@maika.xyz/hideri@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@maika.xyz/hideri/-/hideri-0.0.2.tgz#7a0bd131b4213852aa275798652219486297980a"
+  integrity sha512-nnQ7vABL7tcpUvQOqZPZY+cq7BSs6VDUrY0fHGj59GV+J6BjEshy5bZIrz3Urjtrczk+auu9PpTGN6r5ze2poA==
   dependencies:
     "@maika.xyz/miu" "0.0.3"
     chalk "2.4.2"
