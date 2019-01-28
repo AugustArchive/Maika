@@ -19,7 +19,7 @@ module.exports = class UserSettings {
     /**
      * Gets the user settings
      * @param {string} userID The user ID
-     * @returns {Settings}
+     * @returns {Promise<Settings>}
      */
     async get(userID) {
         const user = UserSchema.findOne({ userID });

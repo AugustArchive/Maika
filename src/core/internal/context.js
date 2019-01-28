@@ -1,3 +1,4 @@
+const { stripIndents } = require('common-tags');
 const MessageCollector = require('./collector');
 const UserSettings = require('../settings/user-settings');
 
@@ -120,7 +121,11 @@ module.exports = class CommandContext {
      * @returns {PromisedMessage}
      */
     async awaitReply(options) {
-        this.send(options.content);
+        this.send(stripIndents`
+            :warning: **|** ${options.content}
+            You have ${options.info.timeout} seconds to answer the following question.
+            Reply with \`cancel\` to cancel this entry.
+        `);
         const message = await this.collector.awaitMessage(options.filter, options.options);
         return message;
     }

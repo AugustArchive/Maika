@@ -6,5 +6,6 @@ module.exports = {
     NO_PERMS: ':name_badge:',
     MUSICAL_NOTES: ':musical_notes:',
     GEARS: ':gear:',
-    YAY: ':tada:'
+    YAY: ':tada:',
+    OK: ':ok_hand:'
 };

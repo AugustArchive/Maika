@@ -35,7 +35,7 @@ module.exports = class MessageCollector {
                 delete this.collectors[channelID + userID];
 
             this.collectors[channelID + userID] = { filter, accept };
-            setTimeout(accept.bind(null, false), timeout);
+            setTimeout(accept.bind(null, false), timeout * 1000);
         });
     }
 }
@@ -44,5 +44,5 @@ module.exports = class MessageCollector {
  * @typedef {object} AwaitMessageInfo
  * @prop {string} channelID The channel ID
  * @prop {string} userID The user ID
- * @prop {number} [timeout=30000] The timeout to wait
+ * @prop {number} [timeout=30] The timeout to wait
  */

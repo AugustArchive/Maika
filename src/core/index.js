@@ -3,5 +3,5 @@ module.exports = {
     Event: require('./internal/event'),
     Plugin: require('./internal/plugin'),
     Scheduler: require('./internal/scheduler'),
-    Language: require("./internal/language")
+    ModLogEntry: require('./internal/models/mod-log')
 };
