@@ -2,6 +2,7 @@ const { Collection } = require('eris');
 const CommandContext = require('../internal/context');
 const { stripIndents } = require('common-tags');
 const UserSchema = require('../../models/user');
+const { humanize: humanizePermissions } = require('../../util/permissions');
 
 module.exports = class pluginProcessor {
     /**
@@ -56,7 +57,7 @@ module.exports = class pluginProcessor {
         else if (command.owner && !this.client.owners.includes(message.sender.id))
             return message.send(`:x: **|** You have inefficent permissions to execute the **\`${command.command}\`** command. (**Developer**)`);
         else if (command.permissions && command.permissions.some(pe => !msg.member.permission.has(pe)))
-            return this.getPermissions(message, command.command, msg.member);
+            return this.hasPermission(message, command.command, msg.member);
 
         if (!this.ratelimits.has(command.command))
             this.ratelimits.set(command.command, new Collection());
@@ -108,10 +109,10 @@ module.exports = class pluginProcessor {
      * @param {import('../internal/command')} command The command
      * @param {import('eris').Member} sender The member
      */
-    // TODO: not be lazy and actually name it something that it is
-    getPermissions(ctx, command, sender) {
+    hasPermission(ctx, command, sender) {
         const needed = command.permissions.filter(perm => sender.permission.has(perm));
-        ctx.send(`:pencil: **|** Sorry but you will need **${needed.length > 1 ? `the following permission: ${needed[0]}` : `the following permissions: ${needed.join(', ')}`}**.`);
+        const humanized = needed.length > 1? `the following permission: **${humanizePermissions(needed[0])}**`: `the following permissions: **${needed.map(s => humanizePermissions(s)).join(', ')}**`;
+        ctx.send(`:pencil: **|** Sorry but you will need ${humanized}.`);
     }
 
     /**

@@ -122,11 +122,17 @@ module.exports = class CommandContext {
      */
     async awaitReply(options) {
         this.send(stripIndents`
-            :warning: **|** ${options.content}
+            :warning: **|** ${options.prompts.start}
             You have ${options.info.timeout} seconds to answer the following question.
             Reply with \`cancel\` to cancel this entry.
         `);
         const message = await this.collector.awaitMessage(options.filter, options.options);
+
+        if (!message.content)
+            return this.send(`${client.emojis.OK} **|** ${options.prompts.noContent}`);
+        if (['cancel'].includes(message.content))
+            return this.send(`${client.emojis.OK} **|** ${options.prompts.cancelled}`);
+
         return message;
     }
 }
@@ -137,14 +143,14 @@ module.exports = class CommandContext {
 
 /**
  * @typedef {Object} IAwait
- * @prop {string} content The content to send
+ * @prop {AwaitPrompts} prompts The prompts the say
  * @prop {import('./collector').AwaitMessageInfo} info The options
  * @prop {(msg: import('eris').Message) => boolean} filter The filter
  */
 
 /**
- * @typedef {Object} MaikaDocumentOptions
- * @prop {any} condition The condition
- * @prop {any} document The document to insert
- * @prop {(error: Error, data: any) => void} callback The callback
+ * @typedef {Object} AwaitPrompts
+ * @prop {string} start The starter prompt
+ * @prop {string} cancelled The cancelled prompt
+ * @prop {string} noContent If the user didn't provide with content
  */

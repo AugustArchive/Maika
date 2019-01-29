@@ -23,6 +23,7 @@ module.exports = class MaikaClient extends Client {
         this.events = new EventManager(this);
         this.schedulers = new SchedulerManager(this);
         this.database = new DatabaseManager(this);
+        /** @type {import('@maika.xyz/hideri').Hideri.Logger} */
         this.logger = Hideri.create();
         this.rest = new RESTClient(this);
         this.color = 15105758;

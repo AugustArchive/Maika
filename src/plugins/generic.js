@@ -127,11 +127,11 @@ module.exports = new Plugin({
                                             return c.aliases.length > 1? 'No aliases.': c.aliases.join(', ')
                                         })(), inline: true
                                     },
-                                    //{
-                                    //name: 'Permissions Required', value: (() => {
-                                    //return c.permissions.length > 1? 'No permissions.': c.permissions.map(s => `\`${s}\``).join('`, `')
-                                    //})(), inline: true
-                                    //},
+                                    {
+                                        name: 'Permissions Required', value: (() => {
+                                            return c.permissions.length > 1? 'No permissions.': c.permissions.map(s => `\`${s}\``).join('`, `')
+                                        })(), inline: true
+                                    },
                                     {
                                         name: 'Guild Only', value: c.guild? 'Yes': 'No', inline: true
                                     },

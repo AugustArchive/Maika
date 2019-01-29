@@ -24,7 +24,11 @@ module.exports = new Plugin({
                     return ctx.send(`${client.emojis.ERROR} **|** You cannot ban me! Nice try.`);
 
                 const response = await ctx.awaitReply({
-                    content: `Are you sure you wanna ban ${user.username}#${user.discriminator}?`,
+                    prompts: {
+                        start: `Are you sure you wanna ban \`${user.username}#${user.discriminator}\`?`,
+                        noContent: `Will not ban \`${user.username}#${user.discriminator}\`. *Your slience gave it away...*`,
+                        cancelled: `Cancelled entry. Will not ban \`${user.username}#${user.discriminator}\`.`
+                    },
                     filter: (msg) => msg.author.id === ctx.sender.id,
                     info: {
                         channelID: ctx.channel.id,
@@ -33,31 +37,79 @@ module.exports = new Plugin({
                     }
                 });
 
-                if (!response.content)
-                    return response.edit(`${client.emojis.OK} **|** Will not ban \`${user.username}#${user.discriminator}\`. *Your slience gave it away...*`);
-                if (['cancel'].includes(response.content))
-                    return response.edit(`${client.emojis.OK} **|** Cancelled entry. Will not ban \`${user.username}#${user.discriminator}\`.`);
+                if ('yes' in response.content) {
+                    const entry = new ModLogEntry(client, {
+                        victim: user,
+                        moderator: ctx.sender,
+                        reason: ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.',
+                        guild: ctx.guild,
+                        action: 'BAN'
+                    });
+    
+                    try {
+                        ctx.dm(stripIndents`
+                            :pencil: **You been banned from ${ctx.guild.name}!**
+                            Reason: ${ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.'}
+                            Contact \`${ctx.sender.username}#${ctx.sender.discriminator}\` to get *maybe* unbanned.
+                        `, user);
+    
+                        await ctx.guild.banMember(user.id, 7, ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.');
+                        entry.post();
+                    } catch(ex) {
+                        await ctx.guild.banMember(user.id, 7, ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.');
+                        entry.post();
+                    }
+                } else if ('no' in response.content) {
+                    ctx.send(`${client.emojis.OK} **|** OK, will not ban the user.`);
+                }
+            }
+        },
+        {
+            command: 'dehoist',
+            description: 'Dehoists a user. (Hoisting is when a user\'s nickname is like `!Maika` for an example)',
+            aliases: ['decancer'],
+            guild: true,
+            permissions: ['banMembers'],
+            run: async (client, ctx) => {
+                const hoistSearcher = /^[^\w\s\d]/;
+                const members = ctx.guild.members.filter((mem) => hoistSearcher.exec(mem.nick || mem.username));
+                const promises = [];
+                const failed = 0;
+                for (const member of members) {
+                    promises.push(
+                        member.edit({ nick: 'hoister' })
+                            .catch(() => failed++)
+                    );
+                }
 
-                const entry = new ModLogEntry(client, {
-                    victim: user,
-                    moderator: ctx.sender,
-                    reason: ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.',
-                    guild: ctx.guild,
-                    action: 'BAN'
+                const message = await ctx.awaitReply({
+                    filter: (msg) => msg.author.id === ctx.sender.id,
+                    prompts: {
+                        start: `Are you sure you wanna dehoist ${members.length - 1} members?`,
+                        noContent: `Your slience says you don't wanna dehoist ${members.length - 1}`,
+                        cancelled: `Will not dehoist ${members.length - 1}`
+                    },
+                    info: {
+                        channelID: ctx.channel.id,
+                        userID: ctx.sender.id,
+                        timeout: 60
+                    }
                 });
 
-                try {
-                    ctx.dm(stripIndents`
-                        :pencil: **You been banned from ${ctx.guild.name}!**
-                        Reason: ${ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.'}
-                        Contact \`${ctx.sender.username}#${ctx.sender.discriminator}\` to get *maybe* unbanned.
-                    `, user);
-
-                    await ctx.guild.banMember(user.id, 7, ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.');
-                    entry.post();
-                } catch(ex) {
-                    await ctx.guild.banMember(user.id, 7, ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.');
-                    entry.post();
+                if ('yes' in message.content) {
+                    await message.edit(`${client.emojis.OK} **|** Dehoisting ${members.length - 1} users... (May take a while depends on server size)`);
+                    await Promise.all(promises);
+                    await message.delete();
+                    return ctx.raw(`${client.emojis.OK} **|** Dehoisting Results:`, {
+                        description: stripIndents`
+                            **Successful**: ${members.length - failed}
+                            **Failure**: ${failed}
+                        `,
+                        color: client.color
+                    });
+                } else if ('no' in message.content) {
+                    await message.delete();
+                    return ctx.send(`${client.emojis.OK} **|** Will not dehoist ${members.length - 1}.`);
                 }
             }
         }

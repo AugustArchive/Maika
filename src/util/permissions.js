@@ -1,4 +1,35 @@
 const { Constants } = require('eris');
+/** @type {{ [x: string]: string; }} */
+const nodes = {
+    createInstantInvite: 'Create Instant Invite',
+    banMembers: 'Ban Members',
+    kickMembers: 'Kick Members',
+    administrator: 'Administrator',
+    manageChannels: 'Manage Channels',
+    manageGuild: 'Manage Guild',
+    addReactions: 'Add Reactions',
+    viewAuditLogs: 'View Audit Logs',
+    voicePrioritySpeaker: 'Priority Speaker',
+    readMessages: 'Read Messages',
+    sendMessages: 'Send Messages',
+    sendTTSMessages: 'Send TTS Messages',
+    manageMessages: 'Manage Messages',
+    embedLinks: 'Embed Links',
+    attachFiles: 'Attach Files',
+    readMessageHistory: 'Read Message History',
+    mentionEveryone: 'Mention Everyone',
+    externalEmojis: 'External Emojis',
+    voiceConnect: 'Connect to VC',
+    voiceSpeak: 'Speak in VC',
+    voiceMuteMembers: 'Mute Members in VC',
+    voiceDeafenMembers: 'Deafen Members in VC',
+    voiceUseVAD: 'Use VAD',
+    changeNickname: 'Change Nickname',
+    manageNicknames: 'Manage Nicknames',
+    manageRoles: 'Manage Roles',
+    manageWebhooks: 'Manage Webhooks',
+    manageEmojis: 'Manage Emojis'
+};
 
 module.exports = class PermissionUtil {
     /**
@@ -7,6 +38,9 @@ module.exports = class PermissionUtil {
      * @returns {number} The permission bitcoded
      */
     static gather(permission) {
+        if (!permission)
+            return this.gather(0);
+
         if (typeof permission === 'number' && permission >= 0)
             return permission;
 
@@ -30,5 +64,14 @@ module.exports = class PermissionUtil {
             return true;
         else
             return false;
+    }
+
+    /**
+     * Humanizes the permission node
+     * @param {import('../core/internal/plugin').Permission} permission The permission to humanize
+     * @returns {string} The humanized permission
+     */
+    static humanize(permission) {
+        return nodes[permission];
     }
 }

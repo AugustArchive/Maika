@@ -48,7 +48,7 @@ module.exports = class MaikaPlugin {
     /**
      * Gets the command instance
      * @param {string} name The command name
-     * @returns {import('./command')[]} The command instance
+     * @returns {import('./command')} The command instance
      */
     getCommand(name) {
         return this.commands.filter(c => c.command === name || c.aliases.includes(name))[0];
