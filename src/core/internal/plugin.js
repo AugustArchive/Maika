@@ -22,7 +22,7 @@ module.exports = class MaikaPlugin {
             if (this.commands.has(command.command))
                 return;
 
-            this.commands.set(info.commands[i].command, new Command(info.commands[i]));
+            this.commands.set(command.command, new Command(command));
         });
     }
 
