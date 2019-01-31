@@ -23,7 +23,7 @@ module.exports = new Plugin({
                 if (user.id === client.user.id)
                     return ctx.send(`${client.emojis.ERROR} **|** You cannot ban me! Nice try.`);
 
-                const response = await ctx.awaitReply({
+                const message = await ctx.awaitReply({
                     prompts: {
                         start: `Are you sure you wanna ban \`${user.username}#${user.discriminator}\`?`,
                         noContent: `Will not ban \`${user.username}#${user.discriminator}\`. *Your slience gave it away...*`,
@@ -37,7 +37,7 @@ module.exports = new Plugin({
                     }
                 });
 
-                if ('yes' in response.content) {
+                if ('yes' in message.content) {
                     const entry = new ModLogEntry(client, {
                         victim: user,
                         moderator: ctx.sender,
@@ -55,16 +55,16 @@ module.exports = new Plugin({
     
                         await ctx.guild.banMember(user.id, 7, ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.');
                         entry.post();
-                        await response.delete();
+                        await message.delete();
                         return ctx.send(`${client.emojis.OK} **|** Successfully banned <@${user.id}>.`);
                     } catch(ex) {
                         await ctx.guild.banMember(user.id, 7, ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.');
                         entry.post();
-                        await response.delete();
+                        await message.delete();
                         return ctx.send(`${client.emojis.OK} **|** Successfully banned <@${user.id}>.`);
                     }
-                } else if ('no' in response.content) {
-                    await response.delete();
+                } else if ('no' in message.content) {
+                    await message.delete();
                     ctx.send(`${client.emojis.OK} **|** OK, will not ban the user.`);
                 }
             }
@@ -78,6 +78,9 @@ module.exports = new Plugin({
             run: async (client, ctx) => {
                 const hoistSearcher = /^[^\w\s\d]/;
                 const members = ctx.guild.members.filter((mem) => hoistSearcher.exec(mem.nick || mem.username));
+                if (!members)
+                    return ctx.send(`${client.emojis.INFO} **|** No users needed to be dehoisted.`);
+
                 const promises = [];
                 const failed = 0;
                 for (const member of members) {
@@ -101,7 +104,7 @@ module.exports = new Plugin({
                     }
                 });
 
-                if ('yes' in message.content) {
+                if (['yes'].includes(message.content)) {
                     await message.edit(`${client.emojis.OK} **|** Dehoisting ${members.length - 1} users... (May take a while; depends on server size)`);
                     await Promise.all(promises);
                     await message.delete();
@@ -112,7 +115,9 @@ module.exports = new Plugin({
                         `,
                         color: client.color
                     });
-                } else if ('no' in message.content) {
+                }
+                
+                if (['no'].includes(message.content)) {
                     await message.delete();
                     return ctx.send(`${client.emojis.OK} **|** Will not dehoist ${members.length - 1} members.`);
                 }
@@ -129,57 +134,59 @@ module.exports = new Plugin({
                 if (!ctx.args[0])
                     return ctx.send(`${client.emojis.ERROR} **|** Missing \`<user>\` argument.`);
 
-                    const user = await client.rest.getUser(ctx.args[0]);
-                    if (user.id === ctx.sender.id)
-                        return ctx.send(`${client.emojis.ERROR} **|** You cannot kick yourself but nice try.`);
+                const user = await client.rest.getUser(ctx.args[0]);
+                if (user.id === ctx.sender.id)
+                    return ctx.send(`${client.emojis.ERROR} **|** You cannot kick yourself but nice try.`);
                     
-                    if (user.id === client.user.id)
-                        return ctx.send(`${client.emojis.ERROR} **|** You cannot kick me! Nice try.`);
+                if (user.id === client.user.id)
+                    return ctx.send(`${client.emojis.ERROR} **|** You cannot kick me! Nice try.`);
     
-                    const response = await ctx.awaitReply({
-                        prompts: {
-                            start: `Are you sure you wanna kick \`${user.username}#${user.discriminator}\`?`,
-                            noContent: `Will not kick \`${user.username}#${user.discriminator}\`. *Your slience gave it away...*`,
-                            cancelled: `Cancelled entry. Will not kick \`${user.username}#${user.discriminator}\`.`
-                        },
-                        filter: (msg) => msg.author.id === ctx.sender.id,
-                        info: {
-                            channelID: ctx.channel.id,
-                            userID: ctx.sender.id,
-                            timeout: 60
-                        }
+                const message = await ctx.awaitReply({
+                    prompts: {
+                        start: `Are you sure you wanna kick \`${user.username}#${user.discriminator}\`?`,
+                        noContent: `Will not kick \`${user.username}#${user.discriminator}\`. *Your slience gave it away...*`,
+                        cancelled: `Cancelled entry. Will not kick \`${user.username}#${user.discriminator}\`.`
+                    },
+                    filter: (msg) => msg.author.id === ctx.sender.id,
+                    info: {
+                        channelID: ctx.channel.id,
+                        userID: ctx.sender.id,
+                        timeout: 60
+                    }
+                });
+    
+                if (['yes'].includes(message.content)) {
+                    const entry = new ModLogEntry(client, {
+                        victim: user,
+                        moderator: ctx.sender,
+                        reason: ctx.args[1]? ctx.args.slice(1).join(' '): 'No reason provided.',
+                        guild: ctx.guild,
+                        action: 'KICK'
                     });
-    
-                    if ('yes' in response.content) {
-                        const entry = new ModLogEntry(client, {
-                            victim: user,
-                            moderator: ctx.sender,
-                            reason: ctx.args[1]? ctx.args.slice(1).join(' '): 'No reason provided.',
-                            guild: ctx.guild,
-                            action: 'KICK'
-                        });
         
-                        try {
-                            ctx.dm(stripIndents`
+                    try {
+                        ctx.dm(stripIndents`
                                 :pencil: **You been kicked from ${ctx.guild.name}!**
                                 Reason: ${ctx.args[1]? ctx.args.slice(1).join(' '): 'No reason provided.'}
                                 You can rejoin the server but obey the rules.
                             `, user);
         
-                            await ctx.guild.banMember(user.id, 7, ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.');
-                            entry.post();
-                            await response.delete();
-                            return ctx.send(`${client.emojis.OK} **|** Successfully kicked <@${user.id}>.`);
-                        } catch(ex) {
-                            await ctx.guild.banMember(user.id, 7, ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.');
-                            entry.post();
-                            await response.delete();
-                            return ctx.send(`${client.emojis.OK} **|** Successfully kicked <@${user.id}>.`);
-                        }
-                    } else if ('no' in response.content) {
-                        await response.delete();
-                        ctx.send(`${client.emojis.OK} **|** OK, will not kick the user.`);
+                        await ctx.guild.banMember(user.id, 7, ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.');
+                        entry.post();
+                        await message.delete();
+                        return ctx.send(`${client.emojis.OK} **|** Successfully kicked <@${user.id}>.`);
+                    } catch(ex) {
+                        await ctx.guild.banMember(user.id, 7, ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.');
+                        entry.post();
+                        await message.delete();
+                        return ctx.send(`${client.emojis.OK} **|** Successfully kicked <@${user.id}>.`);
                     }
+                } 
+                    
+                if (['no'].includes(message.content)) {
+                    await message.delete();
+                    ctx.send(`${client.emojis.OK} **|** OK, will not kick the user.`);
+                }
             }
         }
     ]

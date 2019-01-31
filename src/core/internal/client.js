@@ -109,16 +109,19 @@ module.exports = class MaikaClient extends Client {
      * @returns {Promise<any>} An empty promise that it actually slept / delayed
      */
     sleep(ms) {
-        return new Promise((res) => setTimeout(res(), ms));
+        return new Promise((res) => setTimeout(res, ms));
     }
 
     /**
      * Destroy the Maika instance
      * @returns {Promise<void>} An empty promise
      */
-    async destroy() {
-        await this.disconnect({ reconnect: false });
-        await this.database.destroy();
+    async destroy(full = true) {
+        this.disconnect({ reconnect: false });
+        this.database.destroy();
+        
+        if (full)
+            process.exit();
     }
 
     /**
@@ -126,10 +129,9 @@ module.exports = class MaikaClient extends Client {
      * @returns {void} nOOP
      */
     async reboot() {
-        this.client.logger.warn('Maika is being rebooted!');
-        await this.destroy();
-        await this.sleep(60 * 1000);
-        this.spawn();
+        this.destroy(false);
+        this.sleep(60 * 1000);
+        await this.spawn();
     }
 
     /**

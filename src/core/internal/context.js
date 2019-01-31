@@ -126,12 +126,12 @@ module.exports = class CommandContext {
             You have ${options.info.timeout} seconds to answer the following question.
             Reply with \`cancel\` to cancel this entry.
         `);
-        const message = await this.collector.awaitMessage(options.filter, options.options);
+        const message = await this.collector.awaitMessage(options.filter, options.info);
 
         if (!message.content)
-            return this.send(`${client.emojis.OK} **|** ${options.prompts.noContent}`);
+            return this.send(`${this.client.emojis.OK} **|** ${options.prompts.noContent}`);
         if (['cancel'].includes(message.content))
-            return this.send(`${client.emojis.OK} **|** ${options.prompts.cancelled}`);
+            return this.send(`${this.client.emojis.OK} **|** ${options.prompts.cancelled}`);
 
         return message;
     }

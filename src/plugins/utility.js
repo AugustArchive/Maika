@@ -136,7 +136,7 @@ module.exports = new Plugin({
                         **An error occured while linting the code.**
 
                         **Message**: ${output[0].message}
-                        **Location**: Line ${output[0].line}, Column ${output[0].column}
+                        **Location**: Line ${output[0].line}; Column ${output[0].column}
                         **Is Fatal**: ${output[0].fatal? 'Yes': 'No'}
                     `,
                     color: client.color,
@@ -323,26 +323,26 @@ module.exports = new Plugin({
                     });
 
                 switch (ctx.args[0]) {
-                    case '--plugin': {
-                        const randomized = client.manager.plugins.random();
-                        ctx.send(stripIndents`
+                case '--plugin': {
+                    const randomized = client.manager.plugins.random();
+                    ctx.send(stripIndents`
                             ${client.emojis.INFO} **|** Have you ever used the \`${randomized.name}\` plugin?
                             *${randomized.description}*
 
                             Has ${randomized.commands.size} command${randomized.commands.size > 1 ? 's' : ''} inside of the \`${randomized.name}\` plugin.
                         `);
-                    } break;
-                    case '--command': {
-                        const randomizedPlugin = client.manager.plugins.random();
-                        const randomizedCommand = randomizedPlugin.commands.random();
+                } break;
+                case '--command': {
+                    const randomizedPlugin = client.manager.plugins.random();
+                    const randomizedCommand = randomizedPlugin.commands.random();
 
-                        ctx.send(stripIndents`
+                    ctx.send(stripIndents`
                             ${client.emojis.INFO} **|** Have you ever used the \`${randomizedCommand.command}\` command?
                             *${typeof randomizedCommand.description === 'function'? randomizedCommand.description(client): randomizedCommand.description}*
 
                             In the \`${randomizedPlugin.name}\` plugin.
                         `);
-                    } break;
+                } break;
                 }
             }
         }

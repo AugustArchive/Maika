@@ -6,6 +6,6 @@ module.exports = class ShardDisconnectedEvent extends Event {
     }
 
     emit(error, id) {
-        this.client.logger.warn(`Shard #${id} has died because of an error:\n${error.stack}`);
+        this.client.logger.warn(`Shard #${id} has died because of an error:\n${error.stack === null? error.stack: 'Shard went offline.'}`);
     }
 }

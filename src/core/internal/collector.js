@@ -28,8 +28,8 @@ module.exports = class MessageCollector {
      * @returns {import('./context').PromisedMessage}
      */
     awaitMessage(filter, info) {
-        const { channelID, userID, timeout } = info;
         return new Promise((accept) => {
+            const { channelID, userID, timeout } = info;
             const collector = this.collectors[channelID + userID];
             if (collector)
                 delete this.collectors[channelID + userID];

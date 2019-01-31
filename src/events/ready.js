@@ -8,10 +8,10 @@ module.exports = class ReadyEvent extends Event {
         this.current = Statuses[Math.floor(Math.random() * Statuses.length)];
     }
 
-    emit() {
+    async emit() {
         if (!this.client.user.bot) {
-            this.client.logger.warn('Hello! You\'re running Maika as a selfuser bot, Maika is not a user/selfbot! Destroying...');
-            this.client.destroy();
+            this.client.logger.warn('This client is not a self nor userbot; destroying...');
+            await this.client.destroy();
         }
 
         this.client.editStatus('online', {

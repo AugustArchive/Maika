@@ -19,44 +19,44 @@ module.exports = new Plugin({
                     return ctx.send(`${client.emojis.ERROR} **|** Invalid region. Must chose \`us\` or \`eu\`.`);
 
                 switch(ctx.args[0]) {
-                    case "us": {
-                        try {
-                            const res = await get('https://www.bitstamp.net/api/v2/ticker/btcusd', {
-                                headers: { 'User-Agent': 'Maika/DiscordBot' }
-                            });
+                case "us": {
+                    try {
+                        const res = await get('https://www.bitstamp.net/api/v2/ticker/btcusd', {
+                            headers: { 'User-Agent': 'Maika/DiscordBot' }
+                        });
 
-                            await ctx.embed({
-                                title: 'Bitcoin US',
-                                description: stripIndents`
+                        await ctx.embed({
+                            title: 'Bitcoin US',
+                            description: stripIndents`
                                     :black_medium_square: **1 Bitcoin**: $${parseInt(res.data.high).toFixed(0)}
                                     :black_medium_square: **Highest Value**: $${parseInt(res.data.high).toFixed(0)}
                                 `,
-                                color: client.color,
-                                footer: { text: client.getFooter() }
-                            });
-                        } catch(ex) {
-                            ctx.send(`${client.emojis.ERROR} **|** An error occured while grabbing bitcoin values: \`${ex.message}\`. Try again later.`);
-                        }
-                    } break;
-                    case "eu": {
-                        try {
-                            const res = await get('https://www.bitstamp.net/api/v2/ticker/btceur', {
-                                headers: { 'User-Agent': 'Maika/DiscordBot' }
-                            });
+                            color: client.color,
+                            footer: { text: client.getFooter() }
+                        });
+                    } catch(ex) {
+                        ctx.send(`${client.emojis.ERROR} **|** An error occured while grabbing bitcoin values: \`${ex.message}\`. Try again later.`);
+                    }
+                } break;
+                case "eu": {
+                    try {
+                        const res = await get('https://www.bitstamp.net/api/v2/ticker/btceur', {
+                            headers: { 'User-Agent': 'Maika/DiscordBot' }
+                        });
 
-                            await ctx.embed({
-                                title: 'Bitcoin Europe',
-                                description: stripIndents`
+                        await ctx.embed({
+                            title: 'Bitcoin Europe',
+                            description: stripIndents`
                                     :black_medium_square: **1 Bitcoin**: €${parseInt(res.data.high).toFixed(0)}
                                     :black_medium_square: **Highest Value**: €${parseInt(res.data.high).toFixed(0)}
                                 `,
-                                color: client.color,
-                                footer: { text: client.getFooter() }
-                            });
-                        } catch(ex) {
-                            ctx.send(`${client.emojis.ERROR} **|** An error occured while grabbing bitcoin values: \`${ex.message}\`. Try again later.`);
-                        }
-                    } break;
+                            color: client.color,
+                            footer: { text: client.getFooter() }
+                        });
+                    } catch(ex) {
+                        ctx.send(`${client.emojis.ERROR} **|** An error occured while grabbing bitcoin values: \`${ex.message}\`. Try again later.`);
+                    }
+                } break;
                 }
             }
         }

@@ -34,7 +34,7 @@
     },
     "scripts": {
         "start": "cd src && node bot.js",
-        "pre:ci": "npm i -g eslint",
-        "lint": "npm run pre:ci && eslint ."
+        "lint": "node ./node_modules/.bin/eslint --fix .",
+        "lint:global": "eslint . --fix"
     }
 }

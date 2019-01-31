@@ -34,17 +34,42 @@ module.exports = class ClusterManager {
         cluster.setupMaster({ slient: false });
 
         const limit = this.getCPULimit();
-        for (let i = 0; i < limit.length; i++)
+        for (let i = 0; i < limit.length; i++) {
             cluster.fork();
-        
+        }
+
         cluster
             .on('online', (clu) => {
-                this.client.logger.info(`Worker #${clu.process.pid} is now online.`);
+                this.client.logger.info(`Worker #${clu.id} is now online.`);
                 this.workers.add(clu);
+                this.client.createMessage(process.env.LOG_CHANNEL, {
+                    embed: {
+                        description: `Worker #${clu.id} has started`,
+                        color: this.client.color,
+                        footer: { 
+                            text: (() => {
+                                const i = this.getOnlineWorkers();
+                                return `${i} worker${i > 1? 's': ''} online.`
+                            })() 
+                        }
+                    }
+                });
             })
             .on('exit', (clu, code, signal) => {
                 this.workers.remove(clu);
-                this.client.logger.warn(`Worker #${clu.process.pid} was killed; code ${code}. (${signal? signal: 'No signal.'})`);
+                this.client.logger.warn(`Worker #${clu.id} was killed; code ${code}. (${signal? signal: 'No signal.'})`);
+                this.client.createMessage(process.env.LOG_CHANNEL, {
+                    embed: {
+                        description: `Worker #${clu.id} has died`,
+                        color: this.client.color,
+                        footer: { 
+                            text: (() => {
+                                const i = this.getOnlineWorkers();
+                                return `${i} worker${i > 1? 's': ''} online.`
+                            })() 
+                        }
+                    }
+                });
             });
     }
 
