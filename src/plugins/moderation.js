@@ -161,9 +161,9 @@ module.exports = new Plugin({
         
                         try {
                             ctx.dm(stripIndents`
-                                :pencil: **You been banned from ${ctx.guild.name}!**
+                                :pencil: **You been kicked from ${ctx.guild.name}!**
                                 Reason: ${ctx.args[1]? ctx.args.slice(1).join(' '): 'No reason provided.'}
-                                You can rejoin the serer but obey the rules.
+                                You can rejoin the server but obey the rules.
                             `, user);
         
                             await ctx.guild.banMember(user.id, 7, ctx.args[1]? ctx.args.slice(0).join(' '): 'No reason provided.');

@@ -4,12 +4,14 @@ const EventManager = require('../managers/event-manager');
 const SchedulerManager = require('../managers/scheduler-manager');
 const DatabaseManager = require('../managers/database-manager');
 const AudioManager = require('../managers/audio-manager');
+const ClusterManager = require('../managers/cluster-manager');
 const Hideri = require('@maika.xyz/hideri');
 const { Cluster } = require('lavalink');
 const RESTClient = require('./rest');
 const GuildSettings = require('../settings/guild-settings');
 const RedditFeed = require('./feeds/reddit');
 const RedisClient = require('./redis');
+const Prometheus = require('prom-client');
 
 module.exports = class MaikaClient extends Client {
     constructor() {
@@ -35,6 +37,15 @@ module.exports = class MaikaClient extends Client {
             uri: process.env.REDIS_URI,
             password: process.env.REDIS_PASSWORD
         });
+        this.statistics = {
+            messagesSeen: new Prometheus.Counter({ name: 'messages_seen', help: 'Shows how many messages Maika has seen.' }),
+            commands: {
+                executed: new Prometheus.Counter({ name: 'commands_executed', help: 'What command was executed.' }),
+                /** @type {string[]} */
+                usage: []
+            }
+        };
+        this.clusters = new ClusterManager(this);
 
         this.once('ready', () => {
             this.schedulers.tasks.forEach((s) => s.run(this));
@@ -61,7 +72,8 @@ module.exports = class MaikaClient extends Client {
         });
     }
 
-    async bootstrap() {
+    async spawn() {
+        this.clusters.spawn();
         this.manager.start();
         this.events.start();
         this.schedulers.start();
@@ -117,7 +129,7 @@ module.exports = class MaikaClient extends Client {
         this.client.logger.warn('Maika is being rebooted!');
         await this.destroy();
         await this.sleep(60 * 1000);
-        this.bootstrap();
+        this.spawn();
     }
 
     /**
@@ -154,5 +166,42 @@ module.exports = class MaikaClient extends Client {
      */
     determineStatus(status) {
         return status === 'online'? '<:online:457289010037915660> **Online**': status === 'idle'? '<:away:457289009912217612> **Away**': status === 'dnd'? '<:dnd:457289032330772502> **Do not Disturb**': '<:offline:457289010084184066> **Offline**';
+    }
+
+    getUptime() {
+        return Date.now() - this.startTime;
+    }
+
+    /**
+     * Gets the statistics of Maika
+     */
+    getStatistics() {
+        return {
+            guilds: this.guilds.size,
+            users: this.users.size,
+            channels: Object.keys(this.channelGuildMap).length,
+            uptime: require('@maika.xyz/miu').humanize(this.getUptime()),
+            cpu: {
+                toDiscord: () => {
+                    const cpus = this.getCPU();
+                    const list = cpus.getList();
+                    return `
+                        # Avaliable: ${cpus.avaliable}
+                        ${list}
+                    `;
+                }
+            }
+        };
+    }
+
+    /**
+     * Gets cpu information
+     */
+    getCPU() {
+        const cpus = require('os').cpus();
+        return {
+            avaliable: cpus.length,
+            getList: () => cpus.map((v, _) => `# ${_ + 1}: ${v.model}`).join('\n')
+        };
     }
 };
