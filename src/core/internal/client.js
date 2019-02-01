@@ -12,6 +12,7 @@ const GuildSettings = require('../settings/guild-settings');
 const RedditFeed = require('./feeds/reddit');
 const RedisClient = require('./redis');
 const Prometheus = require('prom-client');
+const Alert = require('./alerts');
 
 module.exports = class MaikaClient extends Client {
     constructor() {
@@ -45,7 +46,8 @@ module.exports = class MaikaClient extends Client {
                 usage: []
             }
         };
-        this.clusters = new ClusterManager(this);
+        this.cluster = new ClusterManager(this);
+        this.webhook = new Alert(this, { id: process.env.WEBHOOK_ID, token: process.env.WEBHOOK_TOKEN });
 
         this.once('ready', () => {
             this.schedulers.tasks.forEach((s) => s.run(this));
@@ -73,10 +75,10 @@ module.exports = class MaikaClient extends Client {
     }
 
     async spawn() {
-        this.clusters.spawn();
         this.manager.start();
         this.events.start();
         this.schedulers.start();
+        this.cluster.spawn();
         this.database.connect();
         this.redis.connect();
         await super.connect()

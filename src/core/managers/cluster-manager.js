@@ -1,5 +1,4 @@
-const { Collection } = require('eris');
-const cluster        = require('cluster');
+const cluster = require('cluster');
 
 module.exports = class ClusterManager {
     /**
@@ -8,13 +7,15 @@ module.exports = class ClusterManager {
      */
     constructor(client) {
         this.client = client;
-        /** @type {Collection<cluster.Worker>} */
-        this.workers = new Collection();
+        /** @type {{ [x: string]: number | string; }[]} */
+        this.shard = [];
     }
 
     async spawn() {
-        this.client.logger.info('Spawning clusters...');
-        await this.spawnWorkers();
+        if (cluster.isMaster)
+            await this.spawnMaster();
+        else
+            await this.spawnWorkers();
     }
 
     /**
@@ -27,50 +28,65 @@ module.exports = class ClusterManager {
     }
 
     /**
-     * Spawns the cluster system
+     * Spawns the workers
      */
-    async spawnWorkers() {
-        this.client.logger.info('Now setting up clusters...');
-        cluster.setupMaster({ slient: false });
+    spawnWorkers() {
+        const startup = (msg) => {
+            if (msg.type !== 'startup') {
+                cluster.worker.once('message', startup);
+                return;
+            }
 
-        const limit = this.getCPULimit();
-        for (let i = 0; i < limit.length; i++) {
-            cluster.fork();
+            this.client.logger.info(`Received a message from master:\n${require('util').inspect(msg)}`);
+        };
+
+        cluster.worker.once('message', startup);
+    }
+
+    /**
+     * Spawns master
+     */
+    async spawnMaster() {
+        const { shards } = await this.client.getBotGateway();
+        let shardsPerWorker;
+        let fields = [];
+        fields.push({ name: 'Total Shards', value: shards, inline: true });
+
+        const cpus = this.getCPULimit();
+        if (cpus >= shards) 
+            shardsPerWorker = 1;
+        else
+            shardsPerWorker = Math.ceil(shards / cpus);
+
+        fields.push({ name: 'Shards Per Worker', value: shardsPerWorker, inline: true });
+
+        const workerCoint = Math.ceil(shards / shardsPerWorker);
+        fields.push({ name: 'Workers', value: workerCoint, inline: true });
+        for (let i = 0; i < workerCoint; i++) {
+            let start = i * shardsPerWorker;
+            let end = ((i + 1) * shardsPerWorker) - 1;
+            let range = start === end? `Shard ${start}`: `Shards ${start}-end`;
+
+            const worker = cluster.fork();
+            Object.assign(worker, {
+                type: 'bot',
+                shardStart: start,
+                shardEnd: end,
+                shardRange: range,
+                shards
+            });
+            this.shard.push({
+                start,
+                end,
+                range
+            });
+            require('./cluster/worker').start(this.client, worker);
         }
 
-        cluster
-            .on('online', (clu) => {
-                this.client.logger.info(`Worker #${clu.id} is now online.`);
-                this.workers.add(clu);
-                this.client.createMessage(process.env.LOG_CHANNEL, {
-                    embed: {
-                        description: `Worker #${clu.id} has started`,
-                        color: this.client.color,
-                        footer: { 
-                            text: (() => {
-                                const i = this.getOnlineWorkers();
-                                return `${i} worker${i > 1? 's': ''} online.`
-                            })() 
-                        }
-                    }
-                });
-            })
-            .on('exit', (clu, code, signal) => {
-                this.workers.remove(clu);
-                this.client.logger.warn(`Worker #${clu.id} was killed; code ${code}. (${signal? signal: 'No signal.'})`);
-                this.client.createMessage(process.env.LOG_CHANNEL, {
-                    embed: {
-                        description: `Worker #${clu.id} has died`,
-                        color: this.client.color,
-                        footer: { 
-                            text: (() => {
-                                const i = this.getOnlineWorkers();
-                                return `${i} worker${i > 1? 's': ''} online.`
-                            })() 
-                        }
-                    }
-                });
-            });
+        await this.client.webhook.embed({
+            description: 'Master has started.',
+            fields
+        });
     }
 
     /**
