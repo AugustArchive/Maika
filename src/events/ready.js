@@ -10,7 +10,7 @@ module.exports = class ReadyEvent extends Event {
 
     async emit() {
         if (!this.client.user.bot) {
-            this.client.logger.warn('This client is not a self nor userbot; destroying...');
+            this.client.logger.warn('This client is not a self or a userbot; destroying client!..');
             await this.client.destroy();
         }
 
