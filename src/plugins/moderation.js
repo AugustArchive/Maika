@@ -188,6 +188,51 @@ module.exports = new Plugin({
                     ctx.send(`${client.emojis.OK} **|** OK, will not kick the user.`);
                 }
             }
+        },
+        {
+            command: 'mute',
+            description: 'Mutes the user if their being too loud for my ears.',
+            usage: '<user> [reason]',
+            aliases: ['mute-member'],
+            guild: true,
+            permissions: ['manageChannels'],
+            run: async(client, ctx) => {
+                if (!ctx.args[0])
+                    return ctx.send(`${client.emojis.ERROR} **|** Provide a user.`);
+
+                const user = await client.rest.getUser(ctx.args[0]);
+                if (user.id === ctx.sender.id)
+                    return ctx.send(`${client.emojis.ERROR} **|** You cannot kick yourself but nice try.`);
+                    
+                if (user.id === client.user.id)
+                    return ctx.send(`${client.emojis.ERROR} **|** You cannot kick me! Nice try.`);
+
+                const message = await ctx.awaitReply({
+                    prompts: {
+                        start: `Are you sure you wanna mute \`${user.username}#${user.discriminator}\`?`,
+                        noContent: `Will not mute \`${user.username}#${user.discriminator}\`. *Your slice gave it away..*`,
+                        cancelled: `Cancelled entry. Will not mute \`${user.username}#${user.discriminator}\`.`
+                    },
+                    filter: (mes) => mes.author.id === ctx.sender.id,
+                    info: {
+                        channelID: ctx.channel.id,
+                        userID: ctx.sender.id,
+                        timeout: 60
+                    }
+                });
+
+                if ('yes'.includes(message.content)) {
+                    const entry = new ModLogEntry(client, {
+                        action: 'MUTE',
+                        victim: user,
+                        moderator: ctx.sender,
+                        reason: ctx.args[1]? ctx.args.slice(1).join(' '): 'No reason provided.',
+                        guild: ctx.guild
+                    });
+
+
+                }
+            }
         }
     ]
 });
