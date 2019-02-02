@@ -18,10 +18,10 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@maika.xyz/eris-utils@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@maika.xyz/eris-utils/-/eris-utils-0.1.0.tgz#9c0b4ec42d11fd307d7c8fc48aed5d41ac04ea09"
-  integrity sha512-0Vxu2XFpxwuVkxrQ9+LbbPXK7TtY8+L6/AwFfN8E48hW8ZUpz/4y4qJ3B+5KyylAm4nAZ2t3b+AiyyQfMUMHIA==
+"@maika.xyz/eris-utils@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@maika.xyz/eris-utils/-/eris-utils-0.1.1.tgz#d22c97d2b0365cbb798f7d421666618d9d410e33"
+  integrity sha512-d8oWDDkUFn6DtVPAhEEGGuq4/yFNt8fk0YvN+9XnTMXo0ZXy8pfMlfwkhP5lcHcc4s+G7Z5W5FveZHxvvnDKRA==
 
 "@maika.xyz/hideri@0.0.2":
   version "0.0.2"
