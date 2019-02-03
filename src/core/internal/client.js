@@ -11,7 +11,6 @@ const RESTClient = require('./rest');
 const GuildSettings = require('../settings/guild-settings');
 const RedditFeed = require('./feeds/reddit');
 const RedisClient = require('./redis');
-const Prometheus = require('prom-client');
 const Alert = require('./alerts');
 
 module.exports = class MaikaClient extends Client {
@@ -38,14 +37,6 @@ module.exports = class MaikaClient extends Client {
             uri: process.env.REDIS_URI,
             password: process.env.REDIS_PASSWORD
         });
-        this.statistics = {
-            messagesSeen: new Prometheus.Counter({ name: 'messages_seen', help: 'Shows how many messages Maika has seen.' }),
-            commands: {
-                executed: new Prometheus.Counter({ name: 'commands_executed', help: 'What command was executed.' }),
-                /** @type {string[]} */
-                usage: []
-            }
-        };
         this.cluster = new ClusterManager(this);
         this.webhook = new Alert(this, { id: process.env.WEBHOOK_ID, token: process.env.WEBHOOK_TOKEN });
 

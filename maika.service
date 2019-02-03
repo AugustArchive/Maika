@@ -1,0 +1,15 @@
+[Unit]
+Description=Maika - Robust multipurpose Discord bot
+Documentation=https://maika.augu.me/docs
+After=network.target
+
+# Replace "$USER" with your username to connect to
+[Service]
+Environment=HTTPS=true
+Type=simple
+User=$USER
+ExecStart=/usr/bin/node /home/$USER/Maika/src/bot.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

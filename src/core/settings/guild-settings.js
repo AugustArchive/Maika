@@ -28,16 +28,16 @@ module.exports = class GuildSettings {
      * Updates any guild settings
      * @param {string} guildID The guild ID
      * @param {any} obj The object to update
-     * @returns {Promise<boolean>}
+     * @returns {Promise<any>}
      */
     update(guildID, obj) {
         this
             .schema
             .updateOne({ guildID }, obj, (error, data) => {
                 if (error)
-                    Promise.reject(false);
+                    Promise.reject(error);
 
-                Promise.resolve(true);
+                Promise.resolve(data);
             }).exec();
     }
 
