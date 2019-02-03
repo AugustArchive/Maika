@@ -23,7 +23,7 @@
         "eris": "github:abalabahaha/eris#dev",
         "ioredis": "4.5.1",
         "lavalink": "2.3.1",
-        "mongoose": "5.4.5",
+        "mongoose": "5.4.9",
         "prom-client": "11.2.1"
     },
     "devDependencies": {
