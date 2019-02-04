@@ -13,6 +13,10 @@ Pull Requests are accepted, but you will have to lint the code (`yarn lint` or `
   - More to come~...
 - Image Manipulation (unique or use Dank Memer's service) (might not come true)
 - Level System (~~maybe better then MEE6, I honestly don't know~~)
+- Localization
+
+## (redo this) Localization: Variables
+soon my guy
 
 ## Running
 As per the developement team, (if you wanna run Maika) we expect you to know how to run Maika. All you need is Redis, Lavalink, & MongoDB. We expect you to know how to clone Maika
