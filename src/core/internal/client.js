@@ -1,10 +1,9 @@
 const { Client } = require('eris');
-const PluginManager = require('../managers/plugin-manager');
+const CommandManager = require('../managers/command-manager');
 const EventManager = require('../managers/event-manager');
 const SchedulerManager = require('../managers/scheduler-manager');
 const DatabaseManager = require('../managers/database-manager');
 const AudioManager = require('../managers/audio-manager');
-const ClusterManager = require('../managers/cluster-manager');
 const Hideri = require('@maika.xyz/hideri');
 const { Cluster } = require('lavalink');
 const RESTClient = require('./rest');
@@ -21,7 +20,7 @@ module.exports = class MaikaClient extends Client {
             autoreconnect: true
         });
 
-        this.manager = new PluginManager(this);
+        this.manager = new CommandManager(this);
         this.events = new EventManager(this);
         this.schedulers = new SchedulerManager(this);
         this.database = new DatabaseManager(this);
@@ -37,7 +36,6 @@ module.exports = class MaikaClient extends Client {
             uri: process.env.REDIS_URI,
             password: process.env.REDIS_PASSWORD
         });
-        this.cluster = new ClusterManager(this);
         this.webhook = new Alert(this, { id: process.env.WEBHOOK_ID, token: process.env.WEBHOOK_TOKEN });
 
         this.once('ready', () => {
@@ -69,7 +67,6 @@ module.exports = class MaikaClient extends Client {
         this.manager.start();
         this.events.start();
         this.schedulers.start();
-        this.cluster.spawn();
         this.database.connect();
         this.redis.connect();
         await super.connect()

@@ -73,28 +73,17 @@ module.exports = new Plugin({
             usage: '[plugin|:command]',
             aliases: ['halp', 'h', '?', 'plugin', 'plugins'],
             run: async (client, ctx) => {
-                let categories = [];
                 let guild = await client.settings.get(ctx.guild.id);
 
                 if (!ctx.args[0]) {
-                    client
-                        .manager
-                        .plugins
-                        .filter(pl => !pl.visible)
-                        .forEach((pl) => {
-                            if (!categories.includes(pl))
-                                categories.push(pl);
-                        });
-
                     return ctx.embed({
                         title: `${client.user.username}#${client.user.discriminator} | Plugins List`,
                         description: stripIndents`
                             **To use a command, do \`${guild['prefix']}<command>\`.**
                             **To get help on a plugin, do \`${guild['prefix']}help <pluginName>\` to view it's commands.**
                             **To get help on a command, do \`${guild['prefix']}help --command <pluginName:commandName>\`**
-
-                            ${categories.map(s => `\`${s.name}\`: **${s.description}** (${s.commands.size} Command${s.commands.size > 1? 's': ''})`).join('\n')}
                         `,
+                        fields: Object.keys,
                         color: client.color,
                         footer: { text: `${client.manager.plugins.size} Plugins | ${client.getFooter()}` }
                     });

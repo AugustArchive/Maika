@@ -2,7 +2,6 @@ const { Collection } = require('eris');
 const CommandContext = require('../internal/context');
 const { stripIndents } = require('common-tags');
 const UserSchema = require('../../models/user');
-const { humanize: humanizePermissions } = require('../../util/permissions');
 
 module.exports = class pluginProcessor {
     /**
@@ -46,18 +45,19 @@ module.exports = class pluginProcessor {
         const args = msg.content.slice(prefix.length).trim().split(/ +/g);
         const message = new CommandContext(this.client, msg, args);
         const commandName = args.shift();
-        const plugin = this.client.manager.plugins.filter(pl => pl.hasCommand(commandName));
-        const command = plugin[0].getCommand(commandName);
+        const command = this.client.manager.commands.filter(s => s.command === commandName || s.aliases.includes(commandName));
 
-        if (!command)
-            return;
+        if (command[0].guild && msg.channel.type === 0)
+            return message.send(`${this.client.emojis['ERROR']} **|** You must be in a guild to execute the **${command[0].command}** command.`);
 
-        if (command.guild && msg.channel.type === 1)
-            return message.send(`:x: **|** You must be in a guild to run the **\`${command.command}\`** command.`);
-        else if (command.owner && !this.client.owners.includes(message.sender.id))
-            return message.send(`:x: **|** You have inefficent permissions to execute the **\`${command.command}\`** command. (**Developer**)`);
-        else if (command.permissions && command.permissions.some(pe => !msg.member.permission.has(pe)))
-            return this.hasPermission(message, command.command, msg.member);
+        if (command[0].owner && !this.client.owners.includes(msg.author.id))
+            return message.send(`${this.client.emojis['ERROR']} **|** You cannot execute the **${command[0].command}**.`);
+
+        if (command[0].permissions.user && command[0].permissions.user.some(p => !msg.member.permission.has(p)))
+            return command[0].handleUserPerms(message);
+
+        if (command[0].permissions.bot && command[0].permissions.bot.some(p => msg.channel.guild.members.get(this.client.user.id).permission.has(p)))
+            return command[0].handleBotPerms(message);
 
         if (!this.ratelimits.has(command.command))
             this.ratelimits.set(command.command, new Collection());
@@ -88,41 +88,19 @@ module.exports = class pluginProcessor {
         }
 
         try {
-            await command.run(this.client, message);
+            await command[0].run(message);
         } catch(ex) {
             message.embed({
                 description: stripIndents`
-                    Command \`${command.command}\` has failed to execute.
-                    Message: **\`${ex.message}\`**
-                    Report this to \`auguwu#5820\` or \`void#0001\` here: ***<https://discord.gg/7TtMP2n>***
+                    **Command ${command[0].command} has errored.**
+                    \`\`\`js
+                    ${ex.message}
+                    \`\`\`
+                    Contact \`August#5820\` on my discord server.
                 `,
-                color: this.client.color,
-                footer: { text: this.client.getFooter() }
+                color: this.client.color
             });
-            this.client.logger.error(`Unexpected error while running the ${command.command} command:\n${ex.stack}`);
+            this.client.logger.error(ex.stack);
         }
-    }
-
-    /**
-     * Checks the sender's permission
-     * @param {CommandContext} ctx The command context
-     * @param {import('../internal/command')} command The command
-     * @param {import('eris').Member} sender The member
-     */
-    hasPermission(ctx, command, sender) {
-        const needed = command.permissions.filter(perm => sender.permission.has(perm));
-        const humanized = needed.length > 1? `the following permission: **${humanizePermissions(needed[0])}**`: `the following permissions: **${needed.map(s => humanizePermissions(s)).join(', ')}**`;
-        ctx.send(`:pencil: **|** Sorry but you will need ${humanized}.`);
-    }
-
-    /**
-     * Runs the "levels" system
-     * @param {CommandContext} ctx The message
-     * @returns {void} nOOP that shit- I mean, noop.
-     */
-    async executeSocialMonitor(ctx) {
-        const Monitor = require('../../monitors/levels');
-        const mon = new Monitor(this.client);
-        await mon.run(ctx);
     }
 }

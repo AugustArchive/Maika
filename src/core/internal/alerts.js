@@ -18,7 +18,7 @@ module.exports = class Alerts {
      */
     async send(content) {
         await axios.post(this.url, {
-            data: content,
+            data: { content },
             headers: {
                 'User-Agent': 'Maika/DiscordBot'
             }

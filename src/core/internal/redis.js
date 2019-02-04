@@ -26,6 +26,9 @@ module.exports = class RedisClient extends Redis {
 /**
  * @typedef {Object} RedisOptions
  * @prop {string} uri The URI of Redis
- * @prop {string} password The password to connect to.
+ * @prop {string} password The password to connect to
+ * 
  * On linux, go to `/etc/redis/redis.conf` and find the `requirepass` key and set it in the `.env` file.
+ * 
+ * Don't use Redis on Windows, it's basically broken
  */
