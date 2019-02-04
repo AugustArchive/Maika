@@ -22,7 +22,7 @@ module.exports = class ReadyEvent extends Event {
         this.client.startRedditFeeds();
         setTimeout(() => {
             this.client.editStatus('online', {
-                name: this.current.name.replace('{{prefix}}', process.env.MAIKA_PREFIX),
+                name: this.current.name.replace('{{prefix}}', process.env.MAIKA_PREFIX).replace('{{shard}}', 0),
                 type: this.current.type
             });
         }, 60 * 1000);
