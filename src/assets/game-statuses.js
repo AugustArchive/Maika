@@ -36,11 +36,7 @@ exports.Statuses = [
         type: 3
     },
     {
-        name: 'August while he\'s working',
-        type: 3
-    },
-    {
-        name: 'void while he\'s playing Minecraft',
-        type: 3
+        name: 'on Shard {{shard}}',
+        type: 0
     }
 ];
