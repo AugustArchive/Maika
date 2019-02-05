@@ -49,22 +49,22 @@ module.exports = new Plugin({
                     });
 
                 switch (ctx.args[0].toLowerCase()) {
-                    case "guild.prefix": {
-                        if (!ctx.args[1])
-                            return ctx.send(`${client.emojis['ERROR']} **|** No prefix was set.`);
+                case "guild.prefix": {
+                    if (!ctx.args[1])
+                        return ctx.send(`${client.emojis['ERROR']} **|** No prefix was set.`);
 
-                        const prefix = ctx.args[1];
-                        if (prefix.length > 15)
-                            return ctx.send(`${client.emojis['ERROR']} **|** Prefixes must be lower or equal to 15.`);
+                    const prefix = ctx.args[1];
+                    if (prefix.length > 15)
+                        return ctx.send(`${client.emojis['ERROR']} **|** Prefixes must be lower or equal to 15.`);
 
-                        if (prefix.includes('@everyone') || prefix.includes('@here'))
-                            return ctx.send(`${client.emojis['ERROR']} **|** I'm not here to piss off other members but no mentions in prefixes.`);
+                    if (prefix.includes('@everyone') || prefix.includes('@here'))
+                        return ctx.send(`${client.emojis['ERROR']} **|** I'm not here to piss off other members but no mentions in prefixes.`);
 
-                        const promise = await client.settings.update(ctx.guild.id, {
-                            prefix
-                        });
-                        ctx.send(`${client.emojis['OK']} **|** Prefix has been set to **${prefix}**.\n${codeblock('js', require('util').inspect(promise))}`);
-                    } break;
+                    const promise = await client.settings.update(ctx.guild.id, {
+                        prefix
+                    });
+                    ctx.send(`${client.emojis['OK']} **|** Prefix has been set to **${prefix}**.\n${codeblock('js', require('util').inspect(promise))}`);
+                } break;
                 }
             }
         }
