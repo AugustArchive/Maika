@@ -19,14 +19,22 @@ Pull Requests are accepted, but you will have to lint the code (`yarn lint` or `
 soon my guy
 
 ## Running
-As per the developement team, (if you wanna run Maika) we expect you to know how to run Maika. All you need is Redis, Lavalink, & MongoDB. We expect you to know how to clone Maika
+#### Requirements
+- Node.js v(unknown)
+- MongoDB v(unknown)
+- Redis v(unknown)
+
+#### Scripts
+Run `yarn build` or `npm run build`  in the terminal to being the startup process.
 
 ### Running: `.env`
 You must create the .env file in the root directory (`$HOME/Maika`), but in a later commit, there is an .env example so rename it.
 
-**Windows**: `soon`
+##### Windows: 
+`soon`
 
-**Linux / MacOS**: `mv $HOME/Maika/.env-example $HOME/Maika/.env`
+##### Linux or MacOS:
+`mv $HOME/Maika/.env-example $HOME/Maika/.env`
 
 ## License
 > [Maika](https://github.com/MaikaBot/Maika) is released under the [MIT](https://github.com/MaikaBot/Maika/blob/master/LICENSE) license and maintained by [auguwu](https://augu.me)
