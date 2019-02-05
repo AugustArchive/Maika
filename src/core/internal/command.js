@@ -5,14 +5,64 @@ module.exports = class MaikaCommand {
      * @param {CommandInfo} info The command info
      */
     constructor(client, info) {
+        /**
+         * The client
+         * @type {import('./client')}
+         */
         this.client = client;
+
+        /**
+         * The command name
+         * @type {string}
+         */
         this.command = info.command;
+
+        /**
+         * The command description
+         * @type {string | DescriptionSupplier}
+         */
         this.description = info.description;
+
+        /**
+         * The command usage. Use the `format` getter to format the usage.
+         * @type {string}
+         */
         this.usage = info.usage || '';
+        
+        /**
+         * The command alias(es). Returns an empty array if no aliases were provided
+         * @type {string[]}
+         */
         this.aliases = info.aliases || [];
+
+        /**
+         * Whenever or not the command should be executed in a guild.
+         * @type {boolean}
+         */
         this.guild = info.guild || false;
+
+        /**
+         * Whenever or not the command should be executed by the owners
+         * @type {boolean}
+         */
         this.owner = info.owner || false;
+
+        /**
+         * Whenever or not the command shouldn't be added to the command collection
+         * @type {boolean}
+         */
         this.disabled = info.disabled || false;
+
+        /**
+         * If the command should(n't) be added to the help command
+         * @type {boolean}
+         */
+        this.hidden = info.hidden || false;
+
+        /**
+         * The permissions. Returns an Object with `bot` & `user` being empty arrays
+         * @type {ICommandPermission}
+         */
         this.permissions = info.permissions || {
             user: [],
             bot: []
@@ -66,12 +116,13 @@ module.exports = class MaikaCommand {
  * @prop {string | DescriptionSupplier} description The command description
  * @prop {string} [category='Generic'] The category name
  * @prop {string} [usage=''] The command usage
- * @prop {CommandAlias} [aliases=[]] The command aliases, returns an Array of no aliases were found
+ * @prop {string[]} [aliases=[]] The command aliases, returns an empty array if no aliases were provided
  * @prop {number} [throttle=3] The command cooldown number, returns 3 as it's default throttle number
  * @prop {boolean} [owner=false] If the command should be ran by the developers
- * @prop {boolean} [guild=false] If the command should be ran in a Discord server.
+ * @prop {boolean} [guild=false] If the command should be ran in a Discord server
  * @prop {ICommandPermission} [permissions] Any bot/user permissions that needs to be handled
  * @prop {boolean} [disabled=false] If the command should't be registered.
+ * @prop {boolean} [hidden=false] If the command should be hidden from the help command.
  */
 
 /**
@@ -83,7 +134,6 @@ module.exports = class MaikaCommand {
 /**
  * @typedef {(client: import('./client'), ctx: import('./context')) => IPromisedCommand} CommandRun
  * @typedef {Promise<void>} IPromisedCommand
- * @typedef {String[]} CommandAlias
  * @typedef {(client: import('./client')) => string} DescriptionSupplier
  * @typedef {"createInstantInvite" | "kickMembers" | "banMembers" | "administrator" | "manageChannels" | "manageGuild" | "addReactions" | "viewAuditLogs" | "voicePrioritySpeaker" | "readMessages" | "sendMessages" | "sendTTSMessages" | "manageMessages" | "embedLinks" | "attachFiles" | "readMessageHistory" | "mentionEveryone" | "externalEmojis" | "voiceConnect" | "voiceSpeak" | "voiceMuteMembers" | "voiceDeafenMembers"| "voiceUseVAD" | "changeNickname" | "manageNicknames" | "manageRoles" | "manageWebhooks" | "manageEmojis"} Permission
  */

@@ -14,17 +14,25 @@ module.exports = class ReadyEvent extends Event {
             await this.client.destroy();
         }
 
-        this.client.editStatus('online', {
-            name: this.current.name.replace('{{prefix}}', process.env.MAIKA_PREFIX),
-            type: this.current.type
-        });
-        this.client.logger.info('Maika successfully connected to Discord OwO');
+        this.client.logger.info(`  Maika has successfully connected to Discord! Ready to serve ${this.client.guilds.size} guilds with ${this.client.users.size} users~`);
         this.client.startRedditFeeds();
-        setTimeout(() => {
+        for (const shard of this.client.shards.map(s => s)) {
+            this.client.logger.info(`  Setting game status for Shard #${shard.id}..`);
             this.client.editStatus('online', {
-                name: this.current.name.replace('{{prefix}}', process.env.MAIKA_PREFIX).replace('{{shard}}', 0),
+                name: this.current.name
+                    .replace('{{prefix}}', process.env.MAIKA_PREFIX)
+                    .replace('{{shard}}', shard.id),
                 type: this.current.type
             });
-        }, 60 * 1000);
+            setInterval(() => {
+                this.client.logger.info(`  Setting game status for Shard #${shard.id}..`);
+                this.client.editStatus('online', {
+                    name: this.current.name
+                        .replace('{{prefix}}', process.env.MAIKA_PREFIX)
+                        .replace('{{shard}}', shard.id),
+                    type: this.current.type
+                });
+            }, 120000);
+        }
     }
 }
