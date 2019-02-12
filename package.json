@@ -2,39 +2,35 @@
     "name": "@maika.xyz/bot",
     "description": "Customizable, stable Discord multipurpose bot made in the Eris library.",
     "version": "0.1.0",
-    "main": "src/bot.js",
+    "main": "build/bot.js",
     "author": "auguwu (augu@voided.pw)",
     "private": true,
-    "bugs": {
-        "url": "https://github.com/MaikaBot/Maika/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/MaikaBot/Maika"
-    },
-    "readme": "https://maikabot.xyz",
+    "bugs": { "url": "https://github.com/MaikaBot/Maika/issues" },
+    "repository": { "type": "git", "url": "https://github.com/MaikaBot/Maika" },
+    "readme": "https://maika.augu.me",
     "dependencies": {
+        "@augu/eris": "0.9.3",
         "@maika.xyz/eris-utils": "0.1.1",
         "@maika.xyz/hideri": "0.0.3",
+        "@maika.xyz/kotori": "0.1.0",
         "@maika.xyz/miu": "0.1.0",
         "axios": "0.18.0",
         "common-tags": "1.8.0",
-        "dotenv": "6.2.0",
-        "eris": "github:abalabahaha/eris#dev",
-        "ioredis": "4.6.2",
-        "lavalink": "2.3.1",
-        "mongoose": "5.4.11",
-        "prom-client": "11.2.1"
+        "mongoose": "5.4.11"
     },
     "devDependencies": {
-        "eslint": "5.13.0"
+        "@types/mongoose": "5.3.12",
+        "@types/node": "10.12.24",
+        "typescript": "3.3.3"
     },
     "engines": {
         "node": ">=8"
     },
     "scripts": {
-        "start": "cd src && node bot.js",
-        "lint": "node ./node_modules/.bin/eslint --fix .",
-        "lint:global": "eslint . --fix"
+        "start": "cd build && node bot.js",
+        "lint": "./node_modules/.bin/eslint --fix .",
+        "lint:global": "eslint . --fix",
+        "build": "./node_modules/.bin/tsc",
+        "build:global": "tsc"
     }
 }
