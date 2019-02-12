@@ -20,7 +20,7 @@
     },
     "devDependencies": {
         "@types/mongoose": "5.3.12",
-        "@types/node": "10.12.24",
+        "@types/node": "10.12.26",
         "typescript": "3.3.3"
     },
     "engines": {
