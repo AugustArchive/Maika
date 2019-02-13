@@ -4,19 +4,19 @@
 ## Contributing
 Pull Requests are accepted, but you will have to lint the code (`yarn lint` or `npm run lint`) and see if it has errors and such.
 
-## TODO
-- Actually do the Music plugin (might come in an later release)
-- Add functionality to donators
-  - Smaller throttle (cooldowns)
-  - More coins while winning or dailies.
-  - Custom Badge
-  - More to come~...
-- Image Manipulation (unique or use Dank Memer's service) (might not come true)
-- Level System (~~maybe better then MEE6, I honestly don't know~~)
-- Localization
+## Creating Locales
+You can create your own locales but must follow the criteria:
 
-## (redo this) Localization: Variables
-soon my guy
+#### Critera
+- Must be fluent in that language
+
+## Creating Locales: Commit Name
+> The commit name must say the following: `Locale {code}`
+
+## Creating Locales: Actually doing it
+> (coming soon) You can visit the Crowdin project
+
+Use the `en-US.js` file as an example
 
 ## Running
 #### Requirements
