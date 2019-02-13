@@ -9,7 +9,7 @@
     "repository": { "type": "git", "url": "https://github.com/MaikaBot/Maika" },
     "readme": "https://maika.augu.me",
     "dependencies": {
-        "@augu/eris": "0.9.3",
+        "@augu/eris": "0.10.0",
         "@maika.xyz/eris-utils": "0.1.1",
         "@maika.xyz/hideri": "0.0.3",
         "@maika.xyz/kotori": "0.1.0",
