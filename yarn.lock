@@ -35,6 +35,15 @@
     "@maika.xyz/miu" "0.1.0"
     chalk "2.4.2"
 
+"@maika.xyz/hideri@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@maika.xyz/hideri/-/hideri-0.1.0.tgz#b39376e928193f39993312026a6952e39d9cf493"
+  integrity sha512-3tk3fMgtZ8RoJw5z2+63xbOAzsXFBXqz1iFi2rQtf6t2OMD3pT0fZyOq8xyJlqFLfOLfKfWsQQ0aWybLF9VsBQ==
+  dependencies:
+    "@maika.xyz/eris-utils" "0.1.1"
+    "@maika.xyz/miu" "0.1.0"
+    chalk "2.4.2"
+
 "@maika.xyz/kotori@0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@maika.xyz/kotori/-/kotori-0.1.0.tgz#01bced3a389b20798b63923b5f521e43617b005b"

@@ -11,7 +11,7 @@
     "dependencies": {
         "@augu/eris": "0.10.0",
         "@maika.xyz/eris-utils": "0.1.1",
-        "@maika.xyz/hideri": "0.0.3",
+        "@maika.xyz/hideri": "0.1.0",
         "@maika.xyz/kotori": "0.1.0",
         "@maika.xyz/miu": "0.1.0",
         "axios": "0.18.0",
