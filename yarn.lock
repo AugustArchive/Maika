@@ -2,6 +2,16 @@
 # yarn lockfile v1
 
 
+"@augu/eris@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@augu/eris/-/eris-0.10.0.tgz#961a6c5d2376677bbb401c62220f6eeed32fc86b"
+  integrity sha512-fxYoeBFBTekB1nznCCzKxMWjBefOG8Plcy5g+2ExzL8SHAYUwMgRlVtfJztJ5rK2E+CAZWFPs6qQPb9vLVY/QQ==
+  dependencies:
+    ws "6.1.3"
+  optionalDependencies:
+    opusscript "0.0.6"
+    tweetnacl "1.0.1"
+
 "@augu/eris@0.9.3":
   version "0.9.3"
   resolved "https://registry.yarnpkg.com/@augu/eris/-/eris-0.9.3.tgz#5e02239fc143a10947a9a521d6f3fb138926a22a"
