@@ -11,11 +11,13 @@ const bot = Kotori.create({
     schedulers: path.join(__dirname, 'schedulers'),
     languages: path.join(__dirname, 'locales'),
     dbURL: process.env.DB_URL,
-    lavalink: {
-        host: process.env.LAVALINK_HOST,
-        port: 2333,
-        password: process.env.LAVALINK_PASSWORD
-    },
+    nodes: [
+        { 
+            host: process.env.LAVALINK_HOST,
+            port: 2333,
+            password: process.env.LAVALINK_PASSWORD 
+        }
+    ],
     disableEveryone: true,
     defaultImageFormat: 'png',
     getAllUsers: true,
@@ -23,8 +25,9 @@ const bot = Kotori.create({
         TYPING_START: true
     },
     maxShards: 'auto',
-    owners: ['280158289667555328', '229552088525438977']
+    owners: ['280158289667555328', '229552088525438977'],
+    fileOptions: { path: path.join(__dirname, 'tmp/logs.txt') }
 });
 bot.start();
 
-process.on('unhandledRejection', (reason, promise) => bot.logger.error(`Unhandled Promise:\n\n${promise}\n${reason}`));
+process.on('unhandledRejection', (reason, promise) => bot.logger.error(`Unhandled Promise:\n\n${require('util').inspect(promise)}\n${reason}`));

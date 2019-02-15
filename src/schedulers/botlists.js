@@ -11,7 +11,7 @@ module.exports = class BotListScheduler extends Scheduler {
 
     async run() {
         // If the user ID is Mafuyu
-        if (client.user.id === '508842721545289731') return;
+        if (this.client.user.id === '508842721545289731') return;
     
         await post(`https://discord.boats/api/bots/${client.user.id}`, {
             headers: {

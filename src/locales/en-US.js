@@ -10,10 +10,13 @@ module.exports = class EnglishUSLocale extends Language {
             completion: 100,
             map: {
                 // Error-like messages
-                NO_ARGS: (args) => `:name_badge: **|** Missing \`${args}\` argument.`,
+                INVALID_USAGE: (usage) => `:name_badge: **|** Invalid usage. \`${usage}\`.`,
                 API_ERROR: (error) => `:x: **|** \`${error.message}\`. Try again later...`,
 
                 // Commands (soon since this isn't done yET)
+                COMMAND_EVAL_TOO_LONG: (url) => `:ok_hand: **|** Result was too long for a Discord embed, so I posted to hastebin!\n\`${url}\``,
+                COMMAND_EVAL_SUCCESS: (ms) => `:tada: Took ${ms}ms to evaluate.`,
+                COMMAND_EVAL_FAILED: (ms) => `:pensive: Took ${ms}ms to evaluate.`
             }
         });
     }
