@@ -34,7 +34,8 @@ module.exports = class EvalCommand extends Command {
                 'script'
             ],
             ownerOnly: true,
-            hidden: true
+            hidden: true,
+            category: 'Developers'
         });
     }
 
@@ -44,7 +45,7 @@ module.exports = class EvalCommand extends Command {
      */
     async run(ctx) {
         if (ctx.args.isEmpty(0)) {
-            const usage = this.getFormat();
+            const usage = await this.getFormat(ctx);
             const string = await ctx.translate('INVALID_USAGE', usage);
             return ctx.send(string);
         }

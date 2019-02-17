@@ -16,7 +16,10 @@ module.exports = class EnglishUSLocale extends Language {
                 // Commands (soon since this isn't done yET)
                 COMMAND_EVAL_TOO_LONG: (url) => `:ok_hand: **|** Result was too long for a Discord embed, so I posted to hastebin!\n\`${url}\``,
                 COMMAND_EVAL_SUCCESS: (ms) => `:tada: Took ${ms}ms to evaluate.`,
-                COMMAND_EVAL_FAILED: (ms) => `:pensive: Took ${ms}ms to evaluate.`
+                COMMAND_EVAL_FAILED: (ms) => `:pensive: Took ${ms}ms to evaluate.`,
+                COMMAND_EXEC_ERROR: (stderr) => `:pensive: **|** Script failed:\n\`\`\`sh\n${stderr}\`\`\``,
+                COMMAND_EXEC_SUCCESS: (stdout) => `:tada: **|** Script was successful:\n\`\`\`sh\n${stdout}\`\`\``,
+                COMMAND_EXEC_NO_RESULT: ':ok_hand: **|** No result occured.'
             }
         });
     }
