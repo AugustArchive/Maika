@@ -20,13 +20,13 @@ module.exports = class AvatarCommand extends Command {
      */
     async run(context) {
         if (context.args.isEmpty(0)) return context.embed({
-            title: `[ ${context.author.tag}'s Avatar ]`,
+            title: await context.translate('COMMAND_AVATAR_TITLE', context.author.tag),
             image: { url: context.author.avatarURL || context.author.defaultAvatarURL }
         });
 
         const user = await this.client.rest.getUser(context.args.get(0));
         return context.embed({
-            title: `[ ${user.tag}'s Avatar ]`,
+            title: await context.translate('COMMAND_AVATAR_TITLE', user.tag),
             image: { url: user.avatarURL || user.defaultAvatarURL }
         });
     }

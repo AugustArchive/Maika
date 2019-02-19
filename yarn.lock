@@ -42,10 +42,10 @@
     "@maika.xyz/miu" "0.1.0"
     chalk "2.4.2"
 
-"@maika.xyz/kotori@0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@maika.xyz/kotori/-/kotori-0.2.1.tgz#9a983e005d8e2842f401582b65d08859d08ceef0"
-  integrity sha512-uftcNqDDSxP1ay0QJD0O3AI6q2VJ1JScRlcw8hnpspRowbbFa/cdmcQmjFcUGFyVxa0cBtof6gReA/HFMARqVg==
+"@maika.xyz/kotori@0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@maika.xyz/kotori/-/kotori-0.2.2.tgz#167196515c2e2e30e2bd208719ace0b261a8c4c0"
+  integrity sha512-Kq+Ht0zI5F6WPzL61NGf0Ie2KPPKeivuO4YGHwfzi9Mf5G+b7sErvLDcg6vJUoz/5auf7lujJY0hUIZW6hWczA==
   dependencies:
     "@augu/eris" "0.10.0"
     "@maika.xyz/eris-utils" "0.1.1"

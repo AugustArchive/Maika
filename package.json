@@ -17,7 +17,7 @@
         "@augu/eris": "0.10.0",
         "@maika.xyz/eris-utils": "0.1.1",
         "@maika.xyz/hideri": "0.1.0",
-        "@maika.xyz/kotori": "0.2.1",
+        "@maika.xyz/kotori": "0.2.2",
         "@maika.xyz/miu": "0.1.0",
         "axios": "0.18.0",
         "common-tags": "1.8.0",
