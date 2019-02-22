@@ -20,7 +20,7 @@ module.exports = class TagBuilder {
      * @returns {Promise<boolean>} If the tag was successful or not
      */
     async create(name, content) {
-        const tag = await TagSchema.findOne({ name }).lean().exec();
+        const tag = await TagSchema.find({ name }).lean().exec();
 
         // If the tag name wasn't taken
         if (!tag || tag === null) {
@@ -45,4 +45,18 @@ module.exports = class TagBuilder {
      * @param {string} name The name
      * @returns {Promise<boolean>}
      */
+    delete(name) {
+        return new Promise(async (resolve, reject) => {
+            if (!name) reject(false);
+            const tag = await TagSchema.findOne({ name }).lean().exec();
+
+            if (!tag || tag === null) reject(false);
+            else {
+                TagSchema.remove({ name }, (error) => {
+                    if (error) reject(false);
+                    resolve(true);
+                });
+            }
+        });
+    }
 }
