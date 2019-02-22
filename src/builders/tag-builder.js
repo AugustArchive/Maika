@@ -59,4 +59,22 @@ module.exports = class TagBuilder {
             }
         });
     }
+    
+    /**
+     * Execute a tag
+     * @param {string} name The name owoowoowowoowow
+     * @returns {Promise<string | import('@augu/eris').Embed>}
+     */
+    execute(name) {
+        return new Promise(async (resolve, reject) => {
+            if (!name) reject('No name provided.');
+            const tag = await TagSchema.findOne({ name }).lean().exec();
+            
+            if (!tag || tag === null) reject('No tag found.');
+            else {
+                if (tag.embed) resolve(tag.embed);
+                else resolve(tag.content);
+            }
+        });
+    }
 }
