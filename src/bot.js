@@ -2,6 +2,7 @@ console.clear();
 require('dotenv').config({ path: '../.env' });
 const Kotori = require('@maika.xyz/kotori');
 const path   = require('path');
+const build  = require('./build');
 
 const bot = Kotori.create({
     token: process.env.MAIKA_TOKEN,
@@ -28,6 +29,8 @@ const bot = Kotori.create({
     owners: ['280158289667555328', '229552088525438977'],
     fileOptions: { path: path.join(__dirname, 'tmp/logs.txt') }
 });
+
+bot.logger.info(`Starting build ${build.mode[0]} (${build.mode[1]})`);
 bot.start();
 
 process.on('unhandledRejection', (reason, promise) => bot.logger.error(`Unhandled Promise:\n\n${require('util').inspect(promise)}\n${reason}`));

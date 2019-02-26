@@ -18,7 +18,7 @@ module.exports = class ExecCommand extends Command {
 
     async run(ctx) {
         if (ctx.args.isEmpty(0)) {
-            const usage = await this.getFormat(ctx);
+            const usage = await this.format(ctx);
             const trans = await ctx.translate('INVALID_USAGE', usage);
             return ctx.send(trans);
         }

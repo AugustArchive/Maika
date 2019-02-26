@@ -22,8 +22,7 @@ module.exports = class RoleInformationCommand extends Command {
      * @param {import('@maika.xyz/kotori').CommandContext} context The command context
      */
     async run(context) {
-        const roleSpin = context.args.arguments.length > 0? context.args.gather(' '): context.member.roles[Math.floor(Math.random() * context.member.roles.length - 1)];
-        const role = await this.client.rest.getRole(roleSpin, context.guild);
+        const role = await this.client.rest.getRole(context.args.has(0)? context.args.gather(' '): context.member.roles[context.member.roles.length - 1], context.guild);
 
         return context.embed({
             title: await context.translate('COMMAND_ROLEINFO_TITLE', role.name),

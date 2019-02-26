@@ -1,6 +1,6 @@
 const { stripIndents } = require('common-tags');
 const { Command }      = require('@maika.xyz/kotori');
-const axios            = require('axios').default;
+const w                = require('wumpfetch');
 const util             = require('util');
 
 /**
@@ -45,7 +45,7 @@ module.exports = class EvalCommand extends Command {
      */
     async run(ctx) {
         if (ctx.args.isEmpty(0)) {
-            const usage = await this.getFormat(ctx);
+            const usage = await this.format(ctx);
             const string = await ctx.translate('INVALID_USAGE', usage);
             return ctx.send(string);
         }
@@ -114,18 +114,19 @@ module.exports = class EvalCommand extends Command {
 
     /**
      * Posts raw data to Hastebin
-     * @param {any} dataT Data to post
+     * @param {any} data Data to post
      * @returns {Promise<string>} The URL
      */
-    post(dataT) {
-        return new Promise(async(resolve, reject) => {
-            const { data } = await axios.post('https://hastebin.com/documents', {
-                headers: { 'User-Agent': `Maika/DiscordBot (v${require('../../../package').version})` },
-                data: dataT
-            });
+    post(data) {
+        return new Promise(async(resolve) => {
+            const req = await w.get({
+                url: 'https://hastebin.com/documents',
+                method: 'POST',
+                data
+            }).send();
+            const res = req.json();
 
-            if (!data) reject();
-            resolve(`https://hastebin.com/${data.key}.js`);
+            resolve(`https://hastebin.com/${res.key}.js`);
         });
     }
 }

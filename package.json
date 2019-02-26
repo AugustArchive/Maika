@@ -19,10 +19,11 @@
         "@maika.xyz/hideri": "0.1.0",
         "@maika.xyz/kotori": "0.2.3",
         "@maika.xyz/miu": "0.1.0",
-        "axios": "0.18.0",
         "common-tags": "1.8.0",
         "dotenv": "6.2.0",
-        "mongoose": "5.4.11"
+        "mongoose": "5.4.15",
+        "table": "5.2.3",
+        "wumpfetch": "0.0.9"
     },
     "devDependencies": {
         "eslint": "5.14.0"
