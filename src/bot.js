@@ -33,4 +33,4 @@ const bot = Kotori.create({
 bot.logger.info(`Starting build ${build.mode[0]} (${build.mode[1]})`);
 bot.start();
 
-process.on('unhandledRejection', (reason, promise) => bot.logger.error(`Unhandled Promise:\n\n${require('util').inspect(promise)}\n${reason}`));
+process.on('unhandledRejection', (reason, promise) => bot.logger.error(`Unhandled Promise:\n\n${reason}\n${require('util').inspect(promise)}`));

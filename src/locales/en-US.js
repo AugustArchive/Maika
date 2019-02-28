@@ -22,6 +22,7 @@ module.exports = class EnglishUSLocale extends Language {
                 LIMIT_NAN: ':x: **|** The argument didn\'t provide a number.',
                 TOO_HIGH: (equal, arg) => `:x: **|** The value has to be lower or equal to ${equal}, received ${arg}.`,
                 TOO_LOW: (equal, arg) => `:x: **|** The value has to be higher or equal to ${equal}, received ${arg}.`,
+                REQUESTED_BY: (tag) => `Requested by ${tag}`,
 
                 // Commands
                 COMMAND_EVAL_TOO_LONG: (url) => `:ok_hand: **|** Result was too long for a Discord embed, so I posted to hastebin!\n\`${url}\``,
@@ -68,6 +69,9 @@ module.exports = class EnglishUSLocale extends Language {
                     will be gone and the coins you earned will still be in
                     your balance. If you wanna cancel your purchase,
                     contact \`August#5820\` here: ***<https://discord.gg/7TtMP2n>***.
+
+                    :pencil: If you donated to me, then conctact \`August#5820\` 
+                    at the discord server above.
                 `,
                 COMMAND_DONATE_PERKS_1: stripIndents`
                     **$1: Namaste**
@@ -95,18 +99,24 @@ module.exports = class EnglishUSLocale extends Language {
                 COMMAND_HELP_TITLE: (client) => `[ ${client.user.tag}'s Command List ]`,
                 COMMAND_HELP_DESCRIPTION: (prefix, guild) => stripIndents`
                     <:kumikoSip:490330937515704320> **The prefix in ${guild} is \`${prefix}\`.**
-                    <:blobThonk:461309895971438602> **If you wanna documentation on a command, type \`${prefix}help [command]**
-                    <:nuuuuuu:447279660372590632> **Additional Links**: [\`GitHub\`](https://github.com/MaikaBot) | [\`Support\`](https://discord.gg/7TtMP2n) | [\`Invite\`](https://discordapp.com/oauth2/authorize?client_id=447229568282132510&scope=bot)
+                    <:blobThonk:461309895971438602> **If you wanna documentation on a command, type \`${prefix}help [command]\`**
+                    <:nuuuuuu:447279660372590632> **Additional Links**: [\`GitHub\`](https://github.com/MaikaBot/Maika) | [\`Support\`](https://discord.gg/7TtMP2n) | [\`Invite\`](https://discordapp.com/oauth2/authorize?client_id=447229568282132510&scope=bot)
                 `,
+                COMMAND_HELP_FOOTER: (prefix, commands) => `Use ${prefix}help to get documentation on an command // ${commands} Commands`,
                 COMMAND_HELP_COMMAND_NAME: (name) => `[ Command ${name} ]`,
                 COMMAND_HELP_USAGE: '❯ Usage',
                 COMMAND_HELP_ALIASES: '❯ Aliases',
                 COMMAND_HELP_ALIASES_NONE: 'No aliases found',
                 COMMAND_HELP_CATEGORY: '❯ Category',
-                COMMAND_HELP_OWNER_ONLY: '❯ Owner Only',
-                COMMAND_HELP_GUILD_ONLY: '❯ Guild Only',
-                COMMAND_HELP_NOT_FOUND: (arg) => `:x: **|** Couldn't find the command \`${arg}\`.`
-            }
+                COMMAND_HELP_OWNER: '❯ Owner Only',
+                COMMAND_HELP_GUILD: '❯ Guild Only',
+                COMMAND_HELP_CHECKS: '❯ Checks',
+                COMMAND_HELP_NOT_FOUND: (arg) => `:x: **|** Couldn't find the command \`${arg}\`.`,
+                COMMAND_HELP_ALIASES_NONE: 'No aliases found',
+                COMMAND_INVITEME_TITLE: (tag) => `[ Invite ${tag} ]`,
+                COMMAND_INVITEME_INVITE: '❯ Invitation',
+                COMMAND_INVITEME_DISCORD: '❯ Discord'
+            } 
         });
     }
 }

@@ -4,6 +4,7 @@ const {
         isFunction
     }
 } = require('@maika.xyz/kotori');
+const { stripIndents } = require('common-tags');
 
 module.exports = class HelpCommand extends Command {
     constructor(client) {
@@ -20,24 +21,26 @@ module.exports = class HelpCommand extends Command {
      * @param {import('@maika.xyz/kotori').CommandContext} context The command context
      */
     async run(context) {
-        if (context.args.isEmpty(0)) {
-            /** @type {Object<string, string[]>} */
-            const categories = {};
-            const settings   = await context.guildSettings.get(context.guild.id);
-            for (let command of this.client.manager.commands.values()) {
-                if (command.hidden) continue;
+        /** @type {Object<string, string[]>} */
+        const categories = {};
+        const settings   = await context.guildSettings.get(context.guild.id);
 
-                const category = categories[command.category];
-                if (!category) categories[command.category] = [];
-                console.log(category);
-                category.push(command.command);
-            }
+        if (context.args.isEmpty(0)) {
+            this
+                .client
+                .manager
+                .commands
+                .forEach(com => {
+                    if (!(com.category in categories)) categories[com.category] = [];
+                    categories[com.category].push(com.command);
+                });
             return context.embed({
                 title: await context.translate('COMMAND_HELP_TITLE', this.client),
                 description: await context.translate('COMMAND_HELP_DESCRIPTION', settings.prefix, context.guild.name),
-                fields: Object.keys(categories).map(cat => ({ name: `❯ ${cat}`, value: `\`${categories[cat].join('`, `')}\`` })),
+                fields: Object.keys(categories).map(cat => ({ name: `❯ ${cat} [${categories[cat].length}]`, value: `\`${categories[cat].join('`, `')}\`` })),
                 footer: {
-                    text: await context.translate('COMMAND_HELP_FOOTER', settings.prefix, this.client.manager.commands.size)
+                    text: await context.translate('COMMAND_HELP_FOOTER', settings.prefix, this.client.manager.commands.size),
+                    icon_url: context.author.avatarURL || context.author.defaultAvatarURL
                 }
             });
         }
@@ -51,21 +54,37 @@ module.exports = class HelpCommand extends Command {
 
         if (command.length > 0) {
             const cmd = command[0];
-            return context.embed({
-                title: await context.translate('COMMAND_HELP_COMMAND_NAME', cmd.command),
+            context.embed({
+                title: await context.translate('COMMAND_HELP_COMMAND_NAME', `${settings.prefix}${cmd.command}`),
                 description: isFunction(cmd.description)? cmd.description(this.client): cmd.description,
                 fields: [
                     {
                         name: await context.translate('COMMAND_HELP_USAGE'),
-                        value: await this.format(context),
+                        value: await cmd.format(context),
                         inline: true
                     },
                     {
                         name: await context.translate('COMMAND_HELP_ALIASES'),
-                        value: (async() => cmd.aliases.length > 1? `\`${cmd.aliases.join('`, `')}\``: await context.translate('COMMAND_HELP_ALIASES_NONE'))(),
+                        value: cmd.aliases.length > 0? `**${cmd.aliases.join(', ')}**`: await context.translate('COMMAND_HELP_ALIASES_NONE'),
                         inline: true
+                    },
+                    {
+                        name: await context.translate('COMMAND_HELP_CATEGORY'),
+                        value: cmd.category,
+                        inline: true
+                    },
+                    {
+                        name: await context.translate('COMMAND_HELP_CHECKS'),
+                        value: stripIndents`
+                            **${await context.translate('COMMAND_HELP_OWNER')}**: ${cmd.ownerOnly? await context.translate('GLOBAL_YES'): await context.translate('GLOBAL_NO')}
+                            **${await context.translate('COMMAND_HELP_GUILD')}**: ${cmd.guildOnly? await context.translate('GLOBAL_YES'): await context.translate('GLOBAL_NO')}
+                        `
                     }
-                ]
+                ],
+                footer: {
+                    text: await context.translate('REQUESTED_BY', context.author.tag),
+                    icon_url: context.author.avatarURL || context.avatar.defaultAvatarURL
+                }
             });
         } else return context.send(await context.translate('COMMAND_HELP_COMMAND_NOT_FOUND', arg));
     }
