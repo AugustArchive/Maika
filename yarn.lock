@@ -68,10 +68,10 @@
     "@types/bson" "*"
     "@types/node" "*"
 
-"@types/mongoose@5.3.15":
-  version "5.3.15"
-  resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-5.3.15.tgz#b826e6011bd6f992434f2a9541442166297a8236"
-  integrity sha512-Pj64zQumjylyhNz4sTYVl4ua2dU/ei/6iwXR3DlTXPO+DcmWDk972sUiI0+jpX3e6bXjO06fpq5ADVzGz4PVmw==
+"@types/mongoose@5.3.23":
+  version "5.3.23"
+  resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-5.3.23.tgz#5a37bb73313f4892af9e2e6b9641a6f7b164200c"
+  integrity sha512-UZJOkFe/ShSt3iYFBiadwwCu2Y8qm/RZyAoCQI2uf88wr3NfDBpbqqoIyrchBy1y2XtvAAyktEPzvvR7up6/TQ==
   dependencies:
     "@types/mongodb" "*"
     "@types/node" "*"
@@ -237,6 +237,24 @@ mongoose@5.4.11:
     safe-buffer "5.1.2"
     sliced "1.0.1"
 
+mongoose@5.4.19:
+  version "5.4.19"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.4.19.tgz#fdca94ee7f71da2cf0e941d02255aa02007c55c0"
+  integrity sha512-paRU3nbCrPIUVw1GAlxo11uIIqrYORctUx1kcLj7i2NhkxPQuy5OK2/FYj8+tglsaixycmONSyop2HQp1IUQSA==
+  dependencies:
+    async "2.6.1"
+    bson "~1.1.0"
+    kareem "2.3.0"
+    mongodb "3.1.13"
+    mongodb-core "3.1.11"
+    mongoose-legacy-pluralize "1.0.2"
+    mpath "0.5.1"
+    mquery "3.2.0"
+    ms "2.1.1"
+    regexp-clone "0.0.1"
+    safe-buffer "5.1.2"
+    sliced "1.0.1"
+
 mpath@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.5.1.tgz#17131501f1ff9e6e4fbc8ffa875aa7065b5775ab"
@@ -257,6 +275,11 @@ ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
   integrity sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
+
+ms@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
+  integrity sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
 
 opusscript@0.0.6:
   version "0.0.6"

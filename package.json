@@ -16,10 +16,10 @@
         "@maika.xyz/miu": "0.1.0",
         "axios": "0.18.0",
         "common-tags": "1.8.0",
-        "mongoose": "5.4.11"
+        "mongoose": "5.4.19"
     },
     "devDependencies": {
-        "@types/mongoose": "5.3.15",
+        "@types/mongoose": "5.3.23",
         "@types/node": "10.12.24",
         "typescript": "3.3.3"
     },
