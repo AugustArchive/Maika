@@ -23,7 +23,7 @@
         "dotenv": "6.2.0",
         "mongoose": "5.4.15",
         "table": "5.2.3",
-        "wumpfetch": "0.0.9"
+        "wumpfetch": "0.1.0"
     },
     "devDependencies": {
         "eslint": "5.14.0"
